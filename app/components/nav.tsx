@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ThemeSwitcher } from "./theme-switcher";
 
 const navItems = {
   "/": {
@@ -31,6 +32,8 @@ export function Navbar() {
                 </Link>
               );
             })}
+            {/* themeSwitcher 우측정렬 */}
+            <ThemeSwitcher />
           </div>
         </nav>
       </div>
