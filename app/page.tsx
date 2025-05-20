@@ -10,7 +10,7 @@ export default function Page() {
       </div>
       <div className="w-full max-w-2xl mb-8">
         <p className="text-left">
-          Hi, I'm Ji Min Lee — a developer passionate about building human-centered technologies, clean code, and meaningful products.
+          Hi, I'm Ji Min Lee — a developer expanding from full-stack engineering into AI, driven by curiosity and a passion for building meaningful, human-centered technologies.
           <br />
           <br />
           I'll be joining the MS in Computer Science program at USC this August, after working as a full-stack engineer in Korea.
