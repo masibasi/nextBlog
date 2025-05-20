@@ -12,8 +12,8 @@ import { themeEffect } from "utils/themeEffect";
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Next.js Portfolio Starter",
-    template: "%s | Next.js Portfolio Starter",
+    default: "Ji Min Lee",
+    template: "%s | Ji Min Lee",
   },
   description: "This is my portfolio.",
   openGraph: {

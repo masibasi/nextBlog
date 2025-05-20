@@ -8,14 +8,8 @@ const navItems = {
   "/blog": {
     name: "blog",
   },
-  "/resume": {
-    name: "resume",
-  },
   "/about": {
     name: "about",
-  },
-  "https://vercel.com/templates/next.js/portfolio-starter-kit": {
-    name: "deploy",
   },
 };
 
@@ -32,6 +26,9 @@ export function Navbar() {
                 </Link>
               );
             })}
+            <a href="/cv.pdf" download className="transition-all hover:text-neutral-800 dark:hover:text-neutral-200 flex align-middle relative py-1 px-2 m-1">
+              resume
+            </a>
           </div>
         </nav>
         <ThemeSwitcher />
