@@ -1,4 +1,4 @@
-import { supabase } from "app/blog/[slug]/page";
+import { supabase } from "./client";
 import { unstable_noStore as noStore } from "next/cache";
 
 export async function getViewsCount(): Promise<{ slug: string; count: number }[]> {

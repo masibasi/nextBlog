@@ -6,9 +6,7 @@ import { createClient } from "@supabase/supabase-js";
 import { ViewCount } from "app/components/ViewCount";
 import { getViewsCount, incrementViews } from "utils/supabase/views";
 import { unstable_noStore as noStore } from "next/cache";
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+import { supabase } from "utils/supabase/client";
 
 export async function generateStaticParams() {
   let posts = getBlogPosts();
