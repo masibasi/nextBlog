@@ -2,7 +2,15 @@ import { notFound } from "next/navigation";
 import { CustomMDX } from "app/components/mdx";
 import { formatDate, getBlogPosts } from "app/blog/utils";
 import { baseUrl } from "app/sitemap";
-import { get } from "http";
+import { createClient } from "@supabase/supabase-js";
+import { ViewCount } from "app/components/ViewCount";
+import { getViewsCount, incrementViews } from "utils/supabase/views";
+import { unstable_noStore as noStore } from "next/cache";
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export async function generateStaticParams() {
   let posts = getBlogPosts();
@@ -45,15 +53,8 @@ export function generateMetadata({ params }) {
   };
 }
 
-export async function getViewsCount(): Promise<{ slug: string; count: number }[]> {
-  // if (!process.env.VIEWS_API_URL) {
-  // return [];
-  // }
-  // TODO: Implement actual fetching logic here
-  return [{ slug: "vim", count: 100 }];
-}
-
 export default async function Blog({ params }) {
+  noStore();
   let post = getBlogPosts().find((post) => post.slug === params.slug);
   const views = await getViewsCount();
   const count = views.find((view) => view.slug === params.slug)?.count || 0;
@@ -61,6 +62,8 @@ export default async function Blog({ params }) {
   if (!post) {
     notFound();
   }
+
+  await incrementViews(params.slug);
 
   return (
     <section>
@@ -85,10 +88,7 @@ export default async function Blog({ params }) {
         }}
       />
       <h1 className="title font-semibold text-2xl tracking-tighter">{post.metadata.title}</h1>
-      <div className="flex justify-between items-center mt-2 mb-8 text-sm">
-        <p className="text-sm text-neutral-600 dark:text-neutral-400">{formatDate(post.metadata.publishedAt)}</p>
-        <p className="text-sm text-neutral-600 dark:text-neutral-400">{count.toLocaleString()} views</p>
-      </div>
+      <ViewCount count={count} publishedAt={formatDate(post.metadata.publishedAt)} />
       <article className="prose">
         <CustomMDX source={post.content} />
       </article>
