@@ -3,7 +3,30 @@ module.exports = {
   darkMode: "selector",
   content: ["./app/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
-    extend: {},
+    extend: {
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: "100%",
+            strong: {
+              fontWeight: "700",
+            },
+            p: {
+              marginTop: "1.25em",
+              marginBottom: "1.25em",
+            },
+            ul: {
+              marginTop: "1.25em",
+              marginBottom: "1.25em",
+            },
+            ol: {
+              marginTop: "1.25em",
+              marginBottom: "1.25em",
+            },
+          },
+        },
+      },
+    },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/typography")],
 };

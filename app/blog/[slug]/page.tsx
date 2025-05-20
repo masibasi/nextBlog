@@ -89,7 +89,7 @@ export default async function Blog({ params }) {
       />
       <h1 className="title font-semibold text-2xl tracking-tighter">{post.metadata.title}</h1>
       <ViewCount count={count} publishedAt={formatDate(post.metadata.publishedAt)} />
-      <article className="prose">
+      <article className="mt-8">
         <CustomMDX source={post.content} />
       </article>
     </section>
