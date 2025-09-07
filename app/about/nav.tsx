@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { ThemeSwitcher } from "./theme-switcher";
-import { LangToggle } from "./lang-toggle";
+import { ThemeSwitcher } from "../components/theme-switcher";
+import { LangToggle } from "../components/lang-toggle";
 import { usePathname } from "next/navigation";
 
 const navItems = {

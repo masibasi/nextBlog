@@ -31,13 +31,13 @@ export default function Footer() {
         <li>
           <a className="flex items-center transition-all hover:text-neutral-800 dark:hover:text-neutral-100" href="mailto:jimin.lee4015@gmail.com">
             <ArrowIcon />
-            <p className="ml-2 h-7">jimin.lee4015@gmail.com</p>
+            <p className="ml-2 h-7">gmail</p>
           </a>
         </li>
         <li>
           <a className="flex items-center transition-all hover:text-neutral-800 dark:hover:text-neutral-100" href="mailto:leejimin@usc.edu">
             <ArrowIcon />
-            <p className="ml-2 h-7">leejimin@usc.edu</p>
+            <p className="ml-2 h-7">usc mail</p>
           </a>
         </li>
       </ul>
