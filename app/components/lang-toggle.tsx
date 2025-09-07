@@ -8,9 +8,9 @@ export function LangToggle() {
   const isKorean = pathname.startsWith("/ko");
   const isPostsPage = /^\/posts(\/|$)/.test(pathname) || /^\/ko\/posts(\/|$)/.test(pathname);
   const targetPath = isKorean ? pathname.replace(/^\/ko/, "") || "/" : "/ko" + pathname;
-  const [localKorean, setLocalKorean] = require('react').useState(isKorean);
+  const [localKorean, setLocalKorean] = require("react").useState(isKorean);
 
-  require('react').useEffect(() => {
+  require("react").useEffect(() => {
     setLocalKorean(isKorean);
   }, [isKorean]);
 
