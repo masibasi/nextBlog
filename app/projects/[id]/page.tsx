@@ -35,15 +35,9 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
   return (
     <main className="max-w-2xl mx-auto py-8 px-4">
       {project.cover && (
-        <img
-          src={project.cover}
-          alt="cover"
-          className="w-full h-64 object-cover rounded-lg mb-6 max-w-full"
-          style={{ maxWidth: "100%", height: "auto" }}
-          onError={(e) => {
-            e.currentTarget.style.display = "none";
-          }}
-        />
+        <div className="mb-4">
+          <img src={project.cover} alt="cover" className="w-full h-64 object-cover rounded-lg mb-2 max-w-full" style={{ maxWidth: "100%", height: "auto" }} />
+        </div>
       )}
       <h1 className="text-3xl font-bold mb-4">{project.name}</h1>
       <div className="mb-2 text-gray-600">Date: {project.duration}</div>
@@ -113,16 +107,12 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
             if (block.type === "image") {
               const url = block.image.type === "external" ? block.image.external.url : block.image.file.url;
               return (
-                <img
-                  key={block.id}
-                  src={url}
-                  alt="notion-img"
-                  className="my-4 rounded max-w-full"
-                  style={{ maxWidth: "100%", height: "auto" }}
-                  onError={(e) => {
-                    e.currentTarget.style.display = "none";
-                  }}
-                />
+                <div key={block.id} className="my-4">
+                  <img src={url} alt="notion-img" className="rounded max-w-full" style={{ maxWidth: "100%", height: "auto" }} />
+                  <a href={project.notionUrl} target="_blank" rel="noopener noreferrer" className="block text-center text-xs text-blue-600 hover:underline mt-1">
+                    View on Notion
+                  </a>
+                </div>
               );
             }
             // YouTube 링크가 있는 bookmark/embed 블록을 iframe으로 렌더링
