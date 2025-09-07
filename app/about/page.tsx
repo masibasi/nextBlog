@@ -2,7 +2,7 @@ export default function AboutPage() {
   return (
     <section className="max-w-2xl mx-auto py-8 px-4">
       <img
-        src="/usc_me.jpg"
+        src="/usc_me.JPG"
         alt="Portrait of Ji Min Lee"
         className="shadow-lg mb-6 w-full"
         style={{
