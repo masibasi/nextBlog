@@ -1,5 +1,10 @@
+"use client";
+
+import React, { useState } from "react";
 import Link from "next/link";
 import { ThemeSwitcher } from "./theme-switcher";
+import { LangToggle } from "./lang-toggle";
+import { usePathname } from "next/navigation";
 
 const navItems = {
   "/": {
@@ -17,6 +22,18 @@ const navItems = {
 };
 
 export function Navbar() {
+  const handleResumeClick = (e: React.MouseEvent) => {
+    const link = document.createElement("a");
+    link.href = "/Ji_Min_Lee_Resume_SWE.pdf";
+    link.download = "";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const pathname = usePathname();
+  const isPostsPage = /^\/posts(\/|$)/.test(pathname) || /^\/ko\/posts(\/|$)/.test(pathname);
+
   return (
     <aside className="-ml-[8px] mb-16 tracking-tight">
       <div className="flex justify-between lg:sticky lg:top-20">
@@ -29,12 +46,17 @@ export function Navbar() {
                 </Link>
               );
             })}
-            <a href="/Ji_Min_Lee_Resume_SWE.pdf" download className="transition-all hover:text-neutral-800 dark:hover:text-neutral-200 flex align-middle relative py-1 px-2 m-1">
-              resume
-            </a>
+            <div className="relative">
+              <button onClick={handleResumeClick} className="transition-all hover:text-neutral-800 dark:hover:text-neutral-200 flex align-middle relative py-1 px-2 m-1">
+                resume
+              </button>
+            </div>
           </div>
         </nav>
-        <ThemeSwitcher />
+        <div className="flex items-center gap-1">
+          <ThemeSwitcher />
+          {isPostsPage && <LangToggle />}
+        </div>
       </div>
     </aside>
   );

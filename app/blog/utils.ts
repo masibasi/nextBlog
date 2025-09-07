@@ -49,8 +49,14 @@ function getMDXData(dir) {
   });
 }
 
-export function getBlogPosts() {
-  return getMDXData(path.join(process.cwd(), "posts"));
+export function getBlogPosts(lang?: string) {
+  let postsDir = "posts";
+  if (lang && lang !== "en") {
+    postsDir = path.join("app", lang, "posts");
+  } else {
+    postsDir = "posts";
+  }
+  return getMDXData(path.join(process.cwd(), postsDir));
 }
 
 export function formatDate(date: string, includeRelative = false) {
