@@ -53,9 +53,11 @@ export function Navbar() {
             </div>
           </div>
         </nav>
-        <div className="flex items-center gap-1 min-w-0">
-          {isPostsPage && <LangToggle />}
-          <ThemeSwitcher />
+        <div className="flex items-center gap-1 min-w-0 max-w-full flex-shrink-0 overflow-hidden">
+          <div className="flex items-center gap-1 w-full max-w-[96px] sm:max-w-none">
+            {isPostsPage && <LangToggle />}
+            <ThemeSwitcher />
+          </div>
         </div>
       </div>
     </aside>
