@@ -6,10 +6,11 @@ export default function AboutPage() {
         alt="Portrait of Ji Min Lee"
         className="shadow-lg mb-6 w-full"
         style={{
-          maxWidth: 480,
-          height: 360,
+          maxWidth: 400,
+          aspectRatio: "3/4", // portrait ratio
+          height: "auto",
           objectFit: "cover",
-          borderRadius: "6px",
+          borderRadius: "12px",
           display: "block",
           marginLeft: "auto",
           marginRight: "auto",
