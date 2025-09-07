@@ -34,7 +34,17 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
 
   return (
     <main className="max-w-2xl mx-auto py-8 px-4">
-      {project.cover && <img src={project.cover} alt="cover" className="w-full h-64 object-cover rounded-lg mb-6" />}
+      {project.cover && (
+        <img
+          src={project.cover}
+          alt="cover"
+          className="w-full h-64 object-cover rounded-lg mb-6 max-w-full"
+          style={{ maxWidth: "100%", height: "auto" }}
+          onError={(e) => {
+            e.currentTarget.style.display = "none";
+          }}
+        />
+      )}
       <h1 className="text-3xl font-bold mb-4">{project.name}</h1>
       <div className="mb-2 text-gray-600">Date: {project.duration}</div>
       <div className="mb-2 flex flex-wrap gap-2 items-center">
@@ -102,7 +112,18 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
             }
             if (block.type === "image") {
               const url = block.image.type === "external" ? block.image.external.url : block.image.file.url;
-              return <img key={block.id} src={url} alt="notion-img" className="my-4 rounded" />;
+              return (
+                <img
+                  key={block.id}
+                  src={url}
+                  alt="notion-img"
+                  className="my-4 rounded max-w-full"
+                  style={{ maxWidth: "100%", height: "auto" }}
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                  }}
+                />
+              );
             }
             // YouTube 링크가 있는 bookmark/embed 블록을 iframe으로 렌더링
             if ((block.type === "bookmark" || block.type === "embed") && block[block.type]?.url) {
