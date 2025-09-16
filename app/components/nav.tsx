@@ -24,7 +24,7 @@ const navItems = {
 export function Navbar() {
   const handleResumeClick = (e: React.MouseEvent) => {
     const link = document.createElement("a");
-    link.href = "/Ji_Min_Lee_Resume_SWE.pdf";
+    link.href = "/Ji_Min_Lee_resume.pdf";
     link.download = "";
     document.body.appendChild(link);
     link.click();
