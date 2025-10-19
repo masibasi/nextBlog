@@ -1,43 +1,107 @@
-// 노션 API 연동 유틸리티
-// 환경변수에 NOTION_TOKEN, NOTION_DATABASE_ID를 저장하고 사용하세요.
+// Notion REST-based utilities (no external SDK) to avoid dependency and duplications
 
-const NOTION_TOKEN = process.env.NOTION_TOKEN;
-const MAIN_DB_ID = "94f8a741c0af438c85a104b5958335e7";
-const OTHER_DB_ID = "9017d654231149daae77353b8dc1911f";
+export type Project = {
+  id: string;
+  title: string;
+  duration?: string; // ISO date string from Notion date.start
+  tags?: string[];
+  stacks?: string[];
+  releasable?: boolean;
+  cover?: string | null;
+  notionUrl?: string | null;
+};
 
-async function fetchProjects(databaseId: string) {
+const NOTION_TOKEN = process.env.NOTION_TOKEN as string | undefined;
+const MAIN_DB_ID = (process.env.NOTION_MAIN_DB_ID as string | undefined) ?? "";
+const OTHER_DB_ID = (process.env.NOTION_OTHER_DB_ID as string | undefined) ?? "";
+const NOTION_VERSION = "2022-06-28";
+
+async function notionQuery(databaseId: string, startCursor?: string) {
   const res = await fetch(`https://api.notion.com/v1/databases/${databaseId}/query`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${NOTION_TOKEN}`,
-      "Notion-Version": "2022-06-28",
+      "Notion-Version": NOTION_VERSION,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({}),
+    body: JSON.stringify({ page_size: 100, start_cursor: startCursor }),
+    // Disable Next.js fetch cache to always get latest
+    next: { revalidate: 0 },
   });
+
   if (!res.ok) {
     const errorText = await res.text();
-    console.error("Notion API error:", res.status, errorText);
-    throw new Error(`Failed to fetch projects from Notion: ${res.status} - ${errorText}`);
+    console.error("[notion] query error:", res.status, errorText);
+    throw new Error(`Notion query failed: ${res.status}`);
   }
-  const data = await res.json();
-  return data.results.map((item: any) => ({
+
+  return res.json();
+}
+
+async function queryAll(databaseId: string): Promise<any[]> {
+  if (!NOTION_TOKEN || !databaseId) return [];
+  const results: any[] = [];
+  let cursor: string | undefined = undefined;
+  let hasMore = true;
+
+  while (hasMore) {
+    const data = await notionQuery(databaseId, cursor);
+    results.push(...(data.results ?? []));
+    hasMore = !!data.has_more;
+    cursor = data.next_cursor ?? undefined;
+  }
+  return results;
+}
+
+function pickTitle(title: any): string {
+  try {
+    return title?.[0]?.plain_text ?? "";
+  } catch {
+    return "";
+  }
+}
+
+function pickMulti(ms: any): string[] {
+  try {
+    return (ms ?? []).map((t: any) => t?.name).filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
+function mapProject(item: any): Project {
+  const props = item?.properties ?? {};
+  const tagsProp = props?.tags ?? props?.Tags; // tolerate both cases
+  const stacksProp = props?.Stacks ?? props?.stacks;
+  return {
     id: item.id,
-    name: item.properties.Name?.title?.[0]?.plain_text || "",
-    duration: item.properties.Duration?.date?.start || "",
-    stacks: item.properties.Stacks?.multi_select?.map((s: any) => s.name) || [],
-    github: item.properties.Github?.url || "",
-    tags: item.properties.Tags?.multi_select?.map((s: any) => s.name) || [],
-    releasable: !!item.properties.releasable?.checkbox,
-    cover: item.cover?.external?.url || item.cover?.file?.url || "",
-    notionUrl: item.url || "",
-  }));
+    title: pickTitle(props?.Name?.title),
+    duration: props?.Duration?.date?.start ?? "",
+    tags: pickMulti(tagsProp?.multi_select),
+    stacks: pickMulti(stacksProp?.multi_select),
+    releasable: !!props?.releasable?.checkbox,
+    cover: item.cover?.external?.url ?? item.cover?.file?.url ?? null,
+    notionUrl: item.url ?? null,
+  };
 }
 
-export async function getMainProjects() {
-  return fetchProjects(MAIN_DB_ID);
+export async function getMainProjects(): Promise<Project[]> {
+  if (!MAIN_DB_ID) return [];
+  const rows = await queryAll(MAIN_DB_ID);
+  console.log("[notion] main fetched:", rows.length);
+  return rows.map(mapProject);
 }
 
-export async function getOtherProjects() {
-  return fetchProjects(OTHER_DB_ID);
+export async function getOtherProjects(): Promise<Project[]> {
+  if (!OTHER_DB_ID) return [];
+  const rows = await queryAll(OTHER_DB_ID);
+  console.log("[notion] other fetched:", rows.length);
+  return rows.map(mapProject);
+}
+
+export async function getAllProjects(): Promise<Project[]> {
+  const [main, other] = await Promise.all([getMainProjects(), getOtherProjects()]);
+  const all = [...(main ?? []), ...(other ?? [])];
+  console.log("[notion] all projects:", all.length);
+  return all;
 }
