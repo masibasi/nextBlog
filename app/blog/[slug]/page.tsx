@@ -4,7 +4,7 @@ import { formatDate, getBlogPosts } from "app/blog/utils";
 import { baseUrl } from "app/sitemap";
 import { createClient } from "@supabase/supabase-js";
 import { ViewCount } from "app/components/ViewCount";
-import { getViewsCount, incrementViews } from "utils/supabase/views";
+import { getViewCount } from "utils/supabase/views";
 import { unstable_noStore as noStore } from "next/cache";
 import { supabase } from "utils/supabase/client";
 
@@ -52,14 +52,13 @@ export function generateMetadata({ params }) {
 export default async function Blog({ params }) {
   noStore();
   let post = getBlogPosts().find((post) => post.slug === params.slug);
-  const views = await getViewsCount();
-  const count = views.find((view) => view.slug === params.slug)?.count || 0;
+  const count = await getViewCount(params.slug);
 
   if (!post) {
     notFound();
   }
 
-  await incrementViews(params.slug);
+  // Increment happens client-side via ViewCount
 
   return (
     <section>
@@ -84,7 +83,7 @@ export default async function Blog({ params }) {
         }}
       />
       <h1 className="title font-semibold text-2xl tracking-tighter">{post.metadata.title}</h1>
-      <ViewCount count={count} publishedAt={formatDate(post.metadata.publishedAt)} />
+      <ViewCount slug={params.slug} count={count} publishedAt={formatDate(post.metadata.publishedAt)} />
       <article className="mt-8">
         <CustomMDX source={post.content} />
       </article>

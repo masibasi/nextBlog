@@ -13,6 +13,16 @@ export async function getViewsCount(): Promise<{ slug: string; count: number }[]
   return data || [];
 }
 
+export async function getViewCount(slug: string): Promise<number> {
+  noStore();
+  const { data, error } = await supabase.from("views").select("count").eq("slug", slug).maybeSingle();
+  if (error) {
+    console.error("Error fetching view by slug:", error);
+    return 0;
+  }
+  return data?.count ?? 0;
+}
+
 export async function incrementViews(slug: string) {
   noStore(); // 캐싱 비활성화
   // 1. 먼저 현재 조회수를 가져옵니다
