@@ -39,11 +39,11 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
           <img src={project.cover} alt="cover" className="w-full h-64 object-cover rounded-lg mb-2 max-w-full" style={{ maxWidth: "100%", height: "auto" }} />
         </div>
       )}
-      <h1 className="text-3xl font-bold mb-4">{project.name}</h1>
+  <h1 className="text-3xl font-bold mb-4">{project.title}</h1>
       <div className="mb-2 text-gray-600">Date: {project.duration}</div>
       <div className="mb-2 flex flex-wrap gap-2 items-center">
         <span className="font-semibold">Stacks:</span>
-        {project.stacks.map((stack: string) => (
+        {(project.stacks ?? []).map((stack: string) => (
           <span
             key={stack}
             className="px-2 py-1 rounded border text-xs font-medium"
@@ -67,16 +67,10 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
           ))}
         </div>
       )}
-      {project.github && (
-        <div className="mb-2">
-          <a href={project.github} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-            Github
-          </a>
-        </div>
-      )}
+      {/* GitHub link removed: not defined in Project type. Add when mapped from Notion if needed. */}
       {project.notionUrl && (
         <div className="mb-4">
-          <a href={project.notionUrl} target="_blank" rel="noopener noreferrer" className="text-sm text-purple-600 hover:underline">
+          <a href={(project.notionUrl ?? undefined) as string | undefined} target="_blank" rel="noopener noreferrer" className="text-sm text-purple-600 hover:underline">
             View original page in Notion
           </a>
         </div>
@@ -109,7 +103,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
               return (
                 <div key={block.id} className="my-4">
                   <img src={url} alt="notion-img" className="rounded max-w-full" style={{ maxWidth: "100%", height: "auto" }} />
-                  <a href={project.notionUrl} target="_blank" rel="noopener noreferrer" className="block text-center text-xs text-blue-600 hover:underline mt-1">
+                  <a href={(project.notionUrl ?? undefined) as string | undefined} target="_blank" rel="noopener noreferrer" className="block text-center text-xs text-blue-600 hover:underline mt-1">
                     View on Notion
                   </a>
                 </div>
