@@ -50,13 +50,16 @@ function getMDXData(dir) {
 }
 
 export function getBlogPosts(lang?: string) {
-  let postsDir = "posts";
-  if (lang && lang !== "en") {
-    postsDir = path.join("app", lang, "posts");
-  } else {
-    postsDir = "posts";
+  // Read MDX from top-level posts directory; locale-specific under posts/<lang>
+  const postsDir = lang && lang !== "en" ? path.join("posts", lang) : "posts";
+  const fullPath = path.join(process.cwd(), postsDir);
+  try {
+    return getMDXData(fullPath);
+  } catch (e) {
+    // Return empty list if directory is missing in the deployment bundle
+    console.error("getBlogPosts read error for dir:", fullPath, e);
+    return [] as any[];
   }
-  return getMDXData(path.join(process.cwd(), postsDir));
 }
 
 export function formatDate(date: string, includeRelative = false) {

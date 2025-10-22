@@ -39,7 +39,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
           <img src={project.cover} alt="cover" className="w-full h-64 object-cover rounded-lg mb-2 max-w-full" style={{ maxWidth: "100%", height: "auto" }} />
         </div>
       )}
-  <h1 className="text-3xl font-bold mb-4">{project.title}</h1>
+      <h1 className="text-3xl font-bold mb-4">{project.title}</h1>
       <div className="mb-2 text-gray-600">Date: {project.duration}</div>
       <div className="mb-2 flex flex-wrap gap-2 items-center">
         <span className="font-semibold">Stacks:</span>
