@@ -1,10 +1,10 @@
 // 프로젝트 목록을 보여주는 페이지
 import ProjectList from "../../components/project-list";
-import { getMainProjects, getOtherProjects } from "../../utils/notion";
+import { getMainProjects, getOtherProjects, type Project } from "../../utils/notion";
 
 export default async function ProjectsPage() {
-  let mainProjects = [];
-  let otherProjects = [];
+  let mainProjects: Project[] = [];
+  let otherProjects: Project[] = [];
   try {
     mainProjects = await getMainProjects();
     console.log("mainProjects", mainProjects);
