@@ -1,13 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    // Ensure content files under ./posts are included in serverless output
+    // Ensure content files under ./posts are included in the serverless output for any route that might read them
     outputFileTracingIncludes: {
-      "/app/posts/[slug]/page": ["./posts/**/*"],
-      "/app/ko/posts/[slug]/page": ["./posts/**/*"],
-      "/app/posts/page": ["./posts/**/*"],
-      "/app/ko/posts/page": ["./posts/**/*"],
-      "/app/blog/[slug]/page": ["./posts/**/*"],
+      "/app/**": ["./posts/**/*"],
+      "/pages/**": ["./posts/**/*"],
     },
   },
 };
