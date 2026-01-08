@@ -22,15 +22,6 @@ const navItems = {
 };
 
 export function Navbar() {
-  const handleResumeClick = (e: React.MouseEvent) => {
-    const link = document.createElement("a");
-    link.href = "/Ji_Min_Lee_resume.pdf";
-    link.download = "";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
   const pathname = usePathname();
   const isPostsPage = /^\/posts(\/|$)/.test(pathname) || /^\/ko\/posts(\/|$)/.test(pathname);
 
@@ -47,9 +38,14 @@ export function Navbar() {
               );
             })}
             <div className="relative">
-              {/* <button onClick={handleResumeClick} className="transition-all hover:text-neutral-800 dark:hover:text-neutral-200 flex align-middle relative py-1 px-2 m-1">
+              <a
+                href="https://docs.google.com/document/d/1OP7d07Z7wqP4_r2_zirm8QgGNnOaoPy4Nl8yKzzPFyM/edit?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-all hover:text-neutral-800 dark:hover:text-neutral-200 flex align-middle relative py-1 px-2 m-1"
+              >
                 resume
-              </button> */}
+              </a>
             </div>
           </div>
         </nav>
