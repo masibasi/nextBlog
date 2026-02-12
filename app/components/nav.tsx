@@ -24,6 +24,15 @@ const navItems = {
 export function Navbar() {
   const pathname = usePathname();
   const isPostsPage = /^\/posts(\/|$)/.test(pathname) || /^\/ko\/posts(\/|$)/.test(pathname);
+  const [showDownloadModal, setShowDownloadModal] = useState(false);
+
+  const handleDownload = () => {
+    const link = document.createElement("a");
+    link.href = "/Ji_Min_Lee_resume2.11.pdf";
+    link.download = "Ji_Min_Lee_resume.pdf";
+    link.click();
+    setShowDownloadModal(false);
+  };
 
   return (
     <aside className="-ml-[8px] mb-16 tracking-tight">
@@ -37,16 +46,12 @@ export function Navbar() {
                 </Link>
               );
             })}
-            <div className="relative">
-              <a
-                href="https://docs.google.com/document/d/1OP7d07Z7wqP4_r2_zirm8QgGNnOaoPy4Nl8yKzzPFyM/edit?usp=sharing"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="transition-all hover:text-neutral-800 dark:hover:text-neutral-200 flex align-middle relative py-1 px-2 m-1"
-              >
-                resume
-              </a>
-            </div>
+            <button
+              onClick={() => setShowDownloadModal(true)}
+              className="transition-all hover:text-neutral-800 dark:hover:text-neutral-200 flex align-middle relative py-1 px-2 m-1"
+            >
+              resume
+            </button>
           </div>
         </nav>
         {/* Responsive: absolutely position on small screens to prevent overflow */}
@@ -57,6 +62,36 @@ export function Navbar() {
           </div>
         </div>
       </div>
+
+      {showDownloadModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+          onClick={() => setShowDownloadModal(false)}
+        >
+          <div
+            className="bg-white dark:bg-neutral-900 rounded-lg p-6 shadow-lg max-w-sm w-full mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="text-neutral-900 dark:text-neutral-100 mb-4">
+              Download resume?
+            </p>
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={() => setShowDownloadModal(false)}
+                className="px-4 py-2 rounded text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDownload}
+                className="px-4 py-2 rounded bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 hover:bg-neutral-700 dark:hover:bg-neutral-300 transition-colors"
+              >
+                Download
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </aside>
   );
 }
