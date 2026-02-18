@@ -49,7 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className="antialiased max-w-3xl mx-auto mt-8 px-4 lg:px-0">
+      <body className="antialiased max-w-5xl mx-auto mt-8 px-4 sm:px-6 lg:px-8">
         <main className="flex-auto min-w-0 mt-6 flex flex-col">
           <Navbar />
           {children}

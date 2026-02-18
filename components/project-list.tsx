@@ -8,9 +8,9 @@ export default function ProjectList({ projects }: { projects: Project[] }) {
   if (!visible.length) return <div>No releasable projects yet.</div>;
 
   return (
-    <ul className="space-y-6">
+    <ul className="space-y-8">
       {visible.map((project) => (
-        <li key={project.id} className="w-full rounded-2xl border p-6 sm:p-7 bg-white/60 dark:bg-neutral-900/40">
+        <li key={project.id} className="w-full rounded-2xl border p-7 sm:p-8 bg-white/60 dark:bg-neutral-900/40">
           <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between md:gap-6">
             <h3 className="min-w-0 text-[18px] leading-snug font-semibold text-neutral-900 dark:text-neutral-100 break-words">
               <Link href={`/projects/${project.id}`} className="hover:underline underline-offset-4">
