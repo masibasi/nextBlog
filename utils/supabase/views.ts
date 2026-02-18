@@ -1,8 +1,11 @@
-import { supabase } from "./client";
+import { getSupabaseClient } from "./client";
 import { unstable_noStore as noStore } from "next/cache";
 
 export async function getViewsCount(): Promise<{ slug: string; count: number }[]> {
-  noStore(); // 캐싱 비활성화
+  noStore();
+  const supabase = getSupabaseClient();
+  if (!supabase) return [];
+
   const { data, error } = await supabase.from("views").select("slug, count");
 
   if (error) {
@@ -15,6 +18,9 @@ export async function getViewsCount(): Promise<{ slug: string; count: number }[]
 
 export async function getViewCount(slug: string): Promise<number> {
   noStore();
+  const supabase = getSupabaseClient();
+  if (!supabase) return 0;
+
   const { data, error } = await supabase.from("views").select("count").eq("slug", slug).maybeSingle();
   if (error) {
     console.error("Error fetching view by slug:", error);
@@ -24,12 +30,13 @@ export async function getViewCount(slug: string): Promise<number> {
 }
 
 export async function incrementViews(slug: string) {
-  noStore(); // 캐싱 비활성화
-  // 1. 먼저 현재 조회수를 가져옵니다
-  const { data: currentData } = await supabase.from("views").select("count").eq("slug", slug).single();
+  noStore();
+  const supabase = getSupabaseClient();
+  if (!supabase) return;
 
-  // 2. 현재 조회수에 1을 더한 값을 upsert합니다
+  const { data: currentData } = await supabase.from("views").select("count").eq("slug", slug).single();
   const newCount = (currentData?.count || 0) + 1;
+
   const { error } = await supabase.from("views").upsert({ slug, count: newCount }, { onConflict: "slug" });
 
   if (error) {
