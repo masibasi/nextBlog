@@ -20,7 +20,7 @@ export default async function ProjectsPage() {
   const regularProjects = releasable.filter((p) => !isFeatured(p));
 
   return (
-    <main className="max-w-4xl mx-auto py-4 px-3 sm:px-6">
+    <main className="max-w-4xl mx-auto py-6 px-4 sm:px-8">
       <h1 className="text-3xl font-bold mb-2">Projects</h1>
       <p className="mb-8 text-sm text-neutral-600 dark:text-neutral-400">Selected work from product engineering, applied AI, and research prototypes.</p>
 
