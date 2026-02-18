@@ -40,7 +40,8 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
         </div>
       )}
       <h1 className="text-3xl font-bold mb-4">{project.title}</h1>
-      <div className="mb-2 text-gray-600">Date: {project.duration}</div>
+      <div className="mb-2 text-gray-600">Date: {project.duration || "N/A"}</div>
+      {project.summary && <p className="mb-3 text-neutral-700 dark:text-neutral-300">{project.summary}</p>}
       <div className="mb-2 flex flex-wrap gap-2 items-center">
         <span className="font-semibold">Stacks:</span>
         {(project.stacks ?? []).map((stack: string) => (
@@ -68,11 +69,18 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
         </div>
       )}
       {/* GitHub link removed: not defined in Project type. Add when mapped from Notion if needed. */}
-      {project.notionUrl && (
-        <div className="mb-4">
-          <a href={(project.notionUrl ?? undefined) as string | undefined} target="_blank" rel="noopener noreferrer" className="text-sm text-purple-600 hover:underline">
-            View original page in Notion
-          </a>
+      {(project.github || project.notionUrl) && (
+        <div className="mb-4 flex gap-4 text-sm">
+          {project.github && (
+            <a href={project.github} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+              View on GitHub
+            </a>
+          )}
+          {project.notionUrl && (
+            <a href={(project.notionUrl ?? undefined) as string | undefined} target="_blank" rel="noopener noreferrer" className="text-purple-600 hover:underline">
+              View original page in Notion
+            </a>
+          )}
         </div>
       )}
 

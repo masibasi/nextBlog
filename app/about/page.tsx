@@ -1,13 +1,15 @@
+import Link from "next/link";
+
 export default function AboutPage() {
   return (
-    <section className="max-w-2xl mx-auto py-8 px-4">
+    <section className="max-w-2xl mx-auto py-8 px-4 space-y-8">
       <img
         src="/usc_me.JPG"
         alt="Portrait of Ji Min Lee"
-        className="shadow-lg mb-6 w-full"
+        className="shadow-lg w-full"
         style={{
           maxWidth: 400,
-          aspectRatio: "3/4", // portrait ratio
+          aspectRatio: "3/4",
           height: "auto",
           objectFit: "cover",
           borderRadius: "12px",
@@ -17,83 +19,60 @@ export default function AboutPage() {
         }}
       />
 
-      <div className="mb-4 flex flex-col gap-1">
-        <span>
-          Email:{" "}
-          <a href="mailto:jimin.lee4015@gmail.com" className="text-blue-600 underline">
-            jimin.lee4015@gmail.com
-          </a>{" "}
-          /{" "}
-          <a href="mailto:leejimin@usc.edu" className="text-blue-600 underline">
-            leejimin@usc.edu
-          </a>
-        </span>
-        <span>
-          Instagram:{" "}
-          <a href="https://www.instagram.com/naive_jimin/" className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">
-            @naive_jimin
-          </a>
-        </span>
+      <div className="space-y-2">
+        <h1 className="text-2xl font-semibold">About</h1>
+        <p>
+          Hi, I’m <strong>Ji Min Lee</strong>. I build full-stack products and applied AI systems with a strong interest in healthcare,
+          education, and human-centered design.
+        </p>
+        <p>
+          Before USC, I worked at EMRO (Korea’s leading AI-powered supply-chain software provider), where I shipped internal AI products
+          and backend systems used in procurement workflows at scale. Now at USC, I work across both research and engineering — from
+          LLM-assisted modules to production-ready web systems.
+        </p>
       </div>
-      <p className="mb-4">
-        Hi, I’m Ji Min Lee — a software engineer with a strong foundation in full-stack development and a growing focus on artificial intelligence. I’ve built enterprise systems at EMRO, contributed
-        to accessibility-focused AI projects at Irvine Tech Hub, and now pursue an M.S. in Computer Science (AI) at USC. I aim to build human-centered AI that bridges research and real-world
-        applications.
-      </p>
 
-      <h2 className="text-xl font-semibold mt-8 mb-2">Career</h2>
-      <ul className="mb-6 list-disc pl-6">
-        <li>
-          🧪 <strong>Graduate Researcher, USC AI for Health Lab</strong> (Sep 2025 – Present) — Adaptive survey generation with LLMs to improve screening efficiency and diagnostic accuracy.
-        </li>
-        <li>
-          💻 <strong>Full-Stack Engineer, EMRO</strong> (Sep 2023 – Jun 2025) — AI Business Division; built intelligent recommendation modules and hybrid CI/CD (Azure + on-prem) for Hyundai Motor
-          procurement systems.
-        </li>
-        <li>
-          🤖 <strong>AI Engineering Apprentice, Irvine Tech Hub</strong> (Jan 2023 – Feb 2023) — Led a 4-person team to build an AI image-generation service for dyslexic users; fine-tuned Stable
-          Diffusion and deployed on Hugging Face.
-        </li>
-      </ul>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="rounded-xl border p-4">
+          <h2 className="font-semibold mb-2">Now</h2>
+          <ul className="list-disc pl-5 text-sm space-y-1">
+            <li>M.S. in Computer Science (AI), USC (2025–2027)</li>
+            <li>Web Team Lead, USC Interaction Lab (NIH R01 funded)</li>
+            <li>Graduate Research Intern, USC AI for Health Lab</li>
+          </ul>
+        </div>
+        <div className="rounded-xl border p-4">
+          <h2 className="font-semibold mb-2">Previously</h2>
+          <ul className="list-disc pl-5 text-sm space-y-1">
+            <li>Full-Stack Engineer, EMRO (2023–2025)</li>
+            <li>B.Eng. Software Engineering, Gachon University (Cum Laude)</li>
+            <li>ROK Army Sergeant (Signal School, Squad Leader)</li>
+          </ul>
+        </div>
+      </div>
 
-      <h2 className="text-xl font-semibold mt-8 mb-2">Education</h2>
-      <ul className="mb-6 list-disc pl-6">
-        <li>
-          🎓 <strong>M.S. in Computer Science (AI), University of Southern California</strong> (Aug 2025 – May 2027)
-        </li>
-        <li>
-          🎓 <strong>B.Eng. in Software Engineering, Gachon University</strong> (2018 – 2024) — GPA 4.13/4.5, Cum Laude
-        </li>
-      </ul>
+      <div className="rounded-xl border p-4">
+        <h2 className="font-semibold mb-2">Interests</h2>
+        <p className="text-sm text-neutral-700 dark:text-neutral-300">
+          Human-centered AI, multimodal systems, AI agents, and product-oriented engineering. I enjoy turning ambiguous ideas into
+          production systems that people actually use.
+        </p>
+      </div>
 
-      <h2 className="text-xl font-semibold mt-8 mb-2">Research &amp; Career Interests</h2>
-      <ul className="mb-6 list-disc pl-6">
-        <li>Human-Centered AI</li>
-        <li>Multimodal Models &amp; AI Agents</li>
-        <li>Applied ML Systems &amp; Product-Focused Engineering</li>
-      </ul>
-
-      {/* <h2 className="text-xl font-semibold mt-8 mb-2">Links</h2> */}
-      {/* <ul className="mb-6 list-disc pl-6">
-        <li>
-          GitHub:{" "}
-          <a href="https://github.com/masibasi" className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">
-            github.com/masibasi
-          </a>
-        </li>
-        <li>
-          LinkedIn:{" "}
-          <a href="https://linkedin.com/in/jiminlee4015" className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">
-            linkedin.com/in/jiminlee4015
-          </a>
-        </li>
-      </ul> */}
-
-      <h2 className="text-xl font-semibold mt-8 mb-2">Fun Facts</h2>
-      <ul className="list-disc pl-6">
-        <li>Enjoy film photography 🎞️, guitar 🎸, and dancing.</li>
-        <li>Big fan of Spurs ⚽ and T1 🎮.</li>
-      </ul>
+      <div className="text-sm space-y-1">
+        <p>
+          Email: <a href="mailto:leejimin@usc.edu" className="underline">leejimin@usc.edu</a>
+        </p>
+        <p>
+          LinkedIn: <a href="https://www.linkedin.com/in/jiminlee4015" target="_blank" rel="noopener noreferrer" className="underline">linkedin.com/in/jiminlee4015</a>
+        </p>
+        <p>
+          GitHub: <a href="https://github.com/masibasi" target="_blank" rel="noopener noreferrer" className="underline">github.com/masibasi</a>
+        </p>
+        <p>
+          <Link href="/resume" className="underline">View resume</Link>
+        </p>
+      </div>
     </section>
   );
 }

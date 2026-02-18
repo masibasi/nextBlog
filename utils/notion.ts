@@ -3,10 +3,12 @@
 export type Project = {
   id: string;
   title: string;
-  duration?: string; // ISO date string from Notion date.start
+  summary?: string;
+  duration?: string;
   tags?: string[];
   stacks?: string[];
   releasable?: boolean;
+  github?: string | null;
   cover?: string | null;
   notionUrl?: string | null;
 };
@@ -25,7 +27,6 @@ async function notionQuery(databaseId: string, startCursor?: string) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ page_size: 100, start_cursor: startCursor }),
-    // Disable Next.js fetch cache to always get latest
     next: { revalidate: 0 },
   });
 
@@ -61,6 +62,22 @@ function pickTitle(title: any): string {
   }
 }
 
+function pickRichText(rt: any): string {
+  try {
+    return (rt ?? []).map((t: any) => t?.plain_text).filter(Boolean).join("").trim();
+  } catch {
+    return "";
+  }
+}
+
+function pickUrl(prop: any): string | null {
+  try {
+    return prop?.url ?? null;
+  } catch {
+    return null;
+  }
+}
+
 function pickMulti(ms: any): string[] {
   try {
     return (ms ?? []).map((t: any) => t?.name).filter(Boolean);
@@ -71,37 +88,46 @@ function pickMulti(ms: any): string[] {
 
 function mapProject(item: any): Project {
   const props = item?.properties ?? {};
-  const tagsProp = props?.tags ?? props?.Tags; // tolerate both cases
+  const tagsProp = props?.tags ?? props?.Tags;
   const stacksProp = props?.Stacks ?? props?.stacks;
+  const summaryProp = props?.Summary ?? props?.Description ?? props?.description;
+  const githubProp = props?.Github ?? props?.GitHub ?? props?.github;
+
   return {
     id: item.id,
     title: pickTitle(props?.Name?.title),
+    summary: pickRichText(summaryProp?.rich_text),
     duration: props?.Duration?.date?.start ?? "",
     tags: pickMulti(tagsProp?.multi_select),
     stacks: pickMulti(stacksProp?.multi_select),
     releasable: !!props?.releasable?.checkbox,
+    github: pickUrl(githubProp),
     cover: item.cover?.external?.url ?? item.cover?.file?.url ?? null,
     notionUrl: item.url ?? null,
   };
 }
 
+function sortByDurationDesc(projects: Project[]): Project[] {
+  return [...projects].sort((a, b) => {
+    const da = a?.duration ? new Date(a.duration).getTime() : 0;
+    const db = b?.duration ? new Date(b.duration).getTime() : 0;
+    return db - da;
+  });
+}
+
 export async function getMainProjects(): Promise<Project[]> {
   if (!MAIN_DB_ID) return [];
   const rows = await queryAll(MAIN_DB_ID);
-  console.log("[notion] main fetched:", rows.length);
-  return rows.map(mapProject);
+  return sortByDurationDesc(rows.map(mapProject));
 }
 
 export async function getOtherProjects(): Promise<Project[]> {
   if (!OTHER_DB_ID) return [];
   const rows = await queryAll(OTHER_DB_ID);
-  console.log("[notion] other fetched:", rows.length);
-  return rows.map(mapProject);
+  return sortByDurationDesc(rows.map(mapProject));
 }
 
 export async function getAllProjects(): Promise<Project[]> {
   const [main, other] = await Promise.all([getMainProjects(), getOtherProjects()]);
-  const all = [...(main ?? []), ...(other ?? [])];
-  console.log("[notion] all projects:", all.length);
-  return all;
+  return sortByDurationDesc([...(main ?? []), ...(other ?? [])]);
 }

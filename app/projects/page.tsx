@@ -1,33 +1,39 @@
-// 프로젝트 목록을 보여주는 페이지
 import ProjectList from "../../components/project-list";
-import { getMainProjects, getOtherProjects, type Project } from "../../utils/notion";
+import { getAllProjects, type Project } from "../../utils/notion";
+
+function isFeatured(project: Project) {
+  const tags = (project.tags ?? []).map((t) => t.toLowerCase());
+  return tags.includes("featured") || tags.includes("main") || tags.includes("highlight");
+}
 
 export default async function ProjectsPage() {
-  let mainProjects: Project[] = [];
-  let otherProjects: Project[] = [];
+  let projects: Project[] = [];
+
   try {
-    mainProjects = await getMainProjects();
-    console.log("mainProjects", mainProjects);
+    projects = await getAllProjects();
   } catch (e) {
-    console.error("mainProjects fetch error", e);
+    console.error("projects fetch error", e);
   }
-  try {
-    otherProjects = await getOtherProjects();
-    console.log("otherProjects", otherProjects);
-  } catch (e) {
-    console.error("otherProjects fetch error", e);
-  }
+
+  const releasable = (projects ?? []).filter((p) => p.releasable);
+  const featuredProjects = releasable.filter(isFeatured);
+  const regularProjects = releasable.filter((p) => !isFeatured(p));
+
   return (
-    <main className="max-w-2xl mx-auto py-1 px-4">
-      <h1 className="text-3xl font-bold mb-4">Projects</h1>
+    <main className="max-w-3xl mx-auto py-1 px-4">
+      <h1 className="text-3xl font-bold mb-2">Projects</h1>
+      <p className="mb-8 text-sm text-neutral-600 dark:text-neutral-400">
+        Selected work from product engineering, applied AI, and research prototypes.
+      </p>
+
       <section className="mb-10">
-        <h2 className="text-xl font-semibold mb-4">Main Projects</h2>
-        {/* mainProjects가 비어있으면 안내 메시지 */}
-        {mainProjects.length === 0 ? <div className="text-red-500 mb-8">Main Projects 데이터를 불러올 수 없습니다.</div> : <ProjectList projects={mainProjects} />}
+        <h2 className="text-xl font-semibold mb-4">Featured</h2>
+        {featuredProjects.length === 0 ? <div className="text-neutral-500">No featured projects yet. Add tag: <code>featured</code> in Notion.</div> : <ProjectList projects={featuredProjects} />}
       </section>
+
       <section>
-        <h2 className="text-xl font-semibold mb-4">Other Projects</h2>
-        {otherProjects.length === 0 ? <div className="text-red-500">Other Projects 데이터를 불러올 수 없습니다.</div> : <ProjectList projects={otherProjects} />}
+        <h2 className="text-xl font-semibold mb-4">All Releasable Projects</h2>
+        {regularProjects.length === 0 ? <div className="text-neutral-500">No additional releasable projects yet.</div> : <ProjectList projects={regularProjects} />}
       </section>
     </main>
   );
