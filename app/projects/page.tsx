@@ -20,11 +20,9 @@ export default async function ProjectsPage() {
   const regularProjects = releasable.filter((p) => !isFeatured(p));
 
   return (
-    <main className="max-w-3xl mx-auto py-1 px-4">
+    <main className="max-w-3xl mx-auto py-2 px-2 sm:px-4">
       <h1 className="text-3xl font-bold mb-2">Projects</h1>
-      <p className="mb-8 text-sm text-neutral-600 dark:text-neutral-400">
-        Selected work from product engineering, applied AI, and research prototypes.
-      </p>
+      <p className="mb-8 text-sm text-neutral-600 dark:text-neutral-400">Selected work from product engineering, applied AI, and research prototypes.</p>
 
       <section className="mb-10">
         <h2 className="text-xl font-semibold mb-4">Featured</h2>
@@ -32,7 +30,7 @@ export default async function ProjectsPage() {
       </section>
 
       <section>
-        <h2 className="text-xl font-semibold mb-4">All Releasable Projects</h2>
+        <h2 className="text-xl font-semibold mb-4">All Projects</h2>
         {regularProjects.length === 0 ? <div className="text-neutral-500">No additional releasable projects yet.</div> : <ProjectList projects={regularProjects} />}
       </section>
     </main>

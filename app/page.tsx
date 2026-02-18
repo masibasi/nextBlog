@@ -1,10 +1,9 @@
-import Link from "next/link";
 import { Posts } from "app/components/posts";
 
 export default function Page() {
   return (
     <section className="flex flex-col items-center">
-      <div className="w-full max-w-2xl space-y-6">
+      <div className="w-full max-w-3xl space-y-8">
         <div className="space-y-3">
           <p className="text-sm uppercase tracking-wide text-neutral-500">Ji Min Lee · Software Engineer</p>
           <h1 className="text-2xl font-semibold tracking-tight">Building human-centered AI products from research to production.</h1>
@@ -14,22 +13,7 @@ export default function Page() {
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-2 text-sm">
-          <Link href="/projects" className="rounded-full border px-3 py-1 hover:bg-neutral-100 dark:hover:bg-neutral-900">
-            View Projects
-          </Link>
-          <Link href="/resume" className="rounded-full border px-3 py-1 hover:bg-neutral-100 dark:hover:bg-neutral-900">
-            Resume
-          </Link>
-          <Link href="/about" className="rounded-full border px-3 py-1 hover:bg-neutral-100 dark:hover:bg-neutral-900">
-            About
-          </Link>
-          <a href="mailto:leejimin@usc.edu" className="rounded-full border px-3 py-1 hover:bg-neutral-100 dark:hover:bg-neutral-900">
-            Contact
-          </a>
-        </div>
-
-        <div className="rounded-xl border p-4">
+        <div className="rounded-xl border p-5">
           <h2 className="mb-2 font-medium">Current Focus</h2>
           <ul className="list-disc space-y-1 pl-5 text-sm text-neutral-700 dark:text-neutral-300">
             <li>Web Team Lead for an NIH R01-funded USC research platform (Next.js, AWS, IoT).</li>
@@ -38,7 +22,7 @@ export default function Page() {
           </ul>
         </div>
 
-        <div className="my-6 w-full">
+        <div className="w-full">
           <h2 className="text-lg font-semibold mb-3">Recent Posts</h2>
           <Posts />
         </div>
