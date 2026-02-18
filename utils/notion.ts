@@ -8,6 +8,7 @@ export type Project = {
   tags?: string[];
   stacks?: string[];
   releasable?: boolean;
+  featured?: boolean;
   github?: string | null;
   cover?: string | null;
   notionUrl?: string | null;
@@ -101,6 +102,7 @@ function mapProject(item: any): Project {
     tags: pickMulti(tagsProp?.multi_select),
     stacks: pickMulti(stacksProp?.multi_select),
     releasable: !!props?.releasable?.checkbox,
+    featured: !!(props?.featured?.checkbox ?? props?.Featured?.checkbox),
     github: pickUrl(githubProp),
     cover: item.cover?.external?.url ?? item.cover?.file?.url ?? null,
     notionUrl: item.url ?? null,

@@ -1,11 +1,6 @@
 import ProjectList from "../../components/project-list";
 import { getAllProjects, type Project } from "../../utils/notion";
 
-function isFeatured(project: Project) {
-  const tags = (project.tags ?? []).map((t) => t.toLowerCase());
-  return tags.includes("featured") || tags.includes("main") || tags.includes("highlight");
-}
-
 export default async function ProjectsPage() {
   let projects: Project[] = [];
 
@@ -16,8 +11,8 @@ export default async function ProjectsPage() {
   }
 
   const releasable = (projects ?? []).filter((p) => p.releasable);
-  const featuredProjects = releasable.filter(isFeatured).slice(0, 3);
-  const regularProjects = releasable.filter((p) => !isFeatured(p));
+  const featuredProjects = releasable.filter((p) => p.featured).slice(0, 3);
+  const regularProjects = releasable.filter((p) => !p.featured);
 
   return (
     <main className="w-full py-8 px-1 sm:px-2">
@@ -26,7 +21,7 @@ export default async function ProjectsPage() {
 
       <section className="mb-12">
         <h2 className="text-xl font-semibold mb-4">Featured</h2>
-        {featuredProjects.length === 0 ? <div className="text-neutral-500">No featured projects yet. Add tag: <code>featured</code> in Notion.</div> : <ProjectList projects={featuredProjects} variant="featured" />}
+        {featuredProjects.length === 0 ? <div className="text-neutral-500">No featured projects yet. In Notion, set <code>featured</code> checkbox = true.</div> : <ProjectList projects={featuredProjects} variant="featured" />}
       </section>
 
       <section>
