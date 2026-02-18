@@ -150,3 +150,21 @@ table {
 .title {
   text-wrap: balance;
 }
+
+@layer components {
+  .page-wrap {
+    @apply w-full py-8 sm:py-10 px-2 sm:px-4;
+  }
+
+  .page-wrap--narrow {
+    @apply max-w-4xl mx-auto;
+  }
+
+  .page-wrap--wide {
+    @apply max-w-5xl mx-auto;
+  }
+
+  .section-card {
+    @apply rounded-2xl border p-6 sm:p-7;
+  }
+}

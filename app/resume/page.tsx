@@ -36,7 +36,7 @@ const skills = ["TypeScript", "Python", "Java", "React", "Next.js", "FastAPI", "
 
 export default function ResumePage() {
   return (
-    <main className="max-w-4xl mx-auto py-5 px-3 sm:px-6 space-y-6">
+    <main className="page-wrap page-wrap--wide space-y-7">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h1 className="text-3xl font-bold">Resume</h1>
@@ -47,7 +47,7 @@ export default function ResumePage() {
         </a>
       </div>
 
-      <div className="rounded-2xl border p-5 text-sm text-neutral-700 dark:text-neutral-300">
+      <div className="section-card text-sm text-neutral-700 dark:text-neutral-300">
         <p><strong>Location:</strong> Los Angeles, CA</p>
         <p><strong>Email:</strong> <a href="mailto:leejimin@usc.edu" className="underline">leejimin@usc.edu</a></p>
         <p>
@@ -56,18 +56,18 @@ export default function ResumePage() {
         </p>
       </div>
 
-      <section className="rounded-2xl border p-5 sm:p-6">
+      <section className="section-card">
         <h2 className="text-lg font-semibold mb-3">At a Glance</h2>
-        <ul className="list-disc pl-5 space-y-1.5 text-sm text-neutral-700 dark:text-neutral-300">
+        <ul className="list-disc pl-5 space-y-2 text-sm text-neutral-700 dark:text-neutral-300">
           {highlights.map((item) => (
             <li key={item}>{item}</li>
           ))}
         </ul>
       </section>
 
-      <section className="rounded-2xl border p-5 sm:p-6">
+      <section className="section-card">
         <h2 className="text-lg font-semibold mb-4">Experience Highlights</h2>
-        <div className="space-y-5">
+        <div className="space-y-6">
           {experience.map((item) => (
             <div key={item.role}>
               <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
@@ -84,7 +84,7 @@ export default function ResumePage() {
         </div>
       </section>
 
-      <section className="rounded-2xl border p-5 sm:p-6">
+      <section className="section-card">
         <h2 className="text-lg font-semibold mb-3">Core Skills</h2>
         <div className="flex flex-wrap gap-2.5">
           {skills.map((skill) => (
