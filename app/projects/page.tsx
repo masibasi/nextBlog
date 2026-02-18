@@ -16,7 +16,7 @@ export default async function ProjectsPage() {
   }
 
   const releasable = (projects ?? []).filter((p) => p.releasable);
-  const featuredProjects = releasable.filter(isFeatured);
+  const featuredProjects = releasable.filter(isFeatured).slice(0, 3);
   const regularProjects = releasable.filter((p) => !isFeatured(p));
 
   return (
@@ -24,14 +24,14 @@ export default async function ProjectsPage() {
       <h1 className="text-3xl font-bold mb-2">Projects</h1>
       <p className="mb-8 text-sm text-neutral-600 dark:text-neutral-400">Selected work from product engineering, applied AI, and research prototypes.</p>
 
-      <section className="mb-10">
+      <section className="mb-12">
         <h2 className="text-xl font-semibold mb-4">Featured</h2>
-        {featuredProjects.length === 0 ? <div className="text-neutral-500">No featured projects yet. Add tag: <code>featured</code> in Notion.</div> : <ProjectList projects={featuredProjects} />}
+        {featuredProjects.length === 0 ? <div className="text-neutral-500">No featured projects yet. Add tag: <code>featured</code> in Notion.</div> : <ProjectList projects={featuredProjects} variant="featured" />}
       </section>
 
       <section>
         <h2 className="text-xl font-semibold mb-4">All Projects</h2>
-        {regularProjects.length === 0 ? <div className="text-neutral-500">No additional releasable projects yet.</div> : <ProjectList projects={regularProjects} />}
+        {regularProjects.length === 0 ? <div className="text-neutral-500">No additional releasable projects yet.</div> : <ProjectList projects={regularProjects} variant="compact" />}
       </section>
     </main>
   );
