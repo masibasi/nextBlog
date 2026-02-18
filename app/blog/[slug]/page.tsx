@@ -2,11 +2,9 @@ import { notFound } from "next/navigation";
 import { CustomMDX } from "app/components/mdx";
 import { formatDate, getBlogPosts } from "app/blog/utils";
 import { baseUrl } from "app/sitemap";
-import { createClient } from "@supabase/supabase-js";
 import { ViewCount } from "app/components/ViewCount";
 import { getViewCount } from "utils/supabase/views";
 import { unstable_noStore as noStore } from "next/cache";
-import { supabase } from "utils/supabase/client";
 
 export async function generateStaticParams() {
   let posts = getBlogPosts();
