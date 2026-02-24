@@ -8,6 +8,7 @@ export type Project = {
   stacks?: string[];
   releasable?: boolean;
   featured?: boolean;
+  summary?: string;
   cover?: string | null;
   notionUrl?: string | null;
 };
@@ -62,6 +63,14 @@ function pickTitle(title: any): string {
   }
 }
 
+function pickRichText(rt: any): string {
+  try {
+    return (rt ?? []).map((t: any) => t?.plain_text ?? "").join("");
+  } catch {
+    return "";
+  }
+}
+
 function pickMulti(ms: any): string[] {
   try {
     return (ms ?? []).map((t: any) => t?.name).filter(Boolean);
@@ -82,6 +91,7 @@ function mapProject(item: any): Project {
     stacks: pickMulti(stacksProp?.multi_select),
     releasable: !!props?.releasable?.checkbox,
     featured: !!props?.featured?.checkbox || !!props?.Featured?.checkbox,
+    summary: pickRichText(props?.Summary?.rich_text ?? props?.summary?.rich_text),
     cover: item.cover?.external?.url ?? item.cover?.file?.url ?? null,
     notionUrl: item.url ?? null,
   };

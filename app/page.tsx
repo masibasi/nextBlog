@@ -130,9 +130,21 @@ export default async function Page() {
                   <div className="w-full h-36 photo-placeholder" />
                 )}
                 <div className="p-3">
-                  <div className="font-medium text-sm text-neutral-900 dark:text-neutral-100 group-hover:underline">
-                    {project.title}
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="font-medium text-sm text-neutral-900 dark:text-neutral-100 group-hover:underline">
+                      {project.title}
+                    </div>
+                    {project.tags?.includes("Award") && (
+                      <span className="shrink-0 px-2 py-0.5 text-xs font-medium rounded-md bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800">
+                        Award
+                      </span>
+                    )}
                   </div>
+                  {project.summary && (
+                    <p className="mt-1 text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed line-clamp-2">
+                      {project.summary}
+                    </p>
+                  )}
                   {project.stacks && project.stacks.length > 0 && (
                     <div className="mt-1.5 flex flex-wrap gap-1">
                       {project.stacks.slice(0, 4).map((stack) => (
