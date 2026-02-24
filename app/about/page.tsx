@@ -4,96 +4,90 @@ export default function AboutPage() {
       <img
         src="/usc_me.JPG"
         alt="Portrait of Ji Min Lee"
-        className="shadow-lg mb-6 w-full"
+        className="rounded-xl shadow-md mb-6 w-full"
         style={{
-          maxWidth: 400,
-          aspectRatio: "3/4", // portrait ratio
+          maxWidth: 360,
+          aspectRatio: "3/4",
           height: "auto",
           objectFit: "cover",
-          borderRadius: "12px",
           display: "block",
           marginLeft: "auto",
           marginRight: "auto",
         }}
       />
 
-      <div className="mb-4 flex flex-col gap-1">
-        <span>
-          Email:{" "}
-          <a href="mailto:jimin.lee4015@gmail.com" className="text-blue-600 underline">
-            jimin.lee4015@gmail.com
-          </a>{" "}
-          /{" "}
-          <a href="mailto:leejimin@usc.edu" className="text-blue-600 underline">
-            leejimin@usc.edu
-          </a>
-        </span>
-        <span>
-          Instagram:{" "}
-          <a href="https://www.instagram.com/naive_jimin/" className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">
-            @naive_jimin
-          </a>
-        </span>
+      {/* Contact */}
+      <div className="mb-6 flex flex-col gap-1 text-sm text-neutral-500 dark:text-neutral-400">
+        <a href="mailto:leejimin@usc.edu" className="hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors">
+          leejimin@usc.edu
+        </a>
+        <a
+          href="https://www.instagram.com/naive_jimin/"
+          className="hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          @naive_jimin
+        </a>
       </div>
-      <p className="mb-4">
-        Hi, I’m Ji Min Lee — a software engineer with a strong foundation in full-stack development and a growing focus on artificial intelligence. I’ve built enterprise systems at EMRO, contributed
-        to accessibility-focused AI projects at Irvine Tech Hub, and now pursue an M.S. in Computer Science (AI) at USC. I aim to build human-centered AI that bridges research and real-world
-        applications.
+
+      {/* Intro */}
+      <p className="mb-8 leading-relaxed text-neutral-800 dark:text-neutral-200">
+        Hi, I'm Ji Min Lee — a software engineer currently leading web development at the{" "}
+        <strong>USC Interaction Lab</strong> and pursuing an{" "}
+        <strong>M.S. in Computer Science (AI) at USC</strong>. Before grad school, I spent two years at{" "}
+        <strong>EMRO</strong> building full-stack systems for Hyundai Motor's procurement platform. I care
+        about making software that actually helps people, and I'm especially drawn to human-centered AI
+        and the messy, interesting work of putting research into practice.
       </p>
 
-      <h2 className="text-xl font-semibold mt-8 mb-2">Career</h2>
-      <ul className="mb-6 list-disc pl-6">
-        <li>
-          🧪 <strong>Graduate Researcher, USC AI for Health Lab</strong> (Sep 2025 – Present) — Adaptive survey generation with LLMs to improve screening efficiency and diagnostic accuracy.
-        </li>
-        <li>
-          💻 <strong>Full-Stack Engineer, EMRO</strong> (Sep 2023 – Jun 2025) — AI Business Division; built intelligent recommendation modules and hybrid CI/CD (Azure + on-prem) for Hyundai Motor
-          procurement systems.
-        </li>
-        <li>
-          🤖 <strong>AI Engineering Apprentice, Irvine Tech Hub</strong> (Jan 2023 – Feb 2023) — Led a 4-person team to build an AI image-generation service for dyslexic users; fine-tuned Stable
-          Diffusion and deployed on Hugging Face.
-        </li>
-      </ul>
+      {/* What I've been up to */}
+      <h2 className="text-lg font-semibold mb-4 text-neutral-900 dark:text-neutral-100">What I've been up to</h2>
+      <div className="space-y-3 mb-8">
+        <div className="card-warm p-4">
+          <div className="font-medium text-neutral-900 dark:text-neutral-100">Web Team Lead, USC Interaction Lab</div>
+          <div className="text-sm text-neutral-500 dark:text-neutral-400 mt-0.5">Jan 2026 – Present</div>
+          <p className="text-sm text-neutral-700 dark:text-neutral-300 mt-2 leading-relaxed">
+            Leading front-end development for the lab's public site and internal tooling. Working closely
+            with researchers to present their work clearly and accessibly.
+          </p>
+        </div>
+        <div className="card-warm p-4">
+          <div className="font-medium text-neutral-900 dark:text-neutral-100">Full-Stack Engineer, EMRO</div>
+          <div className="text-sm text-neutral-500 dark:text-neutral-400 mt-0.5">Sep 2023 – Jun 2025</div>
+          <p className="text-sm text-neutral-700 dark:text-neutral-300 mt-2 leading-relaxed">
+            Built recommendation modules and CI/CD pipelines for enterprise procurement systems at
+            Hyundai Motor. Worked across Spring, Azure, and on-prem infrastructure.
+          </p>
+        </div>
+        <div className="card-warm p-4">
+          <div className="font-medium text-neutral-900 dark:text-neutral-100">Researcher, USC AI for Health Lab</div>
+          <div className="text-sm text-neutral-500 dark:text-neutral-400 mt-0.5">Sep 2025 – Present</div>
+          <p className="text-sm text-neutral-700 dark:text-neutral-300 mt-2 leading-relaxed">
+            Exploring adaptive survey generation with LLMs to improve clinical screening. Working on a
+            paper currently under ACL Rolling Review.
+          </p>
+        </div>
+      </div>
 
-      <h2 className="text-xl font-semibold mt-8 mb-2">Education</h2>
-      <ul className="mb-6 list-disc pl-6">
-        <li>
-          🎓 <strong>M.S. in Computer Science (AI), University of Southern California</strong> (Aug 2025 – May 2027)
-        </li>
-        <li>
-          🎓 <strong>B.Eng. in Software Engineering, Gachon University</strong> (2018 – 2024) — GPA 4.13/4.5, Cum Laude
-        </li>
-      </ul>
+      {/* Education */}
+      <h2 className="text-lg font-semibold mb-3 text-neutral-900 dark:text-neutral-100">Education</h2>
+      <div className="mb-8 space-y-2 text-sm text-neutral-700 dark:text-neutral-300">
+        <div>
+          <span className="font-medium">USC</span> — M.S. Computer Science (AI), 2025–2027
+        </div>
+        <div>
+          <span className="font-medium">Gachon University</span> — B.Eng. Software Engineering, Cum Laude, 2018–2024
+        </div>
+      </div>
 
-      <h2 className="text-xl font-semibold mt-8 mb-2">Research &amp; Career Interests</h2>
-      <ul className="mb-6 list-disc pl-6">
-        <li>Human-Centered AI</li>
-        <li>Multimodal Models &amp; AI Agents</li>
-        <li>Applied ML Systems &amp; Product-Focused Engineering</li>
-      </ul>
-
-      {/* <h2 className="text-xl font-semibold mt-8 mb-2">Links</h2> */}
-      {/* <ul className="mb-6 list-disc pl-6">
-        <li>
-          GitHub:{" "}
-          <a href="https://github.com/masibasi" className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">
-            github.com/masibasi
-          </a>
-        </li>
-        <li>
-          LinkedIn:{" "}
-          <a href="https://linkedin.com/in/jiminlee4015" className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">
-            linkedin.com/in/jiminlee4015
-          </a>
-        </li>
-      </ul> */}
-
-      <h2 className="text-xl font-semibold mt-8 mb-2">Fun Facts</h2>
-      <ul className="list-disc pl-6">
-        <li>Enjoy film photography 🎞️, guitar 🎸, and dancing.</li>
-        <li>Big fan of Spurs ⚽ and T1 🎮.</li>
-      </ul>
+      {/* Outside of work */}
+      <h2 className="text-lg font-semibold mb-3 text-neutral-900 dark:text-neutral-100">Outside of work</h2>
+      <p className="leading-relaxed text-neutral-700 dark:text-neutral-300">
+        I shoot film on weekends, play guitar badly but happily, and dance whenever I get the chance.
+        I'm a Spurs supporter and a devoted T1 fan — two fandoms that have taught me a lot about
+        patience and resilience.
+      </p>
     </section>
   );
 }

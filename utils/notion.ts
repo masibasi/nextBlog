@@ -7,6 +7,7 @@ export type Project = {
   tags?: string[];
   stacks?: string[];
   releasable?: boolean;
+  featured?: boolean;
   cover?: string | null;
   notionUrl?: string | null;
 };
@@ -80,6 +81,7 @@ function mapProject(item: any): Project {
     tags: pickMulti(tagsProp?.multi_select),
     stacks: pickMulti(stacksProp?.multi_select),
     releasable: !!props?.releasable?.checkbox,
+    featured: !!props?.featured?.checkbox || !!props?.Featured?.checkbox,
     cover: item.cover?.external?.url ?? item.cover?.file?.url ?? null,
     notionUrl: item.url ?? null,
   };
@@ -88,20 +90,16 @@ function mapProject(item: any): Project {
 export async function getMainProjects(): Promise<Project[]> {
   if (!MAIN_DB_ID) return [];
   const rows = await queryAll(MAIN_DB_ID);
-  console.log("[notion] main fetched:", rows.length);
   return rows.map(mapProject);
 }
 
 export async function getOtherProjects(): Promise<Project[]> {
   if (!OTHER_DB_ID) return [];
   const rows = await queryAll(OTHER_DB_ID);
-  console.log("[notion] other fetched:", rows.length);
   return rows.map(mapProject);
 }
 
 export async function getAllProjects(): Promise<Project[]> {
   const [main, other] = await Promise.all([getMainProjects(), getOtherProjects()]);
-  const all = [...(main ?? []), ...(other ?? [])];
-  console.log("[notion] all projects:", all.length);
-  return all;
+  return [...(main ?? []), ...(other ?? [])];
 }

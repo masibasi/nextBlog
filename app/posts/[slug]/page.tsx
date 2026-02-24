@@ -14,7 +14,7 @@ export default async function Post({ params }: { params: { slug: string } }) {
   const count = await getViewCount(params.slug);
 
   return (
-    <section>
+    <section className="max-w-2xl">
       <h1 className="title font-semibold text-2xl tracking-tighter">{post.metadata.title}</h1>
       <ViewCount slug={params.slug} count={count} publishedAt={formatDate(post.metadata.publishedAt)} />
       <article className="mt-8">

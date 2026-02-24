@@ -29,15 +29,9 @@ export default function Footer() {
           </a>
         </li>
         <li>
-          <a className="flex items-center transition-all hover:text-neutral-800 dark:hover:text-neutral-100" href="mailto:jimin.lee4015@gmail.com">
-            <ArrowIcon />
-            <p className="ml-2 h-7">gmail</p>
-          </a>
-        </li>
-        <li>
           <a className="flex items-center transition-all hover:text-neutral-800 dark:hover:text-neutral-100" href="mailto:leejimin@usc.edu">
             <ArrowIcon />
-            <p className="ml-2 h-7">usc mail</p>
+            <p className="ml-2 h-7">email</p>
           </a>
         </li>
       </ul>

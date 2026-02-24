@@ -36,7 +36,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
     <main className="max-w-2xl mx-auto py-8 px-4">
       {project.cover && (
         <div className="mb-4">
-          <img src={project.cover} alt="cover" className="w-full h-64 object-cover rounded-lg mb-2 max-w-full" style={{ maxWidth: "100%", height: "auto" }} />
+          <img src={project.cover} alt="cover" className="w-full h-64 object-cover rounded-xl mb-2 max-w-full" style={{ maxWidth: "100%", height: "auto" }} />
         </div>
       )}
       <h1 className="text-3xl font-bold mb-4">{project.title}</h1>
@@ -46,11 +46,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
         {(project.stacks ?? []).map((stack: string) => (
           <span
             key={stack}
-            className="px-2 py-1 rounded border text-xs font-medium"
-            style={{
-              borderColor: getStackColor(stack),
-              color: getStackColor(stack),
-            }}
+            className="px-2 py-1 rounded-md border text-xs font-medium bg-neutral-100 dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300"
           >
             {stack}
           </span>
