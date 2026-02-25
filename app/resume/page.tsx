@@ -10,7 +10,7 @@ function ResumeSection({ title, children }: { title: string; children: React.Rea
     <section className="mb-10">
       <div className="flex items-center gap-3 mb-4">
         <h2 className="text-lg font-semibold tracking-tight text-neutral-900 dark:text-neutral-100 whitespace-nowrap">{title}</h2>
-        <div className="flex-1 border-t border-neutral-200 dark:border-neutral-800" />
+        <div className="flex-1 border-t border-rose-200 dark:border-rose-900/60" />
       </div>
       {children}
     </section>
@@ -39,7 +39,7 @@ function ResumeEntry({
         <ul className="mt-2 space-y-1">
           {bullets.map((b, i) => (
             <li key={i} className="text-sm text-neutral-700 dark:text-neutral-300 flex gap-2">
-              <span className="mt-1.5 shrink-0 w-1.5 h-1.5 rounded-full bg-neutral-400 dark:bg-neutral-600" />
+              <span className="mt-1.5 shrink-0 w-1.5 h-1.5 rounded-full bg-rose-400 dark:bg-rose-500" />
               <span>{b}</span>
             </li>
           ))}
