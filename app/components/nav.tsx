@@ -39,9 +39,9 @@ export function Navbar() {
                 <Link
                   key={path}
                   href={path}
-                  className={`transition-all flex align-middle relative py-1 px-2 m-1 ${
+                  className={`transition-colors font-medium flex align-middle relative py-1 px-2 m-1 ${
                     isActive
-                      ? "text-rose-600 dark:text-rose-400 font-medium"
+                      ? "text-rose-600 dark:text-rose-400"
                       : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200"
                   }`}
                 >
@@ -54,7 +54,9 @@ export function Navbar() {
         {/* Responsive: absolutely position on small screens to prevent overflow */}
         <div className="flex items-center gap-1 min-w-0 max-w-full flex-shrink-0 overflow-visible absolute right-2 top-2 sm:static sm:right-auto sm:top-auto">
           <div className="flex items-center gap-1 w-full max-w-[96px] sm:max-w-none">
-            {isPostsPage && <LangToggle />}
+            <div className={isPostsPage ? "" : "invisible pointer-events-none"}>
+              <LangToggle />
+            </div>
             <ThemeSwitcher />
           </div>
         </div>
