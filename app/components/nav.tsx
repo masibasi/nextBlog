@@ -34,8 +34,17 @@ export function Navbar() {
         <nav className="flex flex-row items-start relative px-0 pb-0 fade md:overflow-auto scroll-pr-6 md:relative w-full" id="nav">
           <div className="flex flex-row space-x-0 pr-10 w-full">
             {Object.entries(navItems).map(([path, { name }]) => {
+              const isActive = path === "/" ? pathname === "/" : pathname.startsWith(path);
               return (
-                <Link key={path} href={path} className="transition-all hover:text-neutral-800 dark:hover:text-neutral-200 flex align-middle relative py-1 px-2 m-1">
+                <Link
+                  key={path}
+                  href={path}
+                  className={`transition-all flex align-middle relative py-1 px-2 m-1 ${
+                    isActive
+                      ? "text-blue-600 dark:text-blue-400 font-medium"
+                      : "hover:text-neutral-800 dark:hover:text-neutral-200"
+                  }`}
+                >
                   {name}
                 </Link>
               );

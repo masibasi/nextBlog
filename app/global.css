@@ -50,7 +50,7 @@ html {
 }
 
 .prose a {
-  @apply underline transition-all decoration-neutral-400 dark:decoration-neutral-600 underline-offset-2 decoration-[0.1em];
+  @apply underline transition-all decoration-blue-300 dark:decoration-blue-700 underline-offset-2 decoration-[0.1em];
 }
 
 .prose .anchor:after {
@@ -152,7 +152,9 @@ table {
 }
 
 .card-warm {
-  @apply rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm hover:shadow-md transition-shadow duration-200;
+  @apply rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm transition-all duration-200
+         hover:shadow-lg hover:shadow-blue-500/10 dark:hover:shadow-blue-400/10
+         hover:border-blue-200 dark:hover:border-blue-800;
 }
 
 .photo-placeholder {

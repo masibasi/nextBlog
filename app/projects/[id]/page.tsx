@@ -249,13 +249,23 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
   return (
     <main className="max-w-2xl mx-auto py-8 px-4">
       {/* Breadcrumb */}
-      <div className="mb-5">
+      <div className="mb-5 flex items-center justify-between">
         <Link
           href="/projects"
           className="inline-flex items-center gap-1 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 underline underline-offset-2 decoration-neutral-300 dark:decoration-neutral-600 transition-colors"
         >
           ← Projects
         </Link>
+        {project.notionUrl && (
+          <a
+            href={project.notionUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-medium text-neutral-500 dark:text-neutral-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+          >
+            View in Notion ↗
+          </a>
+        )}
       </div>
 
       {project.cover && (
@@ -270,26 +280,14 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
 
       {/* Header */}
       <div className="mb-8">
-        <div className="flex items-start justify-between gap-3 flex-wrap mb-2">
-          <div className="flex items-start gap-3 flex-wrap">
-            <h1 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">
-              {project.title}
-            </h1>
-            {hasAward && (
-              <span className="mt-1.5 px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-700">
-                Award
-              </span>
-            )}
-          </div>
-          {project.notionUrl && (
-            <a
-              href={project.notionUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="shrink-0 mt-1 text-sm font-medium text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-100 underline underline-offset-2 decoration-neutral-300 dark:decoration-neutral-600 transition-colors"
-            >
-              View in Notion ↗
-            </a>
+        <div className="flex items-start gap-3 flex-wrap mb-2">
+          <h1 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">
+            {project.title}
+          </h1>
+          {hasAward && (
+            <span className="mt-1.5 px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-700">
+              Award
+            </span>
           )}
         </div>
 

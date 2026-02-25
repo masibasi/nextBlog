@@ -71,7 +71,7 @@ export default async function Page() {
               href="https://github.com/masibasi"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors"
+              className="text-neutral-500 dark:text-neutral-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               GitHub
             </a>
@@ -79,13 +79,13 @@ export default async function Page() {
               href="https://www.linkedin.com/in/jiminlee4015/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors"
+              className="text-neutral-500 dark:text-neutral-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               LinkedIn
             </a>
             <Link
               href="/resume"
-              className="text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors"
+              className="text-neutral-500 dark:text-neutral-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               Resume
             </Link>
@@ -118,7 +118,7 @@ export default async function Page() {
             </h2>
             <Link
               href="/projects"
-              className="text-xs text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors"
+              className="text-xs text-blue-500 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
             >
               All projects →
             </Link>
@@ -179,7 +179,7 @@ export default async function Page() {
           </h2>
           <Link
             href="/posts"
-            className="text-xs text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors"
+            className="text-xs text-blue-500 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
           >
             All posts →
           </Link>
