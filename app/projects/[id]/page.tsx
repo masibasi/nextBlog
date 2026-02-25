@@ -261,7 +261,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
             href={project.notionUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-medium text-neutral-500 dark:text-neutral-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            className="text-sm font-medium text-neutral-500 dark:text-neutral-400 hover:text-rose-600 dark:hover:text-rose-400 transition-colors"
           >
             View in Notion ↗
           </a>
@@ -285,7 +285,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
             {project.title}
           </h1>
           {hasAward && (
-            <span className="mt-1.5 px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-700">
+            <span className="mt-1.5 px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 dark:bg-amber-900/60 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-700">
               Award
             </span>
           )}
