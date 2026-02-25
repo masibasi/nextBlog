@@ -42,6 +42,7 @@ export default function ProjectList({ projects }: { projects: Project[] }) {
                     src={project.cover}
                     alt={project.title}
                     className="w-full h-48 object-cover group-hover:opacity-95 transition-opacity"
+                    loading="eager"
                   />
                 ) : (
                   <div className="w-full h-48 photo-placeholder" />

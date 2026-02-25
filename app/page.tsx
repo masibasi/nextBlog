@@ -131,6 +131,7 @@ export default async function Page() {
                     src={project.cover}
                     alt={project.title}
                     className="w-full h-36 object-cover group-hover:opacity-95 transition-opacity"
+                    loading="eager"
                   />
                 ) : (
                   <div className="w-full h-36 photo-placeholder" />
