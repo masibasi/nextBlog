@@ -54,7 +54,7 @@ export function Navbar() {
         {/* Responsive: absolutely position on small screens to prevent overflow */}
         <div className="flex items-center gap-1 min-w-0 max-w-full flex-shrink-0 overflow-visible absolute right-2 top-2 sm:static sm:right-auto sm:top-auto">
           <div className="flex items-center gap-1 w-full max-w-[96px] sm:max-w-none">
-            <div className={isPostsPage ? "" : "invisible pointer-events-none"}>
+            <div className={`transition-opacity duration-150 ${isPostsPage ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
               <LangToggle />
             </div>
             <ThemeSwitcher />

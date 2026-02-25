@@ -8,20 +8,19 @@ export const ThemeSwitcher = () => {
   const [theme, setTheme] = useState<Theme>("light");
 
   useEffect(() => {
-    if (!("theme" in localStorage)) {
+    const stored = localStorage.getItem("theme") as Theme | null;
+    if (stored) {
+      setTheme(stored);
+    } else {
       const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      const nextTheme = isDark ? "dark" : "light";
-      applyTheme(nextTheme);
-      return;
+      const detected: Theme = isDark ? "dark" : "light";
+      setTheme(detected);
+      localStorage.setItem("theme", detected);
+      document.documentElement.classList.toggle("dark", isDark);
     }
-
-    const currentTheme = localStorage.getItem("theme") as Theme;
-    applyTheme(currentTheme);
   }, []);
 
   const applyTheme = (nextTheme: Theme) => {
-    if (localStorage.getItem("theme") === nextTheme) return;
-
     setTheme(nextTheme);
     localStorage.setItem("theme", nextTheme);
     if (nextTheme === "dark") {
@@ -32,9 +31,7 @@ export const ThemeSwitcher = () => {
   };
 
   const handleToggle = () => {
-    const nextTheme = theme === "light" ? "dark" : "light";
-    console.log("nextTheme", nextTheme);
-    applyTheme(nextTheme);
+    applyTheme(theme === "light" ? "dark" : "light");
   };
 
   return (
