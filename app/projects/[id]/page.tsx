@@ -261,7 +261,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
             href={project.notionUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-medium text-neutral-500 dark:text-neutral-400 hover:text-rose-600 dark:hover:text-rose-400 transition-colors"
+            className="text-sm font-medium text-neutral-500 dark:text-neutral-400 hover:text-cardinal-700 dark:hover:text-cardinal-400 transition-colors"
           >
             View in Notion ↗
           </a>

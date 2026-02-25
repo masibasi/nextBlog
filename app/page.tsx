@@ -71,7 +71,7 @@ export default async function Page() {
               href="https://github.com/masibasi"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-neutral-500 dark:text-neutral-400 hover:text-rose-600 dark:hover:text-rose-400 transition-colors"
+              className="text-neutral-500 dark:text-neutral-400 hover:text-cardinal-700 dark:hover:text-cardinal-400 transition-colors"
             >
               GitHub
             </a>
@@ -79,13 +79,13 @@ export default async function Page() {
               href="https://www.linkedin.com/in/jiminlee4015/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-neutral-500 dark:text-neutral-400 hover:text-rose-600 dark:hover:text-rose-400 transition-colors"
+              className="text-neutral-500 dark:text-neutral-400 hover:text-cardinal-700 dark:hover:text-cardinal-400 transition-colors"
             >
               LinkedIn
             </a>
             <Link
               href="/resume"
-              className="text-neutral-500 dark:text-neutral-400 hover:text-rose-600 dark:hover:text-rose-400 transition-colors"
+              className="text-neutral-500 dark:text-neutral-400 hover:text-cardinal-700 dark:hover:text-cardinal-400 transition-colors"
             >
               Resume
             </Link>
@@ -118,7 +118,7 @@ export default async function Page() {
             </h2>
             <Link
               href="/projects"
-              className="text-xs text-rose-500 dark:text-rose-400 hover:text-rose-700 dark:hover:text-rose-300 transition-colors"
+              className="text-xs text-cardinal-700 dark:text-cardinal-400 hover:text-cardinal-800 dark:hover:text-cardinal-300 transition-colors"
             >
               All projects →
             </Link>
@@ -179,7 +179,7 @@ export default async function Page() {
           </h2>
           <Link
             href="/posts"
-            className="text-xs text-rose-500 dark:text-rose-400 hover:text-rose-700 dark:hover:text-rose-300 transition-colors"
+            className="text-xs text-cardinal-700 dark:text-cardinal-400 hover:text-cardinal-800 dark:hover:text-cardinal-300 transition-colors"
           >
             All posts →
           </Link>

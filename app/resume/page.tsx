@@ -10,7 +10,7 @@ function ResumeSection({ title, children }: { title: string; children: React.Rea
     <section className="mb-10">
       <div className="flex items-center gap-3 mb-4">
         <h2 className="text-lg font-semibold tracking-tight text-neutral-900 dark:text-neutral-100 whitespace-nowrap">{title}</h2>
-        <div className="flex-1 border-t border-rose-200 dark:border-rose-900/60" />
+        <div className="flex-1 border-t border-cardinal-200 dark:border-cardinal-900/60" />
       </div>
       {children}
     </section>
@@ -39,7 +39,7 @@ function ResumeEntry({
         <ul className="mt-2 space-y-1">
           {bullets.map((b, i) => (
             <li key={i} className="text-sm text-neutral-700 dark:text-neutral-300 flex gap-2">
-              <span className="mt-1.5 shrink-0 w-1.5 h-1.5 rounded-full bg-rose-400 dark:bg-rose-500" />
+              <span className="mt-1.5 shrink-0 w-1.5 h-1.5 rounded-full bg-cardinal-700 dark:bg-cardinal-400" />
               <span>{b}</span>
             </li>
           ))}
@@ -71,7 +71,7 @@ export default function ResumePage() {
         <a
           href="/Ji_Min_Lee_resume2.11.pdf"
           download="Ji_Min_Lee_resume.pdf"
-          className="shrink-0 mt-1 px-3 py-1.5 text-sm rounded-lg border border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:border-rose-300 dark:hover:border-rose-700 hover:text-rose-600 dark:hover:text-rose-400 transition-colors"
+          className="shrink-0 mt-1 px-3 py-1.5 text-sm rounded-lg border border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:border-cardinal-300 dark:hover:border-cardinal-800 hover:text-cardinal-700 dark:hover:text-cardinal-400 transition-colors"
         >
           Download PDF
         </a>

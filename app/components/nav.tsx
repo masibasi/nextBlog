@@ -41,7 +41,7 @@ export function Navbar() {
                   href={path}
                   className={`transition-colors font-medium flex align-middle relative py-1 px-2 m-1 ${
                     isActive
-                      ? "text-rose-600 dark:text-rose-400"
+                      ? "text-cardinal-700 dark:text-cardinal-400"
                       : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200"
                   }`}
                 >

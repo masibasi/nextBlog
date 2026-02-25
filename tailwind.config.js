@@ -5,6 +5,18 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        cardinal: {
+          50:  '#fff0f0',
+          100: '#ffe0e0',
+          200: '#ffc0c0',
+          300: '#f08080',
+          400: '#cc3333',
+          500: '#b30000',
+          600: '#a00000',
+          700: '#990000', // USC Cardinal
+          800: '#7a0000',
+          900: '#550000',
+        },
         warm: {
           50: "#fdf8f0",
           100: "#faefd9",

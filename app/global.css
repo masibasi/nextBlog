@@ -51,7 +51,7 @@ html {
 }
 
 .prose a {
-  @apply underline transition-all decoration-rose-400 dark:decoration-rose-500 underline-offset-2 decoration-[0.1em];
+  @apply underline transition-all decoration-cardinal-600 dark:decoration-cardinal-400 underline-offset-2 decoration-[0.1em];
 }
 
 .prose .anchor:after {
@@ -154,8 +154,8 @@ table {
 
 .card-warm {
   @apply rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm transition-all duration-200
-         hover:shadow-lg hover:shadow-rose-500/20 dark:hover:shadow-rose-400/15
-         hover:border-rose-300 dark:hover:border-rose-800;
+         hover:shadow-lg hover:shadow-cardinal-700/20 dark:hover:shadow-cardinal-400/15
+         hover:border-cardinal-300 dark:hover:border-cardinal-800;
 }
 
 .photo-placeholder {
