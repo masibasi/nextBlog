@@ -2,6 +2,13 @@ import React from "react";
 import { getAllProjects } from "../../../utils/notion";
 import Link from "next/link";
 
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  const projects = await getAllProjects();
+  return projects.map((p) => ({ id: p.id }));
+}
+
 function getYouTubeId(url: string): string | null {
   const match = url.match(
     /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{11})/
@@ -220,7 +227,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
           Authorization: `Bearer ${process.env.NOTION_TOKEN}`,
           "Notion-Version": "2022-06-28",
         },
-        next: { revalidate: 0 },
+        next: { revalidate: 3600 },
       });
       if (res.ok) {
         const data = await res.json();

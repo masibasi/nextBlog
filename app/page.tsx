@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Posts } from "app/components/posts";
 import { getMainProjects, getOtherProjects } from "../utils/notion";
 
+export const revalidate = 3600;
+
 const currentWork = [
   {
     role: "Web Team Lead",

@@ -27,8 +27,7 @@ async function notionQuery(databaseId: string, startCursor?: string) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ page_size: 100, start_cursor: startCursor }),
-    // Disable Next.js fetch cache to always get latest
-    next: { revalidate: 0 },
+    next: { revalidate: 3600 },
   });
 
   if (!res.ok) {

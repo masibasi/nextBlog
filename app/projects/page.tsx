@@ -1,6 +1,8 @@
 import ProjectList from "../../components/project-list";
 import { getMainProjects, getOtherProjects, type Project } from "../../utils/notion";
 
+export const revalidate = 3600;
+
 export default async function ProjectsPage() {
   let projects: Project[] = [];
   try {
