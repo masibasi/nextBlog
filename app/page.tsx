@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Posts } from "app/components/posts";
 import { getMainProjects, getOtherProjects } from "../utils/notion";
 
@@ -44,10 +45,13 @@ export default async function Page() {
       {/* Hero: photo + intro */}
       <div className="flex flex-col sm:flex-row gap-8 items-start">
         <div className="shrink-0">
-          <img
+          <Image
             src="/me.jpg"
             alt="Ji Min Lee"
+            width={176}
+            height={176}
             className="rounded-xl shadow-md w-36 h-36 sm:w-44 sm:h-44 object-cover"
+            priority
           />
         </div>
         <div className="flex flex-col justify-center">

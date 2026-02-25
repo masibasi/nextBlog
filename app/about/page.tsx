@@ -1,19 +1,16 @@
+import Image from "next/image";
+
 export default function AboutPage() {
   return (
     <section className="max-w-2xl mx-auto py-8 px-4">
-      <img
+      <Image
         src="/usc_me.JPG"
         alt="Portrait of Ji Min Lee"
-        className="rounded-xl shadow-md mb-6 w-full"
-        style={{
-          maxWidth: 360,
-          aspectRatio: "3/4",
-          height: "auto",
-          objectFit: "cover",
-          display: "block",
-          marginLeft: "auto",
-          marginRight: "auto",
-        }}
+        width={360}
+        height={480}
+        className="rounded-xl shadow-md mb-6 mx-auto"
+        style={{ objectFit: "cover" }}
+        priority
       />
 
       {/* Contact */}

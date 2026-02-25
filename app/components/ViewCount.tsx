@@ -4,12 +4,11 @@ import { useEffect, useState } from "react";
 
 interface ViewCountProps {
   slug: string;
-  count: number;
   publishedAt: string;
 }
 
-export function ViewCount({ slug, count, publishedAt }: ViewCountProps) {
-  const [views, setViews] = useState<number>(count);
+export function ViewCount({ slug, publishedAt }: ViewCountProps) {
+  const [views, setViews] = useState<number | null>(null);
 
   useEffect(() => {
     let aborted = false;
@@ -54,7 +53,9 @@ export function ViewCount({ slug, count, publishedAt }: ViewCountProps) {
   return (
     <div className="flex justify-between items-center mt-2 mb-8 text-sm">
       <p className="text-sm text-neutral-600 dark:text-neutral-400">{publishedAt}</p>
-      <p className="text-sm text-neutral-600 dark:text-neutral-400">{views.toLocaleString()} views</p>
+      <p className="text-sm text-neutral-600 dark:text-neutral-400">
+        {views !== null ? `${views.toLocaleString()} views` : ""}
+      </p>
     </div>
   );
 }
