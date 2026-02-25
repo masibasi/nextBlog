@@ -1,16 +1,218 @@
-// 프로젝트 상세 페이지
-import { getMainProjects, getOtherProjects } from "../../../utils/notion";
+import React from "react";
+import { getAllProjects } from "../../../utils/notion";
 import Link from "next/link";
 
+function getYouTubeId(url: string): string | null {
+  const match = url.match(
+    /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{11})/
+  );
+  return match ? match[1] : null;
+}
+
+type Block = { type: string; id: string; [key: string]: any };
+type BlockGroup =
+  | { type: "bulleted_list"; items: Block[] }
+  | { type: "numbered_list"; items: Block[] }
+  | { type: "to_do_list"; items: Block[] }
+  | Block;
+
+function groupBlocks(blocks: Block[]): BlockGroup[] {
+  const groups: BlockGroup[] = [];
+  let i = 0;
+  while (i < blocks.length) {
+    const block = blocks[i];
+    if (block.type === "bulleted_list_item") {
+      const items: Block[] = [];
+      while (i < blocks.length && blocks[i].type === "bulleted_list_item") {
+        items.push(blocks[i]);
+        i++;
+      }
+      groups.push({ type: "bulleted_list", items });
+    } else if (block.type === "numbered_list_item") {
+      const items: Block[] = [];
+      while (i < blocks.length && blocks[i].type === "numbered_list_item") {
+        items.push(blocks[i]);
+        i++;
+      }
+      groups.push({ type: "numbered_list", items });
+    } else if (block.type === "to_do") {
+      const items: Block[] = [];
+      while (i < blocks.length && blocks[i].type === "to_do") {
+        items.push(blocks[i]);
+        i++;
+      }
+      groups.push({ type: "to_do_list", items });
+    } else {
+      groups.push(block);
+      i++;
+    }
+  }
+  return groups;
+}
+
+function plainTextOf(richText: any[]): string {
+  return (richText ?? []).map((t: any) => t.plain_text).join("");
+}
+
+function renderRichText(richText: any[]): React.ReactNode {
+  return (richText ?? []).map((t: any, i: number) => {
+    let node: React.ReactNode = t.plain_text;
+    const ann = t.annotations ?? {};
+    if (ann.code) {
+      node = (
+        <code key={`c${i}`} className="px-1 py-0.5 rounded bg-neutral-100 dark:bg-neutral-800 text-sm font-mono">
+          {node}
+        </code>
+      );
+    } else {
+      if (ann.bold) node = <strong key={`b${i}`}>{node}</strong>;
+      if (ann.italic) node = <em key={`e${i}`}>{node}</em>;
+    }
+    if (t.href) {
+      return (
+        <a key={i} href={t.href} target="_blank" rel="noopener noreferrer" className="underline text-blue-600 dark:text-blue-400 hover:opacity-75 transition-opacity">
+          {node}
+        </a>
+      );
+    }
+    return <React.Fragment key={i}>{node}</React.Fragment>;
+  });
+}
+
+function YoutubeEmbed({ id, blockId }: { id: string; blockId: string }) {
+  return (
+    <div key={blockId} className="my-6">
+      <iframe
+        src={`https://www.youtube.com/embed/${id}`}
+        title="YouTube video"
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowFullScreen
+        className="w-full aspect-video rounded-xl"
+      />
+    </div>
+  );
+}
+
+function renderBlock(block: Block) {
+  switch (block.type) {
+    case "paragraph": {
+      const plain = plainTextOf(block.paragraph.rich_text);
+      const ytId = getYouTubeId(plain.trim());
+      if (ytId) return <YoutubeEmbed key={block.id} id={ytId} blockId={block.id} />;
+      if (!plain) return null;
+      return (
+        <p key={block.id} className="my-3 text-neutral-800 dark:text-neutral-200 leading-relaxed">
+          {renderRichText(block.paragraph.rich_text)}
+        </p>
+      );
+    }
+    case "heading_1":
+      return (
+        <h2 key={block.id} className="text-2xl font-bold mt-8 mb-3 text-neutral-900 dark:text-neutral-100">
+          {renderRichText(block.heading_1.rich_text)}
+        </h2>
+      );
+    case "heading_2":
+      return (
+        <h3 key={block.id} className="text-lg font-semibold mt-6 mb-2 text-neutral-900 dark:text-neutral-100">
+          {renderRichText(block.heading_2.rich_text)}
+        </h3>
+      );
+    case "heading_3":
+      return (
+        <h4 key={block.id} className="text-base font-semibold mt-4 mb-1 text-neutral-800 dark:text-neutral-200">
+          {renderRichText(block.heading_3.rich_text)}
+        </h4>
+      );
+    case "quote":
+      return (
+        <blockquote key={block.id} className="my-4 pl-4 border-l-4 border-neutral-300 dark:border-neutral-600 text-neutral-600 dark:text-neutral-400 italic leading-relaxed">
+          {renderRichText(block.quote.rich_text)}
+        </blockquote>
+      );
+    case "callout": {
+      const icon = block.callout.icon?.emoji ?? "💡";
+      return (
+        <div key={block.id} className="my-4 flex gap-3 p-4 rounded-xl bg-neutral-50 dark:bg-neutral-800/60 border border-neutral-200 dark:border-neutral-700">
+          <span className="text-lg shrink-0 leading-relaxed">{icon}</span>
+          <div className="text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed">
+            {renderRichText(block.callout.rich_text)}
+          </div>
+        </div>
+      );
+    }
+    case "image": {
+      const url =
+        block.image.type === "external"
+          ? block.image.external.url
+          : block.image.file.url;
+      const captionPlain = plainTextOf(block.image.caption ?? []);
+      return (
+        <figure key={block.id} className="my-6">
+          <img src={url} alt={captionPlain || "image"} className="rounded-xl w-full object-cover" />
+          {captionPlain && (
+            <figcaption className="mt-2 text-center text-xs text-neutral-500 dark:text-neutral-400">
+              {renderRichText(block.image.caption)}
+            </figcaption>
+          )}
+        </figure>
+      );
+    }
+    case "video": {
+      const url =
+        block.video.type === "external" ? block.video.external?.url : null;
+      if (!url) return null;
+      const ytId = getYouTubeId(url);
+      if (ytId) return <YoutubeEmbed key={block.id} id={ytId} blockId={block.id} />;
+      return null;
+    }
+    case "bookmark":
+    case "embed": {
+      const url = block[block.type]?.url;
+      if (!url) return null;
+      const ytId = getYouTubeId(url);
+      if (ytId) return <YoutubeEmbed key={block.id} id={ytId} blockId={block.id} />;
+      return (
+        <div key={block.id} className="my-4">
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="card-warm flex items-center gap-2 px-4 py-3 text-sm text-neutral-700 dark:text-neutral-300 break-all hover:underline"
+          >
+            {url}
+          </a>
+        </div>
+      );
+    }
+    case "divider":
+      return <hr key={block.id} className="my-6 border-neutral-200 dark:border-neutral-700" />;
+    case "code": {
+      const lang = block.code.language ?? "";
+      return (
+        <div key={block.id} className="my-4">
+          {lang && (
+            <div className="px-4 pt-2.5 pb-1 rounded-t-xl bg-neutral-200 dark:bg-neutral-700 text-xs font-mono text-neutral-500 dark:text-neutral-400 border border-b-0 border-neutral-200 dark:border-neutral-700">
+              {lang}
+            </div>
+          )}
+          <pre className={`p-4 ${lang ? "rounded-b-xl" : "rounded-xl"} bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-sm overflow-x-auto text-neutral-800 dark:text-neutral-200`}>
+            <code>{plainTextOf(block.code.rich_text)}</code>
+          </pre>
+        </div>
+      );
+    }
+    default:
+      return null;
+  }
+}
+
 export default async function ProjectDetailPage({ params }: { params: { id: string } }) {
-  // 두 데이터베이스에서 모두 검색
-  const mainProjects = await getMainProjects();
-  const otherProjects = await getOtherProjects();
-  const allProjects = [...mainProjects, ...otherProjects];
+  const allProjects = await getAllProjects();
   const project = allProjects.find((p) => p.id === params.id);
 
-  // Notion 본문 블록 fetch
-  let blocks: any[] = [];
+  let blocks: Block[] = [];
   if (project) {
     try {
       const res = await fetch(`https://api.notion.com/v1/blocks/${project.id}/children`, {
@@ -18,12 +220,13 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
           Authorization: `Bearer ${process.env.NOTION_TOKEN}`,
           "Notion-Version": "2022-06-28",
         },
+        next: { revalidate: 0 },
       });
       if (res.ok) {
         const data = await res.json();
-        blocks = data.results;
+        blocks = data.results ?? [];
       }
-    } catch (e) {
+    } catch {
       // ignore
     }
   }
@@ -32,143 +235,147 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
     return <div className="max-w-2xl mx-auto py-8 px-4">Could not load data</div>;
   }
 
+  const hasAward = project.tags?.includes("Award");
+  const displayTags = (project.tags ?? []).filter((t) => t !== "Award");
+  const grouped = groupBlocks(blocks);
+
   return (
     <main className="max-w-2xl mx-auto py-8 px-4">
-      {project.cover && (
-        <div className="mb-4">
-          <img src={project.cover} alt="cover" className="w-full h-64 object-cover rounded-xl mb-2 max-w-full" style={{ maxWidth: "100%", height: "auto" }} />
-        </div>
-      )}
-      <h1 className="text-3xl font-bold mb-4">{project.title}</h1>
-      <div className="mb-2 text-gray-600">Date: {project.duration}</div>
-      <div className="mb-2 flex flex-wrap gap-2 items-center">
-        <span className="font-semibold">Stacks:</span>
-        {(project.stacks ?? []).map((stack: string) => (
-          <span
-            key={stack}
-            className="px-2 py-1 rounded-md border text-xs font-medium bg-neutral-100 dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300"
-          >
-            {stack}
-          </span>
-        ))}
+      {/* Breadcrumb */}
+      <div className="mb-5">
+        <Link
+          href="/projects"
+          className="inline-flex items-center gap-1 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 underline underline-offset-2 decoration-neutral-300 dark:decoration-neutral-600 transition-colors"
+        >
+          ← Projects
+        </Link>
       </div>
-      {/* tags 필드 렌더링 */}
-      {project.tags && project.tags.length > 0 && (
-        <div className="mb-2 flex flex-wrap gap-2 items-center">
-          <span className="font-semibold">Tags:</span>
-          {project.tags.map((tag: string) => (
-            <span key={tag} className="px-2 py-1 rounded border text-xs font-medium border-gray-400 text-gray-700 dark:text-gray-200">
-              {tag}
-            </span>
-          ))}
-        </div>
-      )}
-      {/* GitHub link removed: not defined in Project type. Add when mapped from Notion if needed. */}
-      {project.notionUrl && (
-        <div className="mb-4">
-          <a href={(project.notionUrl ?? undefined) as string | undefined} target="_blank" rel="noopener noreferrer" className="text-sm text-purple-600 hover:underline">
-            View original page in Notion
-          </a>
+
+      {project.cover && (
+        <div className="mb-6">
+          <img
+            src={project.cover}
+            alt="cover"
+            className="w-full h-64 object-cover rounded-xl"
+          />
         </div>
       )}
 
-      {/* Notion 본문 블록(heading, list, image, YouTube embed 등 지원) */}
+      {/* Header */}
+      <div className="mb-8">
+        <div className="flex items-start justify-between gap-3 flex-wrap mb-2">
+          <div className="flex items-start gap-3 flex-wrap">
+            <h1 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">
+              {project.title}
+            </h1>
+            {hasAward && (
+              <span className="mt-1.5 px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-700">
+                Award
+              </span>
+            )}
+          </div>
+          {project.notionUrl && (
+            <a
+              href={project.notionUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="shrink-0 mt-1 text-sm font-medium text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-100 underline underline-offset-2 decoration-neutral-300 dark:decoration-neutral-600 transition-colors"
+            >
+              View in Notion ↗
+            </a>
+          )}
+        </div>
+
+        {project.summary && (
+          <p className="text-neutral-500 dark:text-neutral-400 mb-3 leading-relaxed">
+            {project.summary}
+          </p>
+        )}
+
+        {project.duration && (
+          <p className="text-sm text-neutral-400 dark:text-neutral-500 mb-3">
+            {project.duration}
+          </p>
+        )}
+
+        {(project.stacks ?? []).length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-3">
+            {(project.stacks ?? []).map((stack) => (
+              <span
+                key={stack}
+                className="px-2 py-1 rounded-md border text-xs font-medium bg-neutral-100 dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300"
+              >
+                {stack}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {displayTags.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {displayTags.map((tag) => (
+              <span
+                key={tag}
+                className="px-2 py-1 rounded border text-xs text-neutral-500 dark:text-neutral-400 border-neutral-300 dark:border-neutral-600"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Body */}
       {blocks.length > 0 && (
-        <div className="prose dark:prose-invert my-8">
-          {blocks.map((block) => {
-            if (block.type === "paragraph") {
-              return <p key={block.id}>{block.paragraph.rich_text.map((t: any) => t.plain_text).join("")}</p>;
-            }
-            if (block.type === "heading_1") {
-              return <h1 key={block.id}>{block.heading_1.rich_text.map((t: any) => t.plain_text).join("")}</h1>;
-            }
-            if (block.type === "heading_2") {
-              return <h2 key={block.id}>{block.heading_2.rich_text.map((t: any) => t.plain_text).join("")}</h2>;
-            }
-            if (block.type === "heading_3") {
-              return <h3 key={block.id}>{block.heading_3.rich_text.map((t: any) => t.plain_text).join("")}</h3>;
-            }
-            if (block.type === "bulleted_list_item") {
-              return <li key={block.id}>{block.bulleted_list_item.rich_text.map((t: any) => t.plain_text).join("")}</li>;
-            }
-            if (block.type === "numbered_list_item") {
-              return <li key={block.id}>{block.numbered_list_item.rich_text.map((t: any) => t.plain_text).join("")}</li>;
-            }
-            if (block.type === "image") {
-              const url = block.image.type === "external" ? block.image.external.url : block.image.file.url;
+        <div className="my-8">
+          {grouped.map((group, i) => {
+            if (group.type === "bulleted_list") {
               return (
-                <div key={block.id} className="my-4">
-                  <img src={url} alt="notion-img" className="rounded max-w-full" style={{ maxWidth: "100%", height: "auto" }} />
-                  <a href={(project.notionUrl ?? undefined) as string | undefined} target="_blank" rel="noopener noreferrer" className="block text-center text-xs text-blue-600 hover:underline mt-1">
-                    View on Notion
-                  </a>
-                </div>
+                <ul key={i} className="my-3 space-y-1 pl-4">
+                  {group.items.map((item) => (
+                    <li key={item.id} className="flex gap-2 text-neutral-800 dark:text-neutral-200 leading-relaxed">
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-neutral-400 dark:bg-neutral-500" />
+                      <span>{renderRichText(item.bulleted_list_item.rich_text)}</span>
+                    </li>
+                  ))}
+                </ul>
               );
             }
-            // YouTube 링크가 있는 bookmark/embed 블록을 iframe으로 렌더링
-            if ((block.type === "bookmark" || block.type === "embed") && block[block.type]?.url) {
-              const url = block[block.type].url;
-              const ytMatch = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{11})/);
-              if (ytMatch) {
-                const videoId = ytMatch[1];
-                return (
-                  <div key={block.id} className="my-6">
-                    <iframe
-                      width="560"
-                      height="315"
-                      src={`https://www.youtube.com/embed/${videoId}`}
-                      title="YouTube video player"
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      allowFullScreen
-                      className="w-full aspect-video rounded"
-                    ></iframe>
-                  </div>
-                );
-              } else {
-                // 일반 북마크는 링크로 표시
-                return (
-                  <div key={block.id} className="my-4">
-                    <a href={url} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline break-all">
-                      {url}
-                    </a>
-                  </div>
-                );
-              }
+            if (group.type === "numbered_list") {
+              return (
+                <ol key={i} className="my-3 space-y-1 pl-5 list-decimal">
+                  {group.items.map((item) => (
+                    <li key={item.id} className="text-neutral-800 dark:text-neutral-200 leading-relaxed">
+                      {renderRichText(item.numbered_list_item.rich_text)}
+                    </li>
+                  ))}
+                </ol>
+              );
             }
-            // 필요시 더 다양한 블록 지원 가능
-            return null;
+            if (group.type === "to_do_list") {
+              return (
+                <ul key={i} className="my-3 space-y-1.5">
+                  {group.items.map((item) => (
+                    <li key={item.id} className="flex gap-2.5 items-start text-neutral-800 dark:text-neutral-200 leading-relaxed">
+                      <span className={`mt-0.5 h-4 w-4 shrink-0 rounded border flex items-center justify-center ${item.to_do.checked ? "bg-neutral-800 dark:bg-neutral-200 border-neutral-800 dark:border-neutral-200" : "border-neutral-300 dark:border-neutral-600"}`}>
+                        {item.to_do.checked && (
+                          <svg className="h-2.5 w-2.5 text-white dark:text-neutral-800" fill="none" viewBox="0 0 10 10">
+                            <path d="M1.5 5l2.5 2.5 4.5-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        )}
+                      </span>
+                      <span className={item.to_do.checked ? "line-through text-neutral-400 dark:text-neutral-500" : ""}>
+                        {renderRichText(item.to_do.rich_text)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              );
+            }
+            return renderBlock(group as Block);
           })}
         </div>
       )}
-
-      <Link href="/projects" className="text-sm text-gray-500 hover:underline">
-        ← Back to project list
-      </Link>
     </main>
   );
-}
-
-// 스택별 색상 반환 함수
-function getStackColor(stack: string) {
-  const colors: Record<string, string> = {
-    React: "#61dafb",
-    "React-native": "#61dafb",
-    Javascript: "#f7df1e",
-    Typescript: "#3178c6",
-    Python: "#3776ab",
-    JAVA: "#e76f00",
-    Docker: "#2496ed",
-    Spring: "#6db33f",
-    MySQL: "#00758f",
-    Oracle: "#f80000",
-    Druid: "#1a1a1a",
-    Kafka: "#231f20",
-    HuggingFace: "#ffcd00",
-    Team: "#888",
-    Android: "#3ddc84",
-    개인: "#888",
-    Superset: "#e1574f",
-  };
-  return colors[stack] || "#888";
 }
