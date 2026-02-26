@@ -153,9 +153,9 @@ table {
 }
 
 .card-warm {
-  @apply rounded-xl border border-cardinal-200 dark:border-cardinal-900 bg-white dark:bg-neutral-900 shadow-sm transition-all duration-200
+  @apply rounded-xl border border-cardinal-400 dark:border-cardinal-800 bg-white dark:bg-neutral-900 shadow-sm transition-all duration-200
          hover:shadow-lg hover:shadow-cardinal-700/20 dark:hover:shadow-cardinal-400/15
-         hover:border-cardinal-300 dark:hover:border-cardinal-700;
+         hover:border-cardinal-600 dark:hover:border-cardinal-600;
 }
 
 .photo-placeholder {
