@@ -247,7 +247,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
   const grouped = groupBlocks(blocks);
 
   return (
-    <main className="max-w-2xl mx-auto py-8 px-4 overflow-x-hidden">
+    <main className="max-w-2xl mx-auto py-8 px-4">
       {/* Breadcrumb */}
       <div className="mb-5 flex items-center justify-between">
         <Link

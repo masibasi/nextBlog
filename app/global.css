@@ -36,6 +36,10 @@ html {
   scrollbar-gutter: stable;
 }
 
+body {
+  overflow-x: hidden;
+}
+
 .prose .anchor {
   @apply absolute invisible no-underline;
 

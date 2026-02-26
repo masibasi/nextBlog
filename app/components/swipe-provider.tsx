@@ -22,18 +22,14 @@ export function SwipeProvider({ children }: { children: React.ReactNode }) {
     let startY = 0;
     let rippleEl: HTMLDivElement | null = null;
 
-    const handleTouchStart = (e: TouchEvent) => {
-      startX = e.touches[0].clientX;
-      startY = e.touches[0].clientY;
-
-      // Create ripple dot at touch position
-      rippleEl = document.createElement("div");
+    const createRipple = (x: number, y: number) => {
+      const el = document.createElement("div");
       const isDark = document.documentElement.classList.contains("dark");
       const color = isDark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.08)";
-      rippleEl.style.cssText = `
+      el.style.cssText = `
         position: fixed;
-        left: ${startX}px;
-        top: ${startY}px;
+        left: ${x}px;
+        top: ${y}px;
         width: 48px;
         height: 48px;
         border-radius: 50%;
@@ -41,16 +37,29 @@ export function SwipeProvider({ children }: { children: React.ReactNode }) {
         transform: translate(-50%, -50%) scale(0);
         pointer-events: none;
         z-index: 9999;
-        transition: transform 0.25s ease, opacity 0.25s ease;
+        transition: transform 0.2s ease, opacity 0.2s ease;
         opacity: 0;
       `;
-      document.body.appendChild(rippleEl);
+      document.body.appendChild(el);
       requestAnimationFrame(() => {
-        if (rippleEl) {
-          rippleEl.style.transform = "translate(-50%, -50%) scale(1)";
-          rippleEl.style.opacity = "1";
-        }
+        el.style.transform = "translate(-50%, -50%) scale(1)";
+        el.style.opacity = "1";
       });
+      return el;
+    };
+
+    const handleTouchStart = (e: TouchEvent) => {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      rippleEl = createRipple(startX, startY);
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!rippleEl) return;
+      const x = e.touches[0].clientX;
+      const y = e.touches[0].clientY;
+      rippleEl.style.left = `${x}px`;
+      rippleEl.style.top = `${y}px`;
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
@@ -78,12 +87,23 @@ export function SwipeProvider({ children }: { children: React.ReactNode }) {
       }
     };
 
+    const handleTouchCancel = () => {
+      if (rippleEl) {
+        rippleEl.remove();
+        rippleEl = null;
+      }
+    };
+
     document.addEventListener("touchstart", handleTouchStart, { passive: true });
+    document.addEventListener("touchmove", handleTouchMove, { passive: true });
     document.addEventListener("touchend", handleTouchEnd, { passive: true });
+    document.addEventListener("touchcancel", handleTouchCancel, { passive: true });
 
     return () => {
       document.removeEventListener("touchstart", handleTouchStart);
+      document.removeEventListener("touchmove", handleTouchMove);
       document.removeEventListener("touchend", handleTouchEnd);
+      document.removeEventListener("touchcancel", handleTouchCancel);
       if (rippleEl) {
         rippleEl.remove();
         rippleEl = null;
