@@ -45,7 +45,7 @@ export function SwipeProvider({ children }: { children: React.ReactNode }) {
         transform: translate(-50%, -50%) scale(0);
         pointer-events: none;
         z-index: 9999;
-        transition: transform 0.22s ease, opacity 0.22s ease;
+        transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
         opacity: 0;
       `;
       document.body.appendChild(rippleEl);
@@ -63,9 +63,10 @@ export function SwipeProvider({ children }: { children: React.ReactNode }) {
 
       if (rippleEl) {
         const el = rippleEl;
-        el.style.transform = "translate(-50%, -50%) scale(1.6)";
+        el.style.transition = "transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease";
+        el.style.transform = "translate(-50%, -50%) scale(1.8)";
         el.style.opacity = "0";
-        setTimeout(() => el.remove(), 250);
+        setTimeout(() => el.remove(), 450);
         rippleEl = null;
       }
 

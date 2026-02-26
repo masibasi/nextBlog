@@ -41,6 +41,12 @@ body {
   overflow-x: clip;
 }
 
+img,
+video,
+iframe {
+  max-width: 100%;
+}
+
 .prose .anchor {
   @apply absolute invisible no-underline;
 
@@ -69,7 +75,7 @@ body {
 }
 
 .prose pre {
-  @apply bg-neutral-50 dark:bg-neutral-900 rounded-lg overflow-x-auto border border-neutral-200 dark:border-neutral-900 py-2 px-3 text-sm;
+  @apply bg-neutral-50 dark:bg-neutral-900 rounded-lg overflow-x-auto border border-neutral-200 dark:border-neutral-900 py-2 px-3 text-sm max-w-full;
 }
 
 .prose code {
