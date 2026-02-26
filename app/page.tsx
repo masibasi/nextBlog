@@ -148,7 +148,7 @@ export default async function Page() {
                     )}
                   </div>
                   {project.summary && (
-                    <p className="mt-1 text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed line-clamp-2">
+                    <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed line-clamp-2">
                       {project.summary}
                     </p>
                   )}
