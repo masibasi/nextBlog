@@ -33,6 +33,7 @@
 
 html {
   min-width: 360px;
+  scrollbar-gutter: stable;
 }
 
 .prose .anchor {
@@ -50,7 +51,7 @@ html {
 }
 
 .prose a {
-  @apply underline transition-all decoration-neutral-400 dark:decoration-neutral-600 underline-offset-2 decoration-[0.1em];
+  @apply underline transition-all decoration-cardinal-600 dark:decoration-cardinal-400 underline-offset-2 decoration-[0.1em];
 }
 
 .prose .anchor:after {
@@ -98,7 +99,7 @@ html {
 }
 
 .prose h3 {
-  @apply text-xl font-medium tracking-tight mt-6 mb-2;
+  @apply text-lg font-medium tracking-tight mt-6 mb-2;
 }
 
 .prose h4 {
@@ -152,7 +153,9 @@ table {
 }
 
 .card-warm {
-  @apply rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm hover:shadow-md transition-shadow duration-200;
+  @apply rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm transition-all duration-200
+         hover:shadow-lg hover:shadow-cardinal-700/20 dark:hover:shadow-cardinal-400/15
+         hover:border-cardinal-400 dark:hover:border-cardinal-700;
 }
 
 .photo-placeholder {

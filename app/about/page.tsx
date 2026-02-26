@@ -39,7 +39,7 @@ export default function AboutPage() {
       </p>
 
       {/* What I've been up to */}
-      <h2 className="text-lg font-semibold mb-4 text-neutral-900 dark:text-neutral-100">What I've been up to</h2>
+      <h2 className="text-lg font-semibold tracking-tight mb-4 text-neutral-900 dark:text-neutral-100">What I've been up to</h2>
       <div className="space-y-3 mb-8">
         <div className="card-warm p-4">
           <div className="font-medium text-neutral-900 dark:text-neutral-100">Web Team Lead, USC Interaction Lab</div>
@@ -68,7 +68,7 @@ export default function AboutPage() {
       </div>
 
       {/* Education */}
-      <h2 className="text-lg font-semibold mb-3 text-neutral-900 dark:text-neutral-100">Education</h2>
+      <h2 className="text-lg font-semibold tracking-tight mb-3 text-neutral-900 dark:text-neutral-100">Education</h2>
       <div className="mb-8 space-y-2 text-sm text-neutral-700 dark:text-neutral-300">
         <div>
           <span className="font-medium">USC</span> — M.S. Computer Science (AI), 2025–2027
@@ -79,7 +79,7 @@ export default function AboutPage() {
       </div>
 
       {/* Outside of work */}
-      <h2 className="text-lg font-semibold mb-3 text-neutral-900 dark:text-neutral-100">Outside of work</h2>
+      <h2 className="text-lg font-semibold tracking-tight mb-3 text-neutral-900 dark:text-neutral-100">Outside of work</h2>
       <p className="leading-relaxed text-neutral-700 dark:text-neutral-300">
         I shoot film on weekends, play guitar badly but happily, and dance whenever I get the chance.
         I'm a Spurs supporter and a devoted T1 fan — two fandoms that have taught me a lot about

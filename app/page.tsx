@@ -71,7 +71,7 @@ export default async function Page() {
               href="https://github.com/masibasi"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors"
+              className="text-neutral-500 dark:text-neutral-400 hover:text-cardinal-700 dark:hover:text-cardinal-400 transition-colors"
             >
               GitHub
             </a>
@@ -79,13 +79,13 @@ export default async function Page() {
               href="https://www.linkedin.com/in/jiminlee4015/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors"
+              className="text-neutral-500 dark:text-neutral-400 hover:text-cardinal-700 dark:hover:text-cardinal-400 transition-colors"
             >
               LinkedIn
             </a>
             <Link
               href="/resume"
-              className="text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors"
+              className="text-neutral-500 dark:text-neutral-400 hover:text-cardinal-700 dark:hover:text-cardinal-400 transition-colors"
             >
               Resume
             </Link>
@@ -95,7 +95,7 @@ export default async function Page() {
 
       {/* What I'm working on */}
       <div>
-        <h2 className="text-sm font-semibold uppercase tracking-widest text-neutral-400 dark:text-neutral-500 mb-3">
+        <h2 className="text-sm font-semibold uppercase tracking-widest text-neutral-500 dark:text-neutral-400 mb-3">
           Now
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -113,12 +113,12 @@ export default async function Page() {
       {featuredProjects.length > 0 && (
         <div>
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
+            <h2 className="text-sm font-semibold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
               Projects
             </h2>
             <Link
               href="/projects"
-              className="text-xs text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors"
+              className="text-xs text-cardinal-700 dark:text-cardinal-400 hover:text-cardinal-800 dark:hover:text-cardinal-300 transition-colors"
             >
               All projects →
             </Link>
@@ -142,13 +142,13 @@ export default async function Page() {
                       {project.title}
                     </div>
                     {project.tags?.includes("Award") && (
-                      <span className="shrink-0 px-2 py-0.5 text-xs font-medium rounded-md bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800">
+                      <span className="shrink-0 px-2 py-0.5 text-xs font-medium rounded-md bg-amber-100 dark:bg-amber-900/60 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-700">
                         Award
                       </span>
                     )}
                   </div>
                   {project.summary && (
-                    <p className="mt-1 text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed line-clamp-2">
+                    <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed line-clamp-2">
                       {project.summary}
                     </p>
                   )}
@@ -174,12 +174,12 @@ export default async function Page() {
       {/* Recent Posts */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-semibold uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
+          <h2 className="text-sm font-semibold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
             Writing
           </h2>
           <Link
             href="/posts"
-            className="text-xs text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors"
+            className="text-xs text-cardinal-700 dark:text-cardinal-400 hover:text-cardinal-800 dark:hover:text-cardinal-300 transition-colors"
           >
             All posts →
           </Link>
