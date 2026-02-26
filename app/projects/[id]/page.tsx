@@ -204,7 +204,7 @@ function renderBlock(block: Block) {
               {lang}
             </div>
           )}
-          <pre className={`p-4 ${lang ? "rounded-b-xl" : "rounded-xl"} bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-sm overflow-x-auto text-neutral-800 dark:text-neutral-200`}>
+          <pre className={`p-4 ${lang ? "rounded-b-xl" : "rounded-xl"} bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-sm overflow-x-auto max-w-full text-neutral-800 dark:text-neutral-200`}>
             <code>{plainTextOf(block.code.rich_text)}</code>
           </pre>
         </div>
@@ -247,7 +247,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
   const grouped = groupBlocks(blocks);
 
   return (
-    <main className="max-w-2xl mx-auto py-8 px-4">
+    <main className="max-w-2xl mx-auto py-8 px-4 overflow-x-hidden">
       {/* Breadcrumb */}
       <div className="mb-5 flex items-center justify-between">
         <Link
