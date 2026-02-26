@@ -34,6 +34,7 @@
 html {
   min-width: 360px;
   scrollbar-gutter: stable;
+  overflow-x: clip; /* clip doesn't create scroll context — sticky still works */
 }
 
 body {
