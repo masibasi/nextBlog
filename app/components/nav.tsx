@@ -46,6 +46,13 @@ export function Navbar() {
                   }`}
                 >
                   {name}
+                  <span
+                    className={`absolute bottom-0 inset-x-2 h-0.5 rounded-full transition-all duration-300 ${
+                      isActive
+                        ? "bg-cardinal-700 dark:bg-cardinal-400"
+                        : "bg-transparent"
+                    }`}
+                  />
                 </Link>
               );
             })}
