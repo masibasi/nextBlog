@@ -4,17 +4,13 @@ import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 
 const PAGE_ORDER = ["/", "/posts", "/about", "/projects", "/resume"];
-
-// cardinal-700 = #990000, cardinal-400 = #cc3333
-const RIPPLE_COLOR_LIGHT = "rgba(153, 0, 0, 0.12)";
-const RIPPLE_COLOR_DARK = "rgba(204, 51, 51, 0.15)";
+const TRAIL_DURATION = 500; // ms trail persists after lift
 
 export function SwipeProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    // Only enable swipe on top-level nav pages (not sub-pages like /projects/abc or /posts/slug)
     const segments = pathname.split("/").filter(Boolean);
     if (segments.length > 1) return;
 
@@ -24,82 +20,149 @@ export function SwipeProvider({ children }: { children: React.ReactNode }) {
 
     let startX = 0;
     let startY = 0;
-    let rippleEl: HTMLDivElement | null = null;
+    const pts: { x: number; y: number; t: number }[] = [];
+    let active = false;
+    let canvas: HTMLCanvasElement | null = null;
+    let ctx: CanvasRenderingContext2D | null = null;
+    let animId: number | null = null;
+
+    const getRgb = () =>
+      document.documentElement.classList.contains("dark")
+        ? "204,51,51"
+        : "153,0,0";
+
+    const removeCanvas = () => {
+      if (animId !== null) {
+        cancelAnimationFrame(animId);
+        animId = null;
+      }
+      canvas?.remove();
+      canvas = null;
+      ctx = null;
+    };
+
+    const tick = () => {
+      if (!ctx || !canvas) return;
+      const now = Date.now();
+
+      // Prune expired points
+      while (pts.length > 0 && now - pts[0].t > TRAIL_DURATION) pts.shift();
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (!active && pts.length === 0) {
+        removeCanvas();
+        return;
+      }
+
+      const c = getRgb();
+
+      // Draw tapered trail — thicker/brighter at head, thinner/dimmer at tail
+      for (let i = 1; i < pts.length; i++) {
+        const a = pts[i - 1];
+        const b = pts[i];
+        const age = now - b.t;
+        const progress = 1 - age / TRAIL_DURATION;
+
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.strokeStyle = `rgba(${c},${progress * 0.55})`;
+        ctx.lineWidth = Math.max(2, 24 * progress);
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.stroke();
+      }
+
+      // Glowing dot at current finger position
+      if (active && pts.length > 0) {
+        const head = pts[pts.length - 1];
+        ctx.beginPath();
+        ctx.arc(head.x, head.y, 14, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${c},0.18)`;
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(head.x, head.y, 7, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${c},0.45)`;
+        ctx.fill();
+      }
+
+      animId = requestAnimationFrame(tick);
+    };
+
+    const initCanvas = () => {
+      if (canvas) return;
+      canvas = document.createElement("canvas");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      canvas.style.cssText =
+        "position:fixed;inset:0;pointer-events:none;z-index:9999;";
+      document.body.appendChild(canvas);
+      ctx = canvas.getContext("2d");
+      animId = requestAnimationFrame(tick);
+    };
 
     const handleTouchStart = (e: TouchEvent) => {
       startX = e.touches[0].clientX;
       startY = e.touches[0].clientY;
+      active = true;
+      pts.length = 0;
+    };
 
-      const isDark = document.documentElement.classList.contains("dark");
-      const color = isDark ? RIPPLE_COLOR_DARK : RIPPLE_COLOR_LIGHT;
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!active) return;
+      const x = e.touches[0].clientX;
+      const y = e.touches[0].clientY;
+      const dx = x - startX;
+      const dy = y - startY;
 
-      rippleEl = document.createElement("div");
-      rippleEl.style.cssText = `
-        position: fixed;
-        left: ${startX}px;
-        top: ${startY}px;
-        width: 44px;
-        height: 44px;
-        border-radius: 50%;
-        background: ${color};
-        transform: translate(-50%, -50%) scale(0);
-        pointer-events: none;
-        z-index: 9999;
-        transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
-        opacity: 0;
-      `;
-      document.body.appendChild(rippleEl);
-      requestAnimationFrame(() => {
-        if (rippleEl) {
-          rippleEl.style.transform = "translate(-50%, -50%) scale(1)";
-          rippleEl.style.opacity = "1";
+      // Only draw trail once horizontal intent is clear
+      if (Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy)) {
+        if (!canvas) {
+          // Retroactively add start point so trail begins from touch origin
+          pts.push({ x: startX, y: startY, t: Date.now() - 80 });
+          initCanvas();
         }
-      });
+        pts.push({ x, y, t: Date.now() });
+      }
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
+      active = false;
       const deltaX = e.changedTouches[0].clientX - startX;
       const deltaY = e.changedTouches[0].clientY - startY;
 
-      if (rippleEl) {
-        const el = rippleEl;
-        el.style.transition = "transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease";
-        el.style.transform = "translate(-50%, -50%) scale(1.8)";
-        el.style.opacity = "0";
-        setTimeout(() => el.remove(), 450);
-        rippleEl = null;
+      if (Math.abs(deltaX) >= 60 && Math.abs(deltaX) >= Math.abs(deltaY)) {
+        if (deltaX < 0) {
+          const next = PAGE_ORDER[currentIndex + 1];
+          if (next) router.push(next);
+        } else {
+          const prev = PAGE_ORDER[currentIndex - 1];
+          if (prev) router.push(prev);
+        }
       }
-
-      if (Math.abs(deltaX) < 60 || Math.abs(deltaX) < Math.abs(deltaY)) return;
-
-      if (deltaX < 0) {
-        const next = PAGE_ORDER[currentIndex + 1];
-        if (next) router.push(next);
-      } else {
-        const prev = PAGE_ORDER[currentIndex - 1];
-        if (prev) router.push(prev);
-      }
+      // Trail fades out naturally via tick loop
     };
 
     const handleTouchCancel = () => {
-      if (rippleEl) {
-        rippleEl.remove();
-        rippleEl = null;
-      }
+      active = false;
+      pts.length = 0;
+      removeCanvas();
     };
 
     document.addEventListener("touchstart", handleTouchStart, { passive: true });
+    document.addEventListener("touchmove", handleTouchMove, { passive: true });
     document.addEventListener("touchend", handleTouchEnd, { passive: true });
     document.addEventListener("touchcancel", handleTouchCancel, { passive: true });
 
     return () => {
       document.removeEventListener("touchstart", handleTouchStart);
+      document.removeEventListener("touchmove", handleTouchMove);
       document.removeEventListener("touchend", handleTouchEnd);
       document.removeEventListener("touchcancel", handleTouchCancel);
-      if (rippleEl) {
-        rippleEl.remove();
-        rippleEl = null;
-      }
+      active = false;
+      removeCanvas();
     };
   }, [pathname, router]);
 
