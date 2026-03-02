@@ -88,14 +88,14 @@ function renderRichText(richText: any[]): React.ReactNode {
 
 function YoutubeEmbed({ id, blockId }: { id: string; blockId: string }) {
   return (
-    <div key={blockId} className="my-6">
+    <div key={blockId} className="my-6 w-full aspect-video overflow-hidden rounded-xl">
       <iframe
         src={`https://www.youtube.com/embed/${id}`}
         title="YouTube video"
         frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowFullScreen
-        className="w-full aspect-video rounded-xl"
+        className="w-full h-full"
       />
     </div>
   );
@@ -109,7 +109,7 @@ function renderBlock(block: Block) {
       if (ytId) return <YoutubeEmbed key={block.id} id={ytId} blockId={block.id} />;
       if (!plain) return null;
       return (
-        <p key={block.id} className="my-3 text-neutral-800 dark:text-neutral-200 leading-relaxed">
+        <p key={block.id} className="my-3 text-neutral-800 dark:text-neutral-200 leading-relaxed break-words">
           {renderRichText(block.paragraph.rich_text)}
         </p>
       );
@@ -204,7 +204,7 @@ function renderBlock(block: Block) {
               {lang}
             </div>
           )}
-          <pre className={`p-4 ${lang ? "rounded-b-xl" : "rounded-xl"} bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-sm overflow-x-auto text-neutral-800 dark:text-neutral-200`}>
+          <pre className={`p-4 ${lang ? "rounded-b-xl" : "rounded-xl"} bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-sm overflow-x-auto max-w-full text-neutral-800 dark:text-neutral-200`}>
             <code>{plainTextOf(block.code.rich_text)}</code>
           </pre>
         </div>

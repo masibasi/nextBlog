@@ -29,7 +29,7 @@ export function Navbar() {
   const isPostsPage = /^\/posts(\/|$)/.test(pathname) || /^\/ko\/posts(\/|$)/.test(pathname);
 
   return (
-    <aside className="-ml-[8px] mb-16 tracking-tight">
+    <aside className="-ml-[8px] mb-16 tracking-tight sticky top-0 z-10 bg-white dark:bg-black">
       <div className="flex justify-between items-center lg:sticky lg:top-20 relative">
         <nav className="flex flex-row items-start relative px-0 pb-0 fade md:overflow-auto scroll-pr-6 md:relative w-full" id="nav">
           <div className="flex flex-row space-x-0 pr-10 w-full">
@@ -46,6 +46,13 @@ export function Navbar() {
                   }`}
                 >
                   {name}
+                  <span
+                    className={`absolute bottom-0 inset-x-2 h-0.5 rounded-full transition-all duration-300 ${
+                      isActive
+                        ? "bg-cardinal-700 dark:bg-cardinal-400"
+                        : "bg-transparent"
+                    }`}
+                  />
                 </Link>
               );
             })}
