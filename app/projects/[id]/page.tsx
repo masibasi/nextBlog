@@ -150,10 +150,11 @@ function renderBlock(block: Block) {
       );
     }
     case "image": {
+      // external URL은 영구, file URL은 만료됨 → 프록시 사용
       const url =
         block.image.type === "external"
           ? block.image.external.url
-          : block.image.file.url;
+          : `/api/notion-image?blockId=${block.id}`;
       const captionPlain = plainTextOf(block.image.caption ?? []);
       return (
         <figure key={block.id} className="my-6">

@@ -91,7 +91,12 @@ function mapProject(item: any): Project {
     releasable: !!props?.releasable?.checkbox,
     featured: !!props?.featured?.checkbox || !!props?.Featured?.checkbox,
     summary: pickRichText(props?.Summary?.rich_text ?? props?.summary?.rich_text),
-    cover: item.cover?.external?.url ?? item.cover?.file?.url ?? null,
+    // external URL은 영구, file URL은 ~1시간 후 만료 → 프록시로 교체
+    cover: item.cover?.external?.url
+      ? item.cover.external.url
+      : item.cover?.file?.url
+      ? `/api/notion-image?pageId=${item.id}`
+      : null,
     notionUrl: item.url ?? null,
   };
 }
