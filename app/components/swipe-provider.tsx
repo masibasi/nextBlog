@@ -2,9 +2,23 @@
 
 import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { getStroke } from "perfect-freehand";
 
 const PAGE_ORDER = ["/", "/posts", "/about", "/projects", "/resume"];
-const TRAIL_DURATION = 500; // ms trail persists after lift
+const FADE_DURATION = 400; // ms — CSS opacity transition after lift
+
+// perfect-freehand stroke outline → Path2D
+function strokeToPath(points: number[][]): Path2D {
+  if (points.length < 2) return new Path2D();
+  const d: string[] = [`M ${points[0][0]} ${points[0][1]} Q`];
+  for (let i = 0; i < points.length - 1; i++) {
+    const [x0, y0] = points[i];
+    const [x1, y1] = points[i + 1];
+    d.push(`${x0} ${y0} ${(x0 + x1) / 2} ${(y0 + y1) / 2}`);
+  }
+  d.push("Z");
+  return new Path2D(d.join(" "));
+}
 
 export function SwipeProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -20,11 +34,13 @@ export function SwipeProvider({ children }: { children: React.ReactNode }) {
 
     let startX = 0;
     let startY = 0;
-    const pts: { x: number; y: number; t: number }[] = [];
+    // [x, y, pressure] — pressure simulated via speed
+    const pts: [number, number, number][] = [];
     let active = false;
     let canvas: HTMLCanvasElement | null = null;
     let ctx: CanvasRenderingContext2D | null = null;
     let animId: number | null = null;
+    let fadeTimer: ReturnType<typeof setTimeout> | null = null;
 
     const getRgb = () =>
       document.documentElement.classList.contains("dark")
@@ -32,10 +48,8 @@ export function SwipeProvider({ children }: { children: React.ReactNode }) {
         : "153,0,0";
 
     const removeCanvas = () => {
-      if (animId !== null) {
-        cancelAnimationFrame(animId);
-        animId = null;
-      }
+      if (animId !== null) { cancelAnimationFrame(animId); animId = null; }
+      if (fadeTimer !== null) { clearTimeout(fadeTimer); fadeTimer = null; }
       canvas?.remove();
       canvas = null;
       ctx = null;
@@ -43,49 +57,21 @@ export function SwipeProvider({ children }: { children: React.ReactNode }) {
 
     const tick = () => {
       if (!ctx || !canvas) return;
-      const now = Date.now();
-
-      // Prune expired points
-      while (pts.length > 0 && now - pts[0].t > TRAIL_DURATION) pts.shift();
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      if (!active && pts.length === 0) {
-        removeCanvas();
-        return;
-      }
+      if (pts.length >= 2) {
+        const stroke = getStroke(pts, {
+          size: 18,
+          thinning: 0.6,
+          smoothing: 0.5,
+          streamline: 0.4,
+          last: !active, // finalize shape when finger lifted
+        });
 
-      const c = getRgb();
-
-      // Draw tapered trail — thicker/brighter at head, thinner/dimmer at tail
-      for (let i = 1; i < pts.length; i++) {
-        const a = pts[i - 1];
-        const b = pts[i];
-        const age = now - b.t;
-        const progress = 1 - age / TRAIL_DURATION;
-
-        ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
-        ctx.lineTo(b.x, b.y);
-        ctx.strokeStyle = `rgba(${c},${progress * 0.55})`;
-        ctx.lineWidth = Math.max(2, 24 * progress);
-        ctx.lineCap = "round";
-        ctx.lineJoin = "round";
-        ctx.stroke();
-      }
-
-      // Glowing dot at current finger position
-      if (active && pts.length > 0) {
-        const head = pts[pts.length - 1];
-        ctx.beginPath();
-        ctx.arc(head.x, head.y, 14, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${c},0.18)`;
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.arc(head.x, head.y, 7, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${c},0.45)`;
-        ctx.fill();
+        const path = strokeToPath(stroke);
+        ctx.fillStyle = `rgba(${getRgb()}, 0.45)`;
+        ctx.fill(path);
       }
 
       animId = requestAnimationFrame(tick);
@@ -97,7 +83,8 @@ export function SwipeProvider({ children }: { children: React.ReactNode }) {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       canvas.style.cssText =
-        "position:fixed;inset:0;pointer-events:none;z-index:9999;";
+        "position:fixed;inset:0;pointer-events:none;z-index:9999;transition:opacity " +
+        FADE_DURATION + "ms ease;";
       document.body.appendChild(canvas);
       ctx = canvas.getContext("2d");
       animId = requestAnimationFrame(tick);
@@ -108,6 +95,9 @@ export function SwipeProvider({ children }: { children: React.ReactNode }) {
       startY = e.touches[0].clientY;
       active = true;
       pts.length = 0;
+      // Cancel any in-progress fade
+      if (fadeTimer !== null) { clearTimeout(fadeTimer); fadeTimer = null; }
+      if (canvas) canvas.style.opacity = "1";
     };
 
     const handleTouchMove = (e: TouchEvent) => {
@@ -117,14 +107,16 @@ export function SwipeProvider({ children }: { children: React.ReactNode }) {
       const dx = x - startX;
       const dy = y - startY;
 
-      // Only draw trail once horizontal intent is clear
       if (Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy)) {
         if (!canvas) {
-          // Retroactively add start point so trail begins from touch origin
-          pts.push({ x: startX, y: startY, t: Date.now() - 80 });
+          pts.push([startX, startY, 0.5]);
           initCanvas();
         }
-        pts.push({ x, y, t: Date.now() });
+        // Simulate pressure from speed (closer points = slower = more pressure)
+        const prev = pts[pts.length - 1];
+        const dist = prev ? Math.hypot(x - prev[0], y - prev[1]) : 0;
+        const pressure = Math.max(0.2, Math.min(1, 1 - dist / 60));
+        pts.push([x, y, pressure]);
       }
     };
 
@@ -142,7 +134,13 @@ export function SwipeProvider({ children }: { children: React.ReactNode }) {
           if (prev) router.push(prev);
         }
       }
-      // Trail fades out naturally via tick loop
+
+      // Fade out the trail
+      if (canvas) {
+        canvas.style.opacity = "0";
+        fadeTimer = setTimeout(removeCanvas, FADE_DURATION);
+      }
+      if (animId !== null) { cancelAnimationFrame(animId); animId = null; }
     };
 
     const handleTouchCancel = () => {
