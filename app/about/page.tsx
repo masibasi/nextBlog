@@ -72,10 +72,11 @@ const education = [
 const INTERESTS = [
   "Film Photography",
   "Guitar",
+  "Cooking",
   "Dancing",
-  "Tottenham Hotspur",
+  "LAFC",
   "T1 Esports",
-  "Cinema",
+  "Dogs",
 ];
 
 export default function AboutPage() {
@@ -167,6 +168,50 @@ export default function AboutPage() {
       {/* Outside of work */}
       <ScrollReveal delay={150}>
         <SectionHeader label="Outside of work" />
+        <div className="grid grid-cols-3 gap-2 mb-5">
+          <Image
+            src="/lafc.jpg"
+            alt="At LAFC game, United Airlines Field"
+            width={400}
+            height={500}
+            className="rounded-xl object-cover w-full aspect-[3/4] shadow-sm"
+          />
+          <Image
+            src="/dog.jpg"
+            alt="With a dog on USC campus"
+            width={400}
+            height={500}
+            className="rounded-xl object-cover w-full aspect-[3/4] shadow-sm"
+          />
+          <Image
+            src="/guitar.jpeg"
+            alt="Playing guitar"
+            width={400}
+            height={500}
+            className="rounded-xl object-cover w-full aspect-[3/4] shadow-sm"
+          />
+          <Image
+            src="/cooking.jpg"
+            alt="Home-cooked meal"
+            width={400}
+            height={500}
+            className="rounded-xl object-cover w-full aspect-[3/4] shadow-sm"
+          />
+          <Image
+            src="/onemillion.jpg"
+            alt="One Million Dance Studio"
+            width={400}
+            height={500}
+            className="rounded-xl object-cover w-full aspect-[3/4] shadow-sm"
+          />
+          <Image
+            src="/photography.JPG"
+            alt="Shooting film at the beach"
+            width={400}
+            height={500}
+            className="rounded-xl object-cover w-full aspect-[3/4] shadow-sm"
+          />
+        </div>
         <div className="flex flex-wrap gap-2 mb-4">
           {INTERESTS.map((interest) => (
             <span
@@ -178,9 +223,10 @@ export default function AboutPage() {
           ))}
         </div>
         <p className="text-[14px] text-neutral-600 dark:text-neutral-300 leading-relaxed">
-          I shoot film on weekends, play guitar badly but happily, and dance whenever I get the chance.
-          I'm a Spurs supporter and a devoted T1 fan — two fandoms that have taught me a lot about
-          patience and resilience.
+          I shoot film on weekends and have a soft spot for dogs — I&apos;ll stop mid-conversation
+          to say hello. I love cooking and sharing food, so my roommates and I take turns cooking
+          for each other every week. I catch LAFC games when I can and still dance when nobody&apos;s
+          watching.
         </p>
       </ScrollReveal>
 
