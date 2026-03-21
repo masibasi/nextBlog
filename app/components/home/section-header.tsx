@@ -9,7 +9,7 @@ type Props = {
 export function SectionHeader({ label, href, linkText }: Props) {
   return (
     <div className="flex justify-between items-baseline mb-9">
-      <span className="text-[11px] font-medium tracking-[0.1em] uppercase text-neutral-400 dark:text-neutral-500">
+      <span className="text-[13px] font-semibold tracking-[0.08em] uppercase text-neutral-700 dark:text-neutral-200">
         {label}
       </span>
       {href && linkText && (

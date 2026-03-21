@@ -60,7 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="en"
       className={cx(
-        "text-black bg-white dark:text-white dark:bg-black",
+        "text-black bg-[#f9f8f4] dark:text-white dark:bg-neutral-950",
         GeistSans.variable,
         GeistMono.variable,
         dmSerif.variable,
@@ -74,7 +74,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className="antialiased bg-[#f9f8f4] dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100">
+      <body className="antialiased min-h-screen bg-[#f9f8f4] dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100">
         <main className="flex-auto min-w-0 flex flex-col pt-[60px]">
           <Navbar />
           <SwipeProvider>{children}</SwipeProvider>

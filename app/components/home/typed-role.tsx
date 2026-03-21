@@ -48,7 +48,7 @@ export function TypedRole({ roles }: Props) {
         return () => clearTimeout(t);
       }
     }
-  }, [phase, roleIndex, roles]);
+  }, [phase, roleIndex, roles, displayText]);
 
   return (
     <span>

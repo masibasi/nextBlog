@@ -4,27 +4,54 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { TypedRole } from "./typed-role";
+import { ContactButton } from "./contact-button";
 
 const ROLES = ["ML Engineer", "AI Researcher", "Full-Stack Dev", "Human-AI Builder"];
 
-const FLOAT_TAGS = [
+type FloatTag = {
+  key: string;
+  className: string;
+  animStyle: React.CSSProperties;
+  accent: boolean;
+  content: React.ReactNode;
+};
+
+const FLOAT_TAGS: FloatTag[] = [
   {
-    label: "USC Viterbi",
-    className: "top-[10%] -left-[12%]",
-    style: { animation: "floatA 4s ease-in-out infinite" },
+    key: "viterbi",
+    className: "top-[8%] -left-[14%]",
+    animStyle: { animation: "floatA 4s ease-in-out infinite" },
     accent: false,
+    content: (
+      <Image
+        src="/Formal_Viterbi_CardOnWhite-removebg-preview.png"
+        alt="USC Viterbi"
+        width={140}
+        height={40}
+        className="h-[28px] w-auto object-contain dark:brightness-0 dark:invert"
+      />
+    ),
   },
   {
-    label: "1st place — GVO Buildathon",
-    className: "top-[30%] -right-[10%]",
-    style: { animation: "floatB 4.5s ease-in-out infinite" },
+    key: "award",
+    className: "top-[32%] -right-[12%]",
+    animStyle: { animation: "floatB 4.5s ease-in-out infinite" },
     accent: true,
+    content: "1st Place · SE & CE · GVO Buildathon",
   },
   {
-    label: "AI for Health Lab",
-    className: "bottom-[22%] -left-[14%]",
-    style: { animation: "floatC 5s ease-in-out infinite" },
+    key: "ilab",
+    className: "bottom-[32%] -left-[16%]",
+    animStyle: { animation: "floatC 5s ease-in-out infinite" },
     accent: false,
+    content: "USC Interaction Lab",
+  },
+  {
+    key: "health",
+    className: "bottom-[18%] -right-[10%]",
+    animStyle: { animation: "floatD 3.5s ease-in-out infinite" },
+    accent: false,
+    content: "AI for Health Lab",
   },
 ];
 
@@ -40,7 +67,7 @@ export function Hero() {
     // Eyebrow
     <div
       key="eyebrow"
-      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-xs tracking-[0.08em] text-green-700 dark:text-green-400 w-fit"
+      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-50 dark:bg-green-900/30 border border-green-300 dark:border-green-700 text-xs tracking-[0.08em] text-green-800 dark:text-green-300 font-medium w-fit"
     >
       <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
       Open to Summer 2026 internships
@@ -57,15 +84,15 @@ export function Hero() {
     // Role
     <div
       key="role"
-      className="flex items-center gap-3 text-base text-neutral-500 dark:text-neutral-400 font-light"
+      className="flex items-center gap-3 text-base text-neutral-700 dark:text-neutral-300"
     >
-      <span className="w-6 h-px bg-neutral-300 dark:bg-neutral-700" />
+      <span className="w-6 h-px bg-neutral-400 dark:bg-neutral-600" />
       <TypedRole roles={ROLES} />
     </div>,
     // Bio
     <p
       key="bio"
-      className="text-[15px] text-neutral-500 dark:text-neutral-400 leading-[1.75] max-w-[400px] font-light"
+      className="text-[15px] text-neutral-600 dark:text-neutral-300 leading-[1.75] max-w-[400px]"
     >
       Software engineer and AI researcher at USC. I build full-stack systems, work on human-centered
       AI, and care about software that&apos;s useful in the real world.
@@ -78,13 +105,7 @@ export function Hero() {
       >
         View projects
       </Link>
-      <a
-        href="mailto:leejimin@usc.edu"
-        className="text-[13px] text-neutral-900 dark:text-neutral-100 tracking-[0.02em] flex items-center gap-1.5 group"
-      >
-        Get in touch
-        <span className="transition-transform group-hover:translate-x-1">→</span>
-      </a>
+      <ContactButton />
     </div>,
   ];
 
@@ -94,6 +115,7 @@ export function Hero() {
         @keyframes floatA { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
         @keyframes floatB { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
         @keyframes floatC { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+        @keyframes floatD { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
       `}</style>
       <section className="min-h-[calc(100vh-60px)] grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center px-6 md:px-12 max-w-6xl mx-auto py-16 lg:py-0">
         {/* Left */}
@@ -123,21 +145,21 @@ export function Hero() {
         >
           <div className="relative w-full max-w-[380px]">
             {/* Floating tags */}
-            {FLOAT_TAGS.map(({ label, className, style, accent }) => (
+            {FLOAT_TAGS.map(({ key, className, animStyle, accent, content }) => (
               <span
-                key={label}
-                className={`absolute z-10 ${className} text-[12px] px-3.5 py-1.5 rounded-full whitespace-nowrap shadow-lg border ${
+                key={key}
+                className={`absolute z-20 ${className} text-[12px] px-3.5 py-1.5 rounded-full whitespace-nowrap shadow-lg border flex items-center ${
                   accent
                     ? "bg-cardinal-50 dark:bg-cardinal-900/30 text-cardinal-700 dark:text-cardinal-300 border-cardinal-200 dark:border-cardinal-800"
-                    : "bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 border-neutral-200 dark:border-neutral-700"
+                    : "bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-200 border-neutral-200 dark:border-neutral-700"
                 }`}
-                style={style}
+                style={animStyle}
               >
-                {label}
+                {content}
               </span>
             ))}
 
-            {/* Photo card */}
+            {/* Photo card (rotated) */}
             <div
               className="relative rounded-2xl overflow-hidden shadow-[0_32px_80px_rgba(0,0,0,0.18)] transition-all duration-500 hover:rotate-0 hover:shadow-[0_48px_100px_rgba(0,0,0,0.22)] hover:-translate-y-2 aspect-[4/5] bg-warm-100 dark:bg-neutral-800"
               style={{ transform: "rotate(1.5deg)" }}
@@ -149,14 +171,15 @@ export function Hero() {
                 className="object-cover"
                 priority
               />
-              {/* Name badge */}
-              <div className="absolute bottom-4 left-4 right-4 bg-white/88 dark:bg-neutral-900/88 backdrop-blur-md rounded-xl px-4 py-3 border border-white/60 dark:border-neutral-700/60">
-                <div className="font-serif text-base leading-tight text-neutral-900 dark:text-neutral-100">
-                  Ji Min Lee
-                </div>
-                <div className="text-[11px] text-neutral-500 dark:text-neutral-400 mt-0.5">
-                  M.S. CS (AI) &middot; USC &middot; 2025–2027
-                </div>
+            </div>
+
+            {/* Name badge — outside rotated div to prevent text blur */}
+            <div className="absolute bottom-4 left-4 right-4 z-10 bg-white dark:bg-neutral-900 rounded-xl px-4 py-3 border border-neutral-200 dark:border-neutral-700 shadow-sm">
+              <div className="font-serif text-base leading-tight text-neutral-900 dark:text-neutral-50 font-semibold">
+                Ji Min Lee
+              </div>
+              <div className="text-[11px] text-neutral-700 dark:text-neutral-300 mt-0.5">
+                M.S. CS (AI) &middot; USC &middot; 2025–2027
               </div>
             </div>
           </div>

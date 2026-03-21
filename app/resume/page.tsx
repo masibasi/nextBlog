@@ -10,7 +10,7 @@ function ResumeSection({ title, children }: { title: string; children: React.Rea
     <section className="mb-10">
       <div className="flex items-center gap-3 mb-4">
         <h2 className="text-lg font-semibold tracking-tight text-neutral-900 dark:text-neutral-100 whitespace-nowrap">{title}</h2>
-        <div className="flex-1 border-t border-cardinal-200 dark:border-cardinal-900/60" />
+        <div className="flex-1 border-t border-cardinal-200 dark:border-cardinal-700" />
       </div>
       {children}
     </section>

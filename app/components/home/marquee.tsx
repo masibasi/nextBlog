@@ -15,9 +15,9 @@ const SKILLS = [
 
 function MarqueeItem({ label }: { label: string }) {
   return (
-    <div className="flex items-center gap-5 px-7 text-[13px] text-neutral-400 dark:text-neutral-500 tracking-[0.04em] whitespace-nowrap">
+    <div className="flex items-center gap-5 px-7 text-[13px] text-neutral-500 dark:text-neutral-400 tracking-[0.04em] whitespace-nowrap">
       {label}
-      <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-600 flex-shrink-0" />
+      <span className="w-1 h-1 rounded-full bg-neutral-400 dark:bg-neutral-500 flex-shrink-0" />
     </div>
   );
 }
