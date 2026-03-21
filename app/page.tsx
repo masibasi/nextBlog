@@ -1,7 +1,12 @@
-import Link from "next/link";
-import Image from "next/image";
-import { Posts } from "app/components/posts";
 import { getMainProjects, getOtherProjects } from "../utils/notion";
+import { getBlogPosts } from "app/blog/utils";
+import { Hero } from "app/components/home/hero";
+import { Marquee } from "app/components/home/marquee";
+import { SectionHeader } from "app/components/home/section-header";
+import { NowSection } from "app/components/home/now-section";
+import { ProjectCard } from "app/components/home/project-card";
+import { WritingList } from "app/components/home/writing-list";
+import { ScrollReveal } from "app/components/home/scroll-reveal";
 
 export const revalidate = 3600;
 
@@ -10,21 +15,23 @@ const currentWork = [
     role: "Web Team Lead",
     org: "USC Interaction Lab",
     period: "Jan 2026 – Present",
+    type: "Work" as const,
   },
   {
     role: "Graduate Research Intern",
     org: "USC AI for Health Lab",
     period: "Sep 2025 – Present",
+    type: "Research" as const,
   },
   {
     role: "M.S. Computer Science (AI)",
     org: "University of Southern California",
     period: "Aug 2025 – May 2027",
+    type: "Education" as const,
   },
 ];
 
 export default async function Page() {
-  // Fetch featured projects for homepage preview
   let featuredProjects: Awaited<ReturnType<typeof getMainProjects>> = [];
   try {
     const [main, other] = await Promise.all([getMainProjects(), getOtherProjects()]);
@@ -37,155 +44,58 @@ export default async function Page() {
       })
       .slice(0, 2);
   } catch {
-    // graceful fallback — show nothing
+    // graceful fallback
   }
 
+  const recentPosts = getBlogPosts()
+    .sort((a, b) =>
+      new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt) ? -1 : 1
+    )
+    .slice(0, 5);
+
   return (
-    <section className="space-y-16">
-      {/* Hero: photo + intro */}
-      <div className="flex flex-col sm:flex-row gap-8 items-start">
-        <div className="shrink-0">
-          <Image
-            src="/me.jpg"
-            alt="Ji Min Lee"
-            width={176}
-            height={176}
-            className="rounded-xl shadow-md w-36 h-36 sm:w-44 sm:h-44 object-cover"
-            priority
-          />
-        </div>
-        <div className="flex flex-col justify-center">
-          <h1 className="text-2xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100 mb-2">
-            Ji Min Lee
-          </h1>
-          <p className="leading-relaxed text-neutral-700 dark:text-neutral-300">
-            Software engineer and AI researcher at USC. I build full-stack systems, work on
-            human-centered AI, and care about software that's useful in the real world. Currently
-            leading web development at the{" "}
-            <strong className="text-neutral-900 dark:text-neutral-100">USC Interaction Lab</strong>{" "}
-            and doing research at the{" "}
-            <strong className="text-neutral-900 dark:text-neutral-100">AI for Health Lab</strong>.
-          </p>
-          <div className="mt-4 flex gap-3 text-sm">
-            <a
-              href="https://github.com/masibasi"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-neutral-500 dark:text-neutral-400 hover:text-cardinal-700 dark:hover:text-cardinal-400 transition-colors"
-            >
-              GitHub
-            </a>
-            <a
-              href="https://www.linkedin.com/in/jiminlee4015/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-neutral-500 dark:text-neutral-400 hover:text-cardinal-700 dark:hover:text-cardinal-400 transition-colors"
-            >
-              LinkedIn
-            </a>
-            <Link
-              href="/resume"
-              className="text-neutral-500 dark:text-neutral-400 hover:text-cardinal-700 dark:hover:text-cardinal-400 transition-colors"
-            >
-              Resume
-            </Link>
-          </div>
-        </div>
-      </div>
+    <div className="font-sans">
+      {/* Hero */}
+      <Hero />
 
-      {/* What I'm working on */}
-      <div>
-        <h2 className="text-sm font-semibold uppercase tracking-widest text-neutral-500 dark:text-neutral-400 mb-3">
-          Now
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          {currentWork.map((item) => (
-            <div key={item.org} className="card-warm p-4">
-              <div className="text-xs text-neutral-500 dark:text-neutral-400 mb-1">{item.period}</div>
-              <div className="font-medium text-sm text-neutral-900 dark:text-neutral-100">{item.role}</div>
-              <div className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">{item.org}</div>
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* Marquee */}
+      <Marquee />
 
-      {/* Featured Projects */}
+      {/* Now */}
+      <section className="max-w-6xl mx-auto px-6 md:px-12 py-20">
+        <ScrollReveal>
+          <SectionHeader label="Now" />
+        </ScrollReveal>
+        <ScrollReveal delay={100}>
+          <NowSection items={currentWork} />
+        </ScrollReveal>
+      </section>
+
+      {/* Projects */}
       {featuredProjects.length > 0 && (
-        <div>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
-              Projects
-            </h2>
-            <Link
-              href="/projects"
-              className="text-xs text-cardinal-700 dark:text-cardinal-400 hover:text-cardinal-800 dark:hover:text-cardinal-300 transition-colors"
-            >
-              All projects →
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {featuredProjects.map((project) => (
-              <a key={project.id} href={`/projects/${project.id}`} className="block card-warm overflow-hidden group">
-                {project.cover ? (
-                  <img
-                    src={project.cover}
-                    alt={project.title}
-                    className="w-full h-36 object-cover group-hover:opacity-95 transition-opacity"
-                    loading="eager"
-                  />
-                ) : (
-                  <div className="w-full h-36 photo-placeholder" />
-                )}
-                <div className="p-3">
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="font-medium text-sm text-neutral-900 dark:text-neutral-100 group-hover:underline">
-                      {project.title}
-                    </div>
-                    {project.tags?.includes("Award") && (
-                      <span className="shrink-0 px-2 py-0.5 text-xs font-medium rounded-md bg-amber-100 dark:bg-amber-900/60 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-700">
-                        Award
-                      </span>
-                    )}
-                  </div>
-                  {project.summary && (
-                    <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed line-clamp-2">
-                      {project.summary}
-                    </p>
-                  )}
-                  {project.stacks && project.stacks.length > 0 && (
-                    <div className="mt-1.5 flex flex-wrap gap-1">
-                      {project.stacks.slice(0, 4).map((stack) => (
-                        <span
-                          key={stack}
-                          className="px-1.5 py-0.5 text-xs rounded bg-neutral-100 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400"
-                        >
-                          {stack}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </a>
+        <section className="max-w-6xl mx-auto px-6 md:px-12 py-20 border-t border-neutral-200/60 dark:border-neutral-800/60">
+          <ScrollReveal>
+            <SectionHeader label="Projects" href="/projects" linkText="All projects" />
+          </ScrollReveal>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {featuredProjects.map((project, i) => (
+              <ScrollReveal key={project.id} delay={i * 100}>
+                <ProjectCard project={project} />
+              </ScrollReveal>
             ))}
           </div>
-        </div>
+        </section>
       )}
 
-      {/* Recent Posts */}
-      <div>
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-semibold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
-            Writing
-          </h2>
-          <Link
-            href="/posts"
-            className="text-xs text-cardinal-700 dark:text-cardinal-400 hover:text-cardinal-800 dark:hover:text-cardinal-300 transition-colors"
-          >
-            All posts →
-          </Link>
-        </div>
-        <Posts />
-      </div>
-    </section>
+      {/* Writing */}
+      <section className="max-w-6xl mx-auto px-6 md:px-12 py-20 border-t border-neutral-200/60 dark:border-neutral-800/60">
+        <ScrollReveal>
+          <SectionHeader label="Writing" href="/posts" linkText="All posts" />
+        </ScrollReveal>
+        <ScrollReveal delay={100}>
+          <WritingList posts={recentPosts} />
+        </ScrollReveal>
+      </section>
+    </div>
   );
 }

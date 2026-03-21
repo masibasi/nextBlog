@@ -53,6 +53,7 @@ export default function Blog({ params }) {
   }
 
   return (
+    <div className="max-w-2xl mx-auto px-4 md:px-6 py-12">
     <section>
       <script
         type="application/ld+json"
@@ -80,5 +81,6 @@ export default function Blog({ params }) {
         <CustomMDX source={post.content} />
       </article>
     </section>
+    </div>
   );
 }

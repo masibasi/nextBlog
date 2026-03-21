@@ -1,73 +1,82 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { ThemeSwitcher } from "./theme-switcher";
 import { LangToggle } from "./lang-toggle";
 import { usePathname } from "next/navigation";
 
-const navItems = {
-  "/": {
-    name: "home",
-  },
-  "/posts": {
-    name: "posts",
-  },
-  "/about": {
-    name: "about",
-  },
-  "/projects": {
-    name: "projects",
-  },
-  "/resume": {
-    name: "resume",
-  },
-};
+const navItems = [
+  { path: "/projects", name: "projects" },
+  { path: "/posts", name: "posts" },
+  { path: "/about", name: "about" },
+  { path: "/resume", name: "resume" },
+];
 
 export function Navbar() {
   const pathname = usePathname();
+  const [scrolled, setScrolled] = useState(false);
   const isPostsPage = /^\/posts(\/|$)/.test(pathname) || /^\/ko\/posts(\/|$)/.test(pathname);
 
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <aside className="-ml-[8px] mb-16 tracking-tight sticky top-0 z-10 bg-white dark:bg-black">
-      <div className="flex justify-between items-center lg:sticky lg:top-20 relative">
-        <nav className="flex flex-row items-start relative px-0 pb-0 fade md:overflow-auto scroll-pr-6 md:relative w-full" id="nav">
-          <div className="flex flex-row space-x-0 pr-10 w-full">
-            {Object.entries(navItems).map(([path, { name }]) => {
-              const isActive = path === "/" ? pathname === "/" : pathname.startsWith(path);
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 h-[60px] transition-all duration-300 ${
+        scrolled
+          ? "border-b border-neutral-200/60 dark:border-neutral-800/60"
+          : "border-b border-transparent"
+      } bg-[#f9f8f4]/85 dark:bg-neutral-950/85 backdrop-blur-xl`}
+    >
+      <div className="max-w-6xl mx-auto px-6 md:px-12 h-full flex items-center justify-between">
+        {/* Brand */}
+        <Link
+          href="/"
+          className="font-serif text-[18px] tracking-[-0.01em] text-neutral-900 dark:text-neutral-100 hover:opacity-80 transition-opacity"
+        >
+          Ji Min Lee
+        </Link>
+
+        {/* Nav links + controls */}
+        <div className="flex items-center gap-6">
+          <nav className="flex items-center gap-1">
+            {navItems.map(({ path, name }) => {
+              const isActive = pathname.startsWith(path);
               return (
                 <Link
                   key={path}
                   href={path}
-                  className={`transition-colors font-medium flex align-middle relative py-1 px-2 m-1 ${
+                  className={`relative px-3 py-1.5 text-[13px] tracking-[0.02em] transition-colors ${
                     isActive
                       ? "text-cardinal-700 dark:text-cardinal-400"
-                      : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200"
+                      : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100"
                   }`}
                 >
                   {name}
-                  <span
-                    className={`absolute bottom-0 inset-x-2 h-0.5 rounded-full transition-all duration-300 ${
-                      isActive
-                        ? "bg-cardinal-700 dark:bg-cardinal-400"
-                        : "bg-transparent"
-                    }`}
-                  />
+                  {isActive && (
+                    <span className="absolute bottom-0 inset-x-3 h-px rounded-full bg-cardinal-700 dark:bg-cardinal-400" />
+                  )}
                 </Link>
               );
             })}
-          </div>
-        </nav>
-        {/* Responsive: absolutely position on small screens to prevent overflow */}
-        <div className="flex items-center gap-1 min-w-0 max-w-full flex-shrink-0 overflow-visible absolute right-2 top-2 sm:static sm:right-auto sm:top-auto">
-          <div className="flex items-center gap-1 w-full max-w-[96px] sm:max-w-none">
-            <div className={`transition-opacity duration-150 ${isPostsPage ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
+          </nav>
+
+          <div className="flex items-center gap-1">
+            <div
+              className={`transition-opacity duration-150 ${
+                isPostsPage ? "opacity-100" : "opacity-0 pointer-events-none"
+              }`}
+            >
               <LangToggle />
             </div>
             <ThemeSwitcher />
           </div>
         </div>
       </div>
-    </aside>
+    </header>
   );
 }

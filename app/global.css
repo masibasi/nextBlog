@@ -172,3 +172,8 @@ table {
 .photo-placeholder {
   @apply rounded-xl bg-gradient-to-br from-warm-100 to-warm-200 dark:from-neutral-800 dark:to-neutral-700;
 }
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
