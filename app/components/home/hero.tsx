@@ -75,11 +75,10 @@ export function Hero() {
     // Name
     <h1
       key="name"
-      className="font-serif text-[clamp(52px,6vw,80px)] leading-[1.0] tracking-[-0.03em] text-neutral-900 dark:text-neutral-100"
+      className="font-serif text-[clamp(44px,6vw,80px)] leading-[1.0] tracking-[-0.03em] text-neutral-900 dark:text-neutral-100"
     >
-      Ji Min
-      <br />
-      <em className="not-italic text-cardinal-700 dark:text-cardinal-400">Lee</em>
+      <span className="lg:hidden">Ji Min <em className="not-italic text-cardinal-700 dark:text-cardinal-400">Lee</em></span>
+      <span className="hidden lg:inline">Ji Min<br /><em className="not-italic text-cardinal-700 dark:text-cardinal-400">Lee</em></span>
     </h1>,
     // Role
     <div
@@ -119,7 +118,7 @@ export function Hero() {
       `}</style>
       <section className="min-h-[calc(100vh-60px)] grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center px-6 md:px-12 max-w-6xl mx-auto py-16 lg:py-0">
         {/* Left */}
-        <div className="flex flex-col gap-7">
+        <div className="flex flex-col gap-7 items-center lg:items-start text-center lg:text-left">
           {leftItems.map((item, i) => (
             <div
               key={i}
@@ -148,7 +147,7 @@ export function Hero() {
             {FLOAT_TAGS.map(({ key, className, animStyle, accent, content }) => (
               <span
                 key={key}
-                className={`absolute z-20 ${className} text-[12px] px-3.5 py-1.5 rounded-full whitespace-nowrap shadow-lg border flex items-center ${
+                className={`absolute z-20 hidden sm:flex ${className} text-[12px] px-3.5 py-1.5 rounded-full whitespace-nowrap shadow-lg border items-center ${
                   accent
                     ? "bg-cardinal-50 dark:bg-cardinal-900/30 text-cardinal-700 dark:text-cardinal-300 border-cardinal-200 dark:border-cardinal-800"
                     : "bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-200 border-neutral-200 dark:border-neutral-700"

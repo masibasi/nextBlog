@@ -32,25 +32,25 @@ export function Navbar() {
           : "border-b border-transparent"
       } bg-[#f9f8f4]/85 dark:bg-neutral-950/85 backdrop-blur-xl`}
     >
-      <div className="max-w-6xl mx-auto px-6 md:px-12 h-full flex items-center justify-between">
+      <div className="max-w-6xl mx-auto px-4 md:px-12 h-full flex items-center justify-between gap-2">
         {/* Brand */}
         <Link
           href="/"
-          className="font-serif text-[18px] tracking-[-0.01em] text-neutral-900 dark:text-neutral-100 hover:opacity-80 transition-opacity"
+          className="font-serif text-[16px] sm:text-[18px] tracking-[-0.01em] text-neutral-900 dark:text-neutral-100 hover:opacity-80 transition-opacity shrink-0"
         >
           Ji Min Lee
         </Link>
 
         {/* Nav links + controls */}
         <div className="flex items-center gap-6">
-          <nav className="flex items-center gap-1">
+          <nav className="flex items-center gap-0">
             {navItems.map(({ path, name }) => {
               const isActive = pathname.startsWith(path);
               return (
                 <Link
                   key={path}
                   href={path}
-                  className={`relative px-3 py-1.5 text-[13px] tracking-[0.02em] transition-colors ${
+                  className={`relative px-2 sm:px-3 py-1.5 text-[12px] sm:text-[13px] tracking-[0.02em] transition-colors ${
                     isActive
                       ? "text-cardinal-700 dark:text-cardinal-400"
                       : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100"

@@ -12,7 +12,7 @@ export default async function ProjectsPage() {
     console.error("projects fetch error", e);
   }
   return (
-    <main className="max-w-2xl mx-auto py-1 px-4">
+    <main className="max-w-2xl mx-auto py-12 px-4">
       <h1 className="text-2xl font-semibold tracking-tight mb-8">Projects</h1>
       <ProjectList projects={projects} />
     </main>
