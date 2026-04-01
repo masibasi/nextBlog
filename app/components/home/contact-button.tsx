@@ -70,30 +70,36 @@ export function ContactButton() {
       >
         Get in touch
         <span
-          className="transition-transform"
-          style={{ transform: open ? "rotate(90deg)" : "translateX(0)" }}
+          className="transition-transform duration-200"
+          style={{ transform: open ? "rotate(90deg)" : "rotate(0deg)" }}
         >
           →
         </span>
       </button>
 
-      {open && (
-        <div className="absolute top-full left-0 mt-2 z-50 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-xl shadow-xl overflow-hidden min-w-[160px]">
-          {CONTACTS.map(({ label, href, icon }) => (
-            <a
-              key={label}
-              href={href}
-              target={href.startsWith("mailto") ? undefined : "_blank"}
-              rel="noopener noreferrer"
-              onClick={() => setOpen(false)}
-              className="flex items-center gap-3 px-4 py-3 text-[13px] text-neutral-700 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:text-cardinal-700 dark:hover:text-cardinal-400 transition-colors"
-            >
-              {icon}
-              {label}
-            </a>
-          ))}
-        </div>
-      )}
+      <div
+        className="absolute top-full left-0 mt-2 z-50 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-xl shadow-xl overflow-hidden min-w-[160px]"
+        style={{
+          opacity: open ? 1 : 0,
+          transform: open ? "translateY(0) scale(1)" : "translateY(-6px) scale(0.97)",
+          pointerEvents: open ? "auto" : "none",
+          transition: "opacity 0.18s cubic-bezier(0.16, 1, 0.3, 1), transform 0.18s cubic-bezier(0.16, 1, 0.3, 1)",
+        }}
+      >
+        {CONTACTS.map(({ label, href, icon }) => (
+          <a
+            key={label}
+            href={href}
+            target={href.startsWith("mailto") ? undefined : "_blank"}
+            rel="noopener noreferrer"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-3 px-4 py-3 text-[13px] text-neutral-700 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:text-cardinal-700 dark:hover:text-cardinal-400 transition-colors"
+          >
+            {icon}
+            {label}
+          </a>
+        ))}
+      </div>
     </div>
   );
 }

@@ -13,7 +13,8 @@ export default async function ProjectsPage() {
   }
   return (
     <main className="max-w-2xl mx-auto py-12 px-4">
-      <h1 className="text-2xl font-semibold tracking-tight mb-8">Projects</h1>
+      <h1 className="font-serif text-3xl tracking-[-0.02em] text-neutral-900 dark:text-neutral-50 mb-2">Projects</h1>
+      <p className="text-[14px] text-neutral-500 dark:text-neutral-400 mb-10">Things I&apos;ve built — research tools, full-stack apps, and AI systems.</p>
       <ProjectList projects={projects} />
     </main>
   );

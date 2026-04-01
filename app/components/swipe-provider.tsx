@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { getStroke } from "perfect-freehand";
 
-const PAGE_ORDER = ["/", "/posts", "/about", "/projects", "/resume"];
+const PAGE_ORDER = ["/", "/projects", "/posts", "/about", "/resume"];
 const FADE_DURATION = 400; // ms — CSS opacity transition after lift
 
 // perfect-freehand stroke outline → Path2D

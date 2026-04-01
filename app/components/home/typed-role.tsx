@@ -29,7 +29,7 @@ export function TypedRole({ roles }: Props) {
     }
 
     if (phase === "pausing") {
-      const t = setTimeout(() => setPhase("deleting"), 200);
+      const t = setTimeout(() => setPhase("deleting"), 900);
       return () => clearTimeout(t);
     }
 
