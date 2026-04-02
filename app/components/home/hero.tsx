@@ -77,6 +77,7 @@ export function Hero() {
   const target = useRef({ x: 0, y: 0 });
   const rafRef = useRef<number | null>(null);
   const shineRef = useRef<HTMLDivElement>(null);
+  const cardDivRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 50);
@@ -120,17 +121,30 @@ export function Hero() {
 
       const { x, y } = mouse.current;
 
+      // Tilt: desktop stays subtle, mobile goes more dramatic
       if (photoWrapperRef.current) {
+        const rx = isTouch ? -y * 22 : -y * 10;
+        const ry = isTouch ?  x *  0 :  x * 12;
         photoWrapperRef.current.style.transform =
-          `perspective(900px) rotateX(${-y * 15}deg) rotateY(${x * 18}deg) rotate(1.5deg)`;
+          `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) rotate(1.5deg)`;
       }
 
-      // Shiny light reflection — moves opposite to tilt (light appears to slide across)
+      // Shine: desktop subtle, mobile slightly more present
       if (shineRef.current) {
         const px = ((x + 1) / 2) * 100;
         const py = ((y + 1) / 2) * 100;
+        const intensity = isTouch ? 0.18 : 0.10;
         shineRef.current.style.background =
-          `radial-gradient(circle at ${px}% ${py}%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.07) 45%, transparent 65%)`;
+          `radial-gradient(circle at ${px}% ${py}%, rgba(255,255,255,${intensity}) 0%, rgba(255,255,255,${intensity * 0.3}) 45%, transparent 65%)`;
+      }
+
+      // Mobile only: dynamic shadow shifts and deepens with tilt
+      if (isTouch && cardDivRef.current) {
+        const offsetY = 28 + y * 20;
+        const blur    = 70 + Math.abs(y) * 50;
+        const opacity = 0.16 + Math.abs(y) * 0.18;
+        cardDivRef.current.style.boxShadow =
+          `0 ${offsetY}px ${blur}px rgba(0,0,0,${opacity})`;
       }
 
       tagOuterRefs.current.forEach((el, i) => {
@@ -256,8 +270,8 @@ export function Hero() {
               </div>
             ))}
 
-            {/* Photo card */}
-            <div className="relative rounded-2xl overflow-hidden shadow-[0_32px_80px_rgba(0,0,0,0.18)] hover:shadow-[0_48px_100px_rgba(0,0,0,0.22)] transition-shadow duration-500 aspect-[4/5] bg-warm-100 dark:bg-neutral-800">
+            {/* Photo card — desktop: CSS hover shadow / mobile: rAF dynamic shadow */}
+            <div ref={cardDivRef} className="relative rounded-2xl overflow-hidden shadow-[0_28px_70px_rgba(0,0,0,0.16)] hover:shadow-[0_40px_90px_rgba(0,0,0,0.22)] transition-shadow duration-500 aspect-[4/5] bg-warm-100 dark:bg-neutral-800">
               <Image
                 src="/me.jpg"
                 alt="Ji Min Lee"
