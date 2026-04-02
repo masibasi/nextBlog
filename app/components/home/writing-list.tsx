@@ -26,15 +26,20 @@ export function WritingList({ posts }: Props) {
         <Link
           key={post.slug}
           href={`/posts/${post.slug}`}
-          className="flex items-baseline gap-6 py-4 border-b border-neutral-200 dark:border-neutral-800 group transition-all duration-200 hover:pl-2"
+          className="flex items-baseline gap-6 py-4 border-b border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 group transition-all duration-300 hover:pl-1"
         >
-          <span className="text-[12px] text-neutral-500 dark:text-neutral-400 tabular-nums min-w-[100px] flex-shrink-0">
+          {/* Date warms slightly on hover */}
+          <span className="text-[12px] text-neutral-400 dark:text-neutral-500 tabular-nums min-w-[100px] flex-shrink-0 transition-colors duration-300 group-hover:text-neutral-600 dark:group-hover:text-neutral-300">
             {formatDate(post.metadata.publishedAt, false)}
           </span>
-          <span className="text-[15px] font-medium text-neutral-900 dark:text-neutral-50 flex-1">
+
+          {/* Title warms to cardinal */}
+          <span className="text-[15px] font-medium text-neutral-900 dark:text-neutral-50 flex-1 transition-colors duration-300 group-hover:text-cardinal-700 dark:group-hover:text-cardinal-400">
             {post.metadata.title}
           </span>
-          <span className="text-neutral-400 dark:text-neutral-500 transition-all duration-200 group-hover:translate-x-1 group-hover:text-neutral-700 dark:group-hover:text-neutral-300">
+
+          {/* Arrow: starts subtle, moves more expressively on hover */}
+          <span className="text-neutral-300 dark:text-neutral-600 transition-all duration-300 group-hover:translate-x-2 group-hover:text-cardinal-700 dark:group-hover:text-cardinal-400">
             →
           </span>
         </Link>

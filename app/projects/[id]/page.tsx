@@ -1,6 +1,7 @@
 import React from "react";
 import { getAllProjects } from "../../../utils/notion";
-import Link from "next/link";
+import { ScrollReveal } from "../../components/home/scroll-reveal";
+import { ProjectPageHeader } from "./project-header";
 
 export const revalidate = 3600;
 
@@ -216,9 +217,10 @@ function renderBlock(block: Block) {
   }
 }
 
-export default async function ProjectDetailPage({ params }: { params: { id: string } }) {
+export default async function ProjectDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const allProjects = await getAllProjects();
-  const project = allProjects.find((p) => p.id === params.id);
+  const project = allProjects.find((p) => p.id === id);
 
   let blocks: Block[] = [];
   if (project) {
@@ -249,136 +251,69 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
 
   return (
     <main className="max-w-2xl mx-auto py-8 px-4">
-      {/* Breadcrumb */}
-      <div className="mb-5 flex items-center justify-between">
-        <Link
-          href="/projects"
-          className="inline-flex items-center gap-1 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 underline underline-offset-2 decoration-neutral-300 dark:decoration-neutral-600 transition-colors"
-        >
-          ← Projects
-        </Link>
-        {project.notionUrl && (
-          <a
-            href={project.notionUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm font-medium text-neutral-500 dark:text-neutral-400 hover:text-cardinal-700 dark:hover:text-cardinal-400 transition-colors"
-          >
-            View in Notion ↗
-          </a>
-        )}
-      </div>
+      {/* Animated header — client component for staggered mount entrance */}
+      <ProjectPageHeader
+        project={project}
+        hasAward={!!hasAward}
+        displayTags={displayTags}
+      />
 
-      {project.cover && (
-        <div className="mb-6">
-          <img
-            src={project.cover}
-            alt="cover"
-            className="w-full h-64 object-cover rounded-xl"
-          />
-        </div>
-      )}
-
-      {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-start gap-3 flex-wrap mb-2">
-          <h1 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">
-            {project.title}
-          </h1>
-          {hasAward && (
-            <span className="mt-1.5 px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 dark:bg-amber-900/60 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-700">
-              Award
-            </span>
-          )}
-        </div>
-
-        {project.summary && (
-          <p className="text-neutral-500 dark:text-neutral-400 mb-3 leading-relaxed">
-            {project.summary}
-          </p>
-        )}
-
-        {project.duration && (
-          <p className="text-sm text-neutral-400 dark:text-neutral-500 mb-3">
-            {project.duration}
-          </p>
-        )}
-
-        {(project.stacks ?? []).length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-3">
-            {(project.stacks ?? []).map((stack) => (
-              <span
-                key={stack}
-                className="px-2 py-1 rounded-md border text-xs font-medium bg-neutral-100 dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300"
-              >
-                {stack}
-              </span>
-            ))}
-          </div>
-        )}
-
-        {displayTags.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            {displayTags.map((tag) => (
-              <span
-                key={tag}
-                className="px-2 py-1 rounded border text-xs text-neutral-500 dark:text-neutral-400 border-neutral-300 dark:border-neutral-600"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Body */}
+      {/* Body — each block group reveals on scroll */}
       {blocks.length > 0 && (
         <div className="my-8">
           {grouped.map((group, i) => {
             if (group.type === "bulleted_list") {
               return (
-                <ul key={i} className="my-3 space-y-1 pl-4">
-                  {group.items.map((item) => (
-                    <li key={item.id} className="flex gap-2 text-neutral-800 dark:text-neutral-200 leading-relaxed">
-                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-neutral-400 dark:bg-neutral-500" />
-                      <span>{renderRichText(item.bulleted_list_item.rich_text)}</span>
-                    </li>
-                  ))}
-                </ul>
+                <ScrollReveal key={`g${i}`}>
+                  <ul className="my-3 space-y-1 pl-4">
+                    {group.items.map((item) => (
+                      <li key={item.id} className="flex gap-2 text-neutral-800 dark:text-neutral-200 leading-relaxed">
+                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-neutral-400 dark:bg-neutral-500" />
+                        <span>{renderRichText(item.bulleted_list_item.rich_text)}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </ScrollReveal>
               );
             }
             if (group.type === "numbered_list") {
               return (
-                <ol key={i} className="my-3 space-y-1 pl-5 list-decimal">
-                  {group.items.map((item) => (
-                    <li key={item.id} className="text-neutral-800 dark:text-neutral-200 leading-relaxed">
-                      {renderRichText(item.numbered_list_item.rich_text)}
-                    </li>
-                  ))}
-                </ol>
+                <ScrollReveal key={`g${i}`}>
+                  <ol className="my-3 space-y-1 pl-5 list-decimal">
+                    {group.items.map((item) => (
+                      <li key={item.id} className="text-neutral-800 dark:text-neutral-200 leading-relaxed">
+                        {renderRichText(item.numbered_list_item.rich_text)}
+                      </li>
+                    ))}
+                  </ol>
+                </ScrollReveal>
               );
             }
             if (group.type === "to_do_list") {
               return (
-                <ul key={i} className="my-3 space-y-1.5">
-                  {group.items.map((item) => (
-                    <li key={item.id} className="flex gap-2.5 items-start text-neutral-800 dark:text-neutral-200 leading-relaxed">
-                      <span className={`mt-0.5 h-4 w-4 shrink-0 rounded border flex items-center justify-center ${item.to_do.checked ? "bg-neutral-800 dark:bg-neutral-200 border-neutral-800 dark:border-neutral-200" : "border-neutral-300 dark:border-neutral-600"}`}>
-                        {item.to_do.checked && (
-                          <svg className="h-2.5 w-2.5 text-white dark:text-neutral-800" fill="none" viewBox="0 0 10 10">
-                            <path d="M1.5 5l2.5 2.5 4.5-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                        )}
-                      </span>
-                      <span className={item.to_do.checked ? "line-through text-neutral-400 dark:text-neutral-500" : ""}>
-                        {renderRichText(item.to_do.rich_text)}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+                <ScrollReveal key={`g${i}`}>
+                  <ul className="my-3 space-y-1.5">
+                    {group.items.map((item) => (
+                      <li key={item.id} className="flex gap-2.5 items-start text-neutral-800 dark:text-neutral-200 leading-relaxed">
+                        <span className={`mt-0.5 h-4 w-4 shrink-0 rounded border flex items-center justify-center ${item.to_do.checked ? "bg-neutral-800 dark:bg-neutral-200 border-neutral-800 dark:border-neutral-200" : "border-neutral-300 dark:border-neutral-600"}`}>
+                          {item.to_do.checked && (
+                            <svg className="h-2.5 w-2.5 text-white dark:text-neutral-800" fill="none" viewBox="0 0 10 10">
+                              <path d="M1.5 5l2.5 2.5 4.5-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                          )}
+                        </span>
+                        <span className={item.to_do.checked ? "line-through text-neutral-400 dark:text-neutral-500" : ""}>
+                          {renderRichText(item.to_do.rich_text)}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </ScrollReveal>
               );
             }
-            return renderBlock(group as Block);
+            const rendered = renderBlock(group as Block);
+            if (!rendered) return null;
+            return <ScrollReveal key={`g${i}`}>{rendered}</ScrollReveal>;
           })}
         </div>
       )}

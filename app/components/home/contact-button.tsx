@@ -64,9 +64,10 @@ export function ContactButton() {
 
   return (
     <div className="relative" ref={ref}>
+      {/* Trigger — warms to cardinal on hover */}
       <button
         onClick={() => setOpen((v) => !v)}
-        className="text-[13px] text-neutral-900 dark:text-neutral-100 tracking-[0.02em] flex items-center gap-1.5 group font-medium"
+        className="text-[13px] text-neutral-900 dark:text-neutral-100 tracking-[0.02em] flex items-center gap-1.5 font-medium transition-colors duration-200 hover:text-cardinal-700 dark:hover:text-cardinal-400"
       >
         Get in touch
         <span
@@ -77,25 +78,39 @@ export function ContactButton() {
         </span>
       </button>
 
+      {/* Dropdown */}
       <div
         className="absolute top-full left-0 mt-2 z-50 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-xl shadow-xl overflow-hidden min-w-[160px]"
         style={{
           opacity: open ? 1 : 0,
           transform: open ? "translateY(0) scale(1)" : "translateY(-6px) scale(0.97)",
           pointerEvents: open ? "auto" : "none",
-          transition: "opacity 0.18s cubic-bezier(0.16, 1, 0.3, 1), transform 0.18s cubic-bezier(0.16, 1, 0.3, 1)",
+          transition:
+            "opacity 0.18s cubic-bezier(0.16, 1, 0.3, 1), transform 0.18s cubic-bezier(0.16, 1, 0.3, 1)",
         }}
       >
-        {CONTACTS.map(({ label, href, icon }) => (
+        {CONTACTS.map(({ label, href, icon }, i) => (
           <a
             key={label}
             href={href}
             target={href.startsWith("mailto") ? undefined : "_blank"}
             rel="noopener noreferrer"
             onClick={() => setOpen(false)}
-            className="flex items-center gap-3 px-4 py-3 text-[13px] text-neutral-700 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:text-cardinal-700 dark:hover:text-cardinal-400 transition-colors"
+            // Named group so icon can respond independently of the link group
+            className="flex items-center gap-3 px-4 py-3 text-[13px] text-neutral-700 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:text-cardinal-700 dark:hover:text-cardinal-400 transition-colors group/link"
+            style={{
+              // Staggered reveal: each item slides up and fades in after the container opens
+              opacity: open ? 1 : 0,
+              transform: open ? "translateY(0)" : "translateY(-4px)",
+              transition:
+                "opacity 0.16s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.15s, color 0.15s",
+              transitionDelay: open ? `${i * 40}ms` : "0ms",
+            }}
           >
-            {icon}
+            {/* Icon lifts slightly on row hover */}
+            <span className="transition-transform duration-200 group-hover/link:-translate-y-0.5">
+              {icon}
+            </span>
             {label}
           </a>
         ))}
