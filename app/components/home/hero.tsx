@@ -70,16 +70,12 @@ const ENTER_FROM = [
 
 export function Hero() {
   const [mounted, setMounted] = useState(false);
-  // iOS 13+: gyro needs explicit permission via user gesture
-  const [gyroHint, setGyroHint] = useState(false);
 
   const photoWrapperRef = useRef<HTMLDivElement>(null);
   const tagOuterRefs = useRef<(HTMLDivElement | null)[]>(Array(FLOAT_TAGS.length).fill(null));
   const mouse = useRef({ x: 0, y: 0 });
   const target = useRef({ x: 0, y: 0 });
   const rafRef = useRef<number | null>(null);
-  // Holds the iOS permission-request function so the hint button can call it
-  const gyroStartRef = useRef<(() => Promise<void>) | null>(null);
 
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 50);
@@ -92,7 +88,8 @@ export function Hero() {
 
     const isTouch = window.matchMedia("(pointer: coarse)").matches;
     const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-    let removeInputListener: (() => void) | undefined;
+
+    let removeMouseListener: (() => void) | undefined;
 
     if (!isTouch) {
       // Desktop: mouse tracking
@@ -101,50 +98,22 @@ export function Hero() {
         target.current.y = (e.clientY / window.innerHeight) * 2 - 1;
       };
       window.addEventListener("mousemove", onMouseMove, { passive: true });
-      removeInputListener = () => window.removeEventListener("mousemove", onMouseMove);
-
-    } else if ("DeviceOrientationEvent" in window) {
-      // Mobile: gyroscope
-      // ±RANGE degrees of tilt maps to ±1 normalized
-      const RANGE = 25;
-      let initialBeta: number | null = null;
-      let initialGamma: number | null = null;
-
-      const startGyro = () => {
-        const onOrientation = (e: DeviceOrientationEvent) => {
-          if (e.beta === null || e.gamma === null) return;
-          // Calibrate on first reading — wherever phone is held becomes "center"
-          if (initialBeta === null) initialBeta = e.beta;
-          if (initialGamma === null) initialGamma = e.gamma;
-          target.current.x = Math.max(-1, Math.min(1, (e.gamma - initialGamma!) / RANGE));
-          target.current.y = Math.max(-1, Math.min(1, (e.beta  - initialBeta!)  / RANGE));
-        };
-        window.addEventListener("deviceorientation", onOrientation);
-        removeInputListener = () => window.removeEventListener("deviceorientation", onOrientation);
-        setGyroHint(false);
-      };
-
-      // iOS 13+ blocks DeviceOrientationEvent until requestPermission() is called
-      // from a user gesture. Android works without any permission.
-      if (typeof (DeviceOrientationEvent as any).requestPermission === "function") {
-        setGyroHint(true);
-        gyroStartRef.current = async () => {
-          try {
-            const perm = await (DeviceOrientationEvent as any).requestPermission();
-            if (perm === "granted") startGyro();
-            else setGyroHint(false); // user declined — hide the prompt
-          } catch {
-            setGyroHint(false);
-          }
-        };
-      } else {
-        startGyro(); // Android or older iOS — just go
-      }
+      removeMouseListener = () => window.removeEventListener("mousemove", onMouseMove);
     }
+    // Mobile: target is updated each frame from scroll position (no event listener needed)
 
-    // rAF loop — identical for mouse and gyro (both update target.current)
     const loop = () => {
-      const s = isTouch ? 0.08 : 0.06; // slightly snappier on gyro
+      // Mobile: derive tilt from card's position relative to viewport center
+      if (isTouch && photoWrapperRef.current) {
+        const rect = photoWrapperRef.current.getBoundingClientRect();
+        const cardCenter = rect.top + rect.height / 2;
+        const offset = (cardCenter - window.innerHeight / 2) / (window.innerHeight * 0.6);
+        target.current.y = Math.max(-1, Math.min(1, offset));
+        // No left-right tilt on mobile (no horizontal scroll input)
+        target.current.x = 0;
+      }
+
+      const s = isTouch ? 0.06 : 0.06;
       mouse.current.x = lerp(mouse.current.x, target.current.x, s);
       mouse.current.y = lerp(mouse.current.y, target.current.y, s);
 
@@ -166,7 +135,7 @@ export function Hero() {
     rafRef.current = requestAnimationFrame(loop);
 
     return () => {
-      removeInputListener?.();
+      removeMouseListener?.();
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, []);
@@ -299,20 +268,6 @@ export function Hero() {
               </div>
             </div>
 
-            {/* iOS gyro permission hint — only shown on iOS before permission is granted */}
-            {gyroHint && (
-              <button
-                onClick={() => gyroStartRef.current?.()}
-                className="absolute bottom-20 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1.5 text-[11px] text-neutral-600 dark:text-neutral-300 bg-white/90 dark:bg-neutral-800/90 backdrop-blur-sm px-3 py-1.5 rounded-full border border-neutral-200 dark:border-neutral-700 shadow-sm whitespace-nowrap transition-opacity duration-300"
-              >
-                {/* Phone tilt icon */}
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-60">
-                  <rect x="7" y="2" width="10" height="20" rx="2" ry="2" />
-                  <path d="M12 18h.01" />
-                </svg>
-                Tap to tilt
-              </button>
-            )}
           </div>
         </div>
       </section>
