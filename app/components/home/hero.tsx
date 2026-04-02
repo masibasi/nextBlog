@@ -76,6 +76,7 @@ export function Hero() {
   const mouse = useRef({ x: 0, y: 0 });
   const target = useRef({ x: 0, y: 0 });
   const rafRef = useRef<number | null>(null);
+  const shineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 50);
@@ -107,7 +108,7 @@ export function Hero() {
       if (isTouch && photoWrapperRef.current) {
         const rect = photoWrapperRef.current.getBoundingClientRect();
         const cardCenter = rect.top + rect.height / 2;
-        const offset = (cardCenter - window.innerHeight / 2) / (window.innerHeight * 0.6);
+        const offset = (cardCenter - window.innerHeight / 2) / (window.innerHeight * 0.4);
         target.current.y = Math.max(-1, Math.min(1, offset));
         // No left-right tilt on mobile (no horizontal scroll input)
         target.current.x = 0;
@@ -121,7 +122,15 @@ export function Hero() {
 
       if (photoWrapperRef.current) {
         photoWrapperRef.current.style.transform =
-          `perspective(900px) rotateX(${-y * 8}deg) rotateY(${x * 10}deg) rotate(1.5deg)`;
+          `perspective(900px) rotateX(${-y * 15}deg) rotateY(${x * 18}deg) rotate(1.5deg)`;
+      }
+
+      // Shiny light reflection — moves opposite to tilt (light appears to slide across)
+      if (shineRef.current) {
+        const px = ((x + 1) / 2) * 100;
+        const py = ((y + 1) / 2) * 100;
+        shineRef.current.style.background =
+          `radial-gradient(circle at ${px}% ${py}%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.07) 45%, transparent 65%)`;
       }
 
       tagOuterRefs.current.forEach((el, i) => {
@@ -255,6 +264,12 @@ export function Hero() {
                 fill
                 className="object-cover"
                 priority
+              />
+              {/* Shiny light reflection — position driven by rAF tilt values */}
+              <div
+                ref={shineRef}
+                className="absolute inset-0 pointer-events-none"
+                style={{ mixBlendMode: "screen" }}
               />
             </div>
 
