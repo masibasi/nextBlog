@@ -107,7 +107,7 @@ export function ProjectPageHeader({ project, hasAward, displayTags }: Props) {
             {(project.stacks ?? []).map((stack) => (
               <span
                 key={stack}
-                className="px-2 py-1 rounded-md border text-xs font-medium bg-neutral-100 dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300"
+                className="px-2 py-1 rounded-md border text-xs font-medium bg-warm-50 dark:bg-warm-900/20 border-warm-200 dark:border-warm-700/40 text-warm-800 dark:text-warm-300"
               >
                 {stack}
               </span>
@@ -120,7 +120,7 @@ export function ProjectPageHeader({ project, hasAward, displayTags }: Props) {
             {displayTags.map((tag) => (
               <span
                 key={tag}
-                className="px-2 py-1 rounded border text-xs text-neutral-500 dark:text-neutral-400 border-neutral-300 dark:border-neutral-600"
+                className="px-2 py-1 rounded border text-xs bg-cardinal-50 dark:bg-cardinal-900/20 text-cardinal-700 dark:text-cardinal-300 border-cardinal-100 dark:border-cardinal-800/40"
               >
                 {tag}
               </span>

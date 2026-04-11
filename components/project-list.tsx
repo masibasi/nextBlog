@@ -77,7 +77,7 @@ export default function ProjectList({ projects }: { projects: Project[] }) {
                       {project.stacks.map((stack) => (
                         <span
                           key={stack}
-                          className="px-2.5 py-1 text-[11px] rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 border border-neutral-300 dark:border-neutral-600"
+                          className="px-2.5 py-1 text-[11px] rounded-full bg-warm-50 dark:bg-warm-900/20 text-warm-800 dark:text-warm-300 border border-warm-200 dark:border-warm-700/40"
                         >
                           {stack}
                         </span>
@@ -118,7 +118,7 @@ export default function ProjectList({ projects }: { projects: Project[] }) {
                     {project.stacks.map((stack) => (
                       <span
                         key={stack}
-                        className="px-2.5 py-1 text-[11px] rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 border border-neutral-300 dark:border-neutral-600"
+                        className="px-2.5 py-1 text-[11px] rounded-full bg-warm-50 dark:bg-warm-900/20 text-warm-800 dark:text-warm-300 border border-warm-200 dark:border-warm-700/40"
                       >
                         {stack}
                       </span>

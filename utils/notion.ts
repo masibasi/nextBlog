@@ -27,7 +27,7 @@ async function notionQuery(databaseId: string, startCursor?: string) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ page_size: 100, start_cursor: startCursor }),
-    next: { revalidate: 3600 },
+    next: { revalidate: 60 },
   });
 
   if (!res.ok) {

@@ -44,7 +44,7 @@ export function ProjectCard({ project }: Props) {
             {project.stacks.slice(0, 4).map((stack) => (
               <span
                 key={stack}
-                className="text-[11px] text-neutral-600 dark:text-neutral-300 bg-neutral-100 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 px-2.5 py-1 rounded-full"
+                className="text-[11px] bg-warm-50 dark:bg-warm-900/20 text-warm-800 dark:text-warm-300 border border-warm-200 dark:border-warm-700/40 px-2.5 py-1 rounded-full"
               >
                 {stack}
               </span>
