@@ -8,7 +8,7 @@ import { ProjectCard } from "app/components/home/project-card";
 import { WritingList } from "app/components/home/writing-list";
 import { ScrollReveal } from "app/components/home/scroll-reveal";
 
-export const revalidate = 3600;
+export const revalidate = 60;
 
 const currentWork = [
   {
