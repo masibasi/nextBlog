@@ -10,6 +10,7 @@ export type Project = {
   featured?: boolean;
   summary?: string;
   cover?: string | null;
+  linkUrl?: string | null;
   notionUrl?: string | null;
 };
 
@@ -82,6 +83,8 @@ function mapProject(item: any): Project {
   const props = item?.properties ?? {};
   const tagsProp = props?.tags ?? props?.Tags; // tolerate both cases
   const stacksProp = props?.Stacks ?? props?.stacks;
+  const linkProp = props?.Link ?? props?.link;
+  const demoProp = props?.Demo ?? props?.demo; // backward-compat fallback
   return {
     id: item.id,
     title: pickTitle(props?.Name?.title),
@@ -97,6 +100,7 @@ function mapProject(item: any): Project {
       : item.cover?.file?.url
       ? `/api/notion-image?pageId=${item.id}`
       : null,
+    linkUrl: linkProp?.url ?? demoProp?.url ?? null,
     notionUrl: item.url ?? null,
   };
 }

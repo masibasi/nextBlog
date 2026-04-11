@@ -42,7 +42,7 @@ export default async function Page() {
         const db = b.duration ? new Date(b.duration).getTime() : 0;
         return db - da;
       })
-      .slice(0, 2);
+      .slice(0, 3);
   } catch {
     // graceful fallback
   }
@@ -77,7 +77,7 @@ export default async function Page() {
           <ScrollReveal>
             <SectionHeader label="Projects" href="/projects" linkText="All projects" />
           </ScrollReveal>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {featuredProjects.map((project, i) => (
               <ScrollReveal key={project.id} delay={i * 100}>
                 <ProjectCard project={project} />

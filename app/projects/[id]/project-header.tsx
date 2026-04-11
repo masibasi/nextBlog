@@ -42,16 +42,28 @@ export function ProjectPageHeader({ project, hasAward, displayTags }: Props) {
         >
           ← Projects
         </Link>
-        {project.notionUrl && (
-          <a
-            href={project.notionUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm font-medium text-neutral-500 dark:text-neutral-400 hover:text-cardinal-700 dark:hover:text-cardinal-400 transition-colors"
-          >
-            View in Notion ↗
-          </a>
-        )}
+        <div className="flex items-center gap-3">
+          {project.linkUrl && (
+            <a
+              href={project.linkUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium text-neutral-500 dark:text-neutral-400 hover:text-cardinal-700 dark:hover:text-cardinal-400 transition-colors"
+            >
+              Link ↗
+            </a>
+          )}
+          {project.notionUrl && (
+            <a
+              href={project.notionUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium text-neutral-500 dark:text-neutral-400 hover:text-cardinal-700 dark:hover:text-cardinal-400 transition-colors"
+            >
+              View in Notion ↗
+            </a>
+          )}
+        </div>
       </div>
 
       {/* Cover — subtle scale-up */}
