@@ -10,6 +10,8 @@ export function generateStaticParams() {
 }
 
 export default function Post({ params }: { params: { slug: string } }) {
+  notFound();
+
   const post = getBlogPosts().find((post) => post.slug === params.slug);
   if (!post) notFound();
 

@@ -1,11 +1,9 @@
 import { getMainProjects, getOtherProjects } from "../utils/notion";
-import { getBlogPosts } from "app/blog/utils";
 import { Hero } from "app/components/home/hero";
 import { Marquee } from "app/components/home/marquee";
 import { SectionHeader } from "app/components/home/section-header";
 import { NowSection } from "app/components/home/now-section";
 import { ProjectCard } from "app/components/home/project-card";
-import { WritingList } from "app/components/home/writing-list";
 import { ScrollReveal } from "app/components/home/scroll-reveal";
 
 export const revalidate = 60;
@@ -47,12 +45,6 @@ export default async function Page() {
     // graceful fallback
   }
 
-  const recentPosts = getBlogPosts()
-    .sort((a, b) =>
-      new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt) ? -1 : 1
-    )
-    .slice(0, 5);
-
   return (
     <div className="font-sans">
       {/* Hero */}
@@ -87,15 +79,6 @@ export default async function Page() {
         </section>
       )}
 
-      {/* Writing */}
-      <section className="max-w-6xl mx-auto px-6 md:px-12 py-20 border-t border-neutral-200/60 dark:border-neutral-800/60">
-        <ScrollReveal>
-          <SectionHeader label="Writing" href="/posts" linkText="All posts" />
-        </ScrollReveal>
-        <ScrollReveal delay={100}>
-          <WritingList posts={recentPosts} />
-        </ScrollReveal>
-      </section>
     </div>
   );
 }

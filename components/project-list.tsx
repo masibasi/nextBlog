@@ -32,48 +32,49 @@ export default function ProjectList({ projects }: { projects: Project[] }) {
     <div className="space-y-8">
       {/* Featured projects — large cards with cover image */}
       {featured.length > 0 && (
-        <div className="space-y-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {featured.map((project) => {
             const isAward = project.tags?.includes("Award");
             return (
               <a
                 key={project.id}
                 href={`/projects/${project.id}`}
-                className="group block bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 rounded-[14px] overflow-hidden shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:border-neutral-400 dark:hover:border-neutral-600"
+                className="group block bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-2xl overflow-hidden shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-neutral-300 dark:hover:border-neutral-600"
               >
-                <div className="aspect-video overflow-hidden bg-warm-100 dark:bg-neutral-800">
+                <div className="relative overflow-hidden bg-warm-100 dark:bg-neutral-800 aspect-[4/3]">
                   {project.cover ? (
                     <img
                       src={project.cover}
                       alt={project.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                       loading="eager"
                     />
                   ) : (
                     <div className="w-full h-full photo-placeholder" />
                   )}
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-neutral-900/15 via-transparent to-transparent" />
                 </div>
-                <div className="p-5">
+                <div className="p-6 md:p-7">
                   {isAward && (
                     <div className="mb-2.5">
                       <AwardBadge />
                     </div>
                   )}
-                  <h3 className="font-semibold text-[16px] text-neutral-900 dark:text-neutral-50 tracking-[-0.01em] leading-snug">
+                  <h3 className="font-semibold text-[18px] text-neutral-900 dark:text-neutral-50 tracking-[-0.01em] leading-snug">
                     {project.title || "Untitled"}
                   </h3>
                   {project.summary && (
-                    <p className="mt-1.5 text-[13px] text-neutral-600 dark:text-neutral-300 leading-relaxed">
+                    <p className="mt-2 text-[14px] text-neutral-600 dark:text-neutral-300 leading-relaxed">
                       {project.summary}
                     </p>
                   )}
                   {project.duration && (
-                    <span className="text-[12px] text-neutral-500 dark:text-neutral-400 mt-1.5 block">
+                    <span className="text-[13px] text-neutral-500 dark:text-neutral-400 mt-2 block">
                       {project.duration}
                     </span>
                   )}
                   {project.stacks && project.stacks.length > 0 && (
-                    <div className="mt-3 flex flex-wrap gap-1.5">
+                    <div className="mt-4 flex flex-wrap gap-2">
                       {project.stacks.map((stack) => (
                         <span
                           key={stack}
@@ -93,7 +94,7 @@ export default function ProjectList({ projects }: { projects: Project[] }) {
 
       {/* Regular projects — smaller grid cards */}
       {regular.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {regular.map((project) => {
             const isAward = project.tags?.includes("Award");
             return (
