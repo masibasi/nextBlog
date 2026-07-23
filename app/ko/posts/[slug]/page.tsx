@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { CustomMDX } from "app/components/mdx";
-import { formatDate, getBlogPosts } from "app/blog/utils";
+import { formatDate, getBlogPosts } from "app/lib/posts";
 import { ViewCount } from "app/components/ViewCount";
 
 export const revalidate = false;

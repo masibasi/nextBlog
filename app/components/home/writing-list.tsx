@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { formatDate } from "app/blog/utils";
+import { formatDate } from "app/lib/posts";
 
 type Post = {
   slug: string;

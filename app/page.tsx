@@ -1,14 +1,22 @@
 import { getMainProjects, getOtherProjects } from "../utils/notion";
+import { getBlogPosts } from "app/lib/posts";
 import { Hero } from "app/components/home/hero";
-import { Marquee } from "app/components/home/marquee";
 import { SectionHeader } from "app/components/home/section-header";
 import { NowSection } from "app/components/home/now-section";
 import { ProjectCard } from "app/components/home/project-card";
+import { WritingList } from "app/components/home/writing-list";
 import { ScrollReveal } from "app/components/home/scroll-reveal";
+import { SITE_URL } from "app/data/site";
 
 export const revalidate = 60;
 
 const currentWork = [
+  {
+    role: "Software Engineering Intern",
+    org: "Blue Shield of California",
+    period: "Jun 2026 – Present",
+    type: "Work" as const,
+  },
   {
     role: "Web Team Lead",
     org: "USC Interaction Lab",
@@ -45,13 +53,37 @@ export default async function Page() {
     // graceful fallback
   }
 
+  const recentPosts = getBlogPosts()
+    .sort((a, b) =>
+      new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt) ? -1 : 1
+    )
+    .slice(0, 5);
+
   return (
     <div className="font-sans">
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Person",
+            name: "Ji Min Lee",
+            jobTitle: "Software Engineer",
+            url: SITE_URL,
+            affiliation: {
+              "@type": "CollegeOrUniversity",
+              name: "University of Southern California",
+            },
+            sameAs: [
+              "https://github.com/masibasi",
+              "https://linkedin.com/in/jiminlee4015",
+            ],
+          }),
+        }}
+      />
       {/* Hero */}
       <Hero />
-
-      {/* Marquee */}
-      <Marquee />
 
       {/* Now */}
       <section className="max-w-6xl mx-auto px-6 md:px-12 py-20">
@@ -78,6 +110,16 @@ export default async function Page() {
           </div>
         </section>
       )}
+
+      {/* Writing */}
+      <section className="max-w-6xl mx-auto px-6 md:px-12 py-20 border-t border-neutral-200/60 dark:border-neutral-800/60">
+        <ScrollReveal>
+          <SectionHeader label="Writing" href="/posts" linkText="All posts" />
+        </ScrollReveal>
+        <ScrollReveal delay={100}>
+          <WritingList posts={recentPosts} />
+        </ScrollReveal>
+      </section>
 
     </div>
   );

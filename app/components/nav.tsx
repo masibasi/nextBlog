@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 
 const navItems = [
   { path: "/projects", name: "projects" },
+  { path: "/posts", name: "writing" },
   { path: "/about", name: "about" },
   { path: "/resume", name: "resume" },
 ];
@@ -44,7 +45,8 @@ export function Navbar() {
         <div className="flex items-center gap-6">
           <nav className="flex items-center gap-0">
             {navItems.map(({ path, name }) => {
-              const isActive = pathname.startsWith(path);
+              const isActive =
+                pathname.startsWith(path) || (path === "/posts" && pathname.startsWith("/ko/posts"));
               return (
                 <Link
                   key={path}

@@ -5,7 +5,7 @@ import { ScrollReveal } from "app/components/home/scroll-reveal";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "About Ji Min Lee — Software Engineer & AI Researcher at USC",
+  description: "About Ji Min Lee — Software Engineer, Full-Stack & AI Systems, currently interning at Blue Shield of California",
 };
 
 const SOCIAL_LINKS = [
@@ -101,7 +101,7 @@ export default function AboutPage() {
               Ji Min Lee
             </h1>
             <p className="mt-1 text-[15px] text-neutral-600 dark:text-neutral-300">
-              Software Engineer &amp; AI Researcher at USC
+              Software Engineer at USC · SWE Intern @ Blue Shield of California
             </p>
           </div>
           {/* Social links */}

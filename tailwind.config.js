@@ -9,17 +9,12 @@ module.exports = {
         sans: ["var(--font-dm-sans)", "system-ui", "sans-serif"],
       },
       keyframes: {
-        marquee: {
-          "0%": { transform: "translateX(0)" },
-          "100%": { transform: "translateX(-50%)" },
-        },
         heroIn: {
           "0%": { opacity: "0", transform: "translateY(20px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
       },
       animation: {
-        marquee: "marquee 28s linear infinite",
         "hero-in": "heroIn 0.7s ease forwards",
       },
       colors: {

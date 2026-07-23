@@ -31,10 +31,10 @@ export const metadata: Metadata = {
     default: "Ji Min Lee",
     template: "%s | Ji Min Lee",
   },
-  description: "Ji Min Lee — Software Engineer & AI Researcher at USC. Building human-centered AI and full-stack systems.",
+  description: "Ji Min Lee — Software Engineer, Full-Stack & AI Systems. M.S. CS (AI) at USC, currently a software engineering intern at Blue Shield of California.",
   openGraph: {
     title: "Ji Min Lee",
-    description: "Software Engineer & AI Researcher at USC. Building human-centered AI and full-stack systems.",
+    description: "Software Engineer, Full-Stack & AI Systems. M.S. CS (AI) at USC, currently a software engineering intern at Blue Shield of California.",
     url: baseUrl,
     siteName: "Ji Min Lee",
     locale: "en_US",

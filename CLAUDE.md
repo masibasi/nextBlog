@@ -27,11 +27,12 @@ pnpm start    # start production server
 | `app/page.tsx` | Homepage — full-width, no max-w constraint |
 | `app/components/nav.tsx` | Fixed navbar with backdrop-blur (client component) |
 | `app/components/footer.tsx` | Full-width footer, left/right layout |
-| `app/components/home/` | Homepage-only components (hero, marquee, project-card, etc.) |
+| `app/components/home/` | Homepage-only components (hero, project-card, now-section, writing-list, etc.) |
 | `components/project-list.tsx` | Projects page list (featured large card + regular grid) |
 | `utils/notion.ts` | All Notion fetch logic — `revalidate: 60` |
-| `app/global.css` | Global styles: `.card-warm`, `.photo-placeholder`, marquee keyframes |
-| `tailwind.config.js` | Cardinal/warm color scales, font vars, marquee animation |
+| `app/global.css` | Global styles: `.card-warm`, `.photo-placeholder` |
+| `tailwind.config.js` | Cardinal/warm color scales, font vars, hero-in animation |
+| `app/data/site.ts` | `SITE_URL`, `CURRENT_STATUS` (hero status pill — swap when job status changes) |
 
 ## Environment Variables
 
@@ -60,7 +61,6 @@ NOTION_OTHER_DB_ID
 ### Tailwind Classes
 - `.card-warm`: neutral border default → cardinal border+shadow on hover
 - `.photo-placeholder`: gradient bg for image placeholders
-- `animate-marquee`: 28s linear infinite scroll
 
 ### Animation
 - Easing: `cubic-bezier(0.16, 1, 0.3, 1)` (ease-out-expo) throughout

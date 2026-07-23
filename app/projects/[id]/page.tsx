@@ -2,12 +2,46 @@ import React from "react";
 import { getAllProjects } from "../../../utils/notion";
 import { ScrollReveal } from "../../components/home/scroll-reveal";
 import { ProjectPageHeader } from "./project-header";
+import { baseUrl } from "../../sitemap";
 
 export const revalidate = 3600;
 
 export async function generateStaticParams() {
   const projects = await getAllProjects();
   return projects.map((p) => ({ id: p.id }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const projects = await getAllProjects();
+  const project = projects.find((p) => p.id === id);
+  if (!project) return {};
+
+  const title = project.title;
+  const description = project.summary ?? `${project.title} — a project by Ji Min Lee.`;
+  const ogImage = project.cover
+    ? project.cover.startsWith("http")
+      ? project.cover
+      : `${baseUrl}${project.cover}`
+    : `${baseUrl}/og?title=${encodeURIComponent(title)}`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "article",
+      url: `${baseUrl}/projects/${id}`,
+      images: [{ url: ogImage }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
+    },
+  };
 }
 
 function getYouTubeId(url: string): string | null {

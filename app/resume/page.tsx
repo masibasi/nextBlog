@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Resume",
-  description: "Ji Min Lee — Software Engineer & AI Researcher",
+  description: "Ji Min Lee — Software Engineer, Full-Stack & AI Systems",
 };
 
 function ResumeSection({ title, children }: { title: string; children: React.ReactNode }) {
@@ -50,10 +50,11 @@ function ResumeEntry({
 }
 
 const skillGroups = [
-  { label: "Languages", skills: ["TypeScript", "JavaScript", "Python", "Java"] },
-  { label: "Frameworks", skills: ["React", "Next.js", "Spring", "FastAPI", "Flask"] },
-  { label: "Cloud & DevOps", skills: ["AWS (Amplify, IoT Core, DynamoDB)", "Docker", "Jenkins", "Azure"] },
-  { label: "Data / AI", skills: ["MySQL", "PostgreSQL", "PyTorch", "LangGraph"] },
+  { label: "Languages", skills: ["Python", "Java", "TypeScript", "JavaScript"] },
+  { label: "Frameworks", skills: ["Spring Boot", "FastAPI", "Flask", "React", "Next.js"] },
+  { label: "AI & Agentic Systems", skills: ["LLM applications", "AI agents", "LangGraph", "MCP", "Prompt & workflow design"] },
+  { label: "Integration & Data", skills: ["MuleSoft Anypoint Platform", "DataWeave", "REST APIs", "MySQL", "PostgreSQL"] },
+  { label: "Cloud & DevOps", skills: ["AWS", "Azure", "Docker", "Jenkins", "CI/CD"] },
 ];
 
 export default function ResumePage() {
@@ -63,13 +64,13 @@ export default function ResumePage() {
       <div className="flex items-start justify-between mb-10">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">Ji Min Lee</h1>
-          <p className="text-neutral-500 dark:text-neutral-400 mt-1">Software Engineer · Full-Stack & Applied AI</p>
+          <p className="text-neutral-500 dark:text-neutral-400 mt-1">Software Engineer · Full-Stack & AI Systems</p>
           <a href="mailto:leejimin@usc.edu" className="text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors mt-1 block">
             leejimin@usc.edu
           </a>
         </div>
         <a
-          href="/Ji_Min_Lee_resume2.11.pdf"
+          href="/Ji_Min_Lee_resume_2026.pdf"
           download="Ji_Min_Lee_resume.pdf"
           className="shrink-0 mt-1 px-3 py-1.5 text-sm rounded-lg border border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:border-cardinal-300 dark:hover:border-cardinal-800 hover:text-cardinal-700 dark:hover:text-cardinal-400 transition-colors"
         >
@@ -93,6 +94,16 @@ export default function ResumePage() {
 
       {/* Professional Experience */}
       <ResumeSection title="Professional Experience">
+        <ResumeEntry
+          title="Software Engineering Intern, Integration & Interoperability Platform"
+          subtitle="Blue Shield of California · Long Beach, CA"
+          period="Jun 2026 – Present"
+          bullets={[
+            "Developing reusable AI-assisted tooling for Boomi-to-MuleSoft migrations using MuleSoft Vibes, Anypoint Code Builder, and internal integration standards",
+            "Built an initial reusable AI migration skill that guides phased analysis of Boomi processes, field mappings, transformation logic, configuration, counters, and error-handling patterns",
+            "Analyzed a production integration reference process to identify mapping gaps and validation requirements, and defined Python MCP tools for structured Boomi parsing and MuleSoft standards compliance",
+          ]}
+        />
         <ResumeEntry
           title="Web Team Lead (NIH R01 Funded Project)"
           subtitle="University of Southern California, Interaction Lab (Prof. Maja Matarić) · Los Angeles, CA"
@@ -120,6 +131,15 @@ export default function ResumePage() {
 
       {/* Projects */}
       <ResumeSection title="Projects">
+        <ResumeEntry
+          title="Peeko – Real-time AI lecture recovery system"
+          subtitle="Concept & Team Lead · 1st Place Overall, Build4SC Hackathon (GRIDS x Viterbi, USC, 47 participants)"
+          period="Apr 2026"
+          bullets={[
+            "Led a 4-person team to design and ship an end-to-end AI product in 12 hours",
+            "Built LLM pipelines for rolling session summarization, \"Catch Me Up\" recovery, and Q&A detection with a Node.js/Supabase backend",
+          ]}
+        />
         <ResumeEntry
           title="Visurai – AI-powered visual storytelling assistant"
           subtitle="Awards: 1st Place (Context Engineering), Software Engineering Award · USC Good Vibes Only Buildathon (LA Tech Week by a16z)"
@@ -158,7 +178,7 @@ export default function ResumePage() {
         <div className="space-y-2">
           {skillGroups.map(({ label, skills }) => (
             <div key={label} className="flex flex-wrap gap-x-2 gap-y-1 items-baseline">
-              <span className="text-xs font-semibold text-neutral-500 dark:text-neutral-400 w-28 shrink-0">{label}</span>
+              <span className="text-xs font-semibold text-neutral-500 dark:text-neutral-400 w-40 shrink-0">{label}</span>
               <div className="flex flex-wrap gap-1.5">
                 {skills.map((skill) => (
                   <span
