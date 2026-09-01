@@ -72,10 +72,12 @@ export function CalendlySection() {
   const url = buildUrl(isDark);
 
   // widget.js only auto-scans for `.calendly-inline-widget` when it first loads,
-  // so mount (and remount on theme change) explicitly.
+  // so mount (and remount on theme change) explicitly. `scriptReady` is only a
+  // trigger to re-run this — window.Calendly is the real readiness check, since
+  // on a client-side return to the homepage the script is already cached.
   useEffect(() => {
     const el = widgetRef.current;
-    if (!shouldLoad || !scriptReady || !el || !window.Calendly) return;
+    if (!shouldLoad || !el || !window.Calendly) return;
 
     el.innerHTML = "";
     window.Calendly.initInlineWidget({ url, parentElement: el });
@@ -87,6 +89,9 @@ export function CalendlySection() {
         <Script
           src={WIDGET_SRC}
           strategy="lazyOnload"
+          // onReady fires on every mount, including when next/script serves the
+          // script from cache; onLoad only fires on the first real load.
+          onReady={() => setScriptReady(true)}
           onLoad={() => setScriptReady(true)}
         />
       )}
