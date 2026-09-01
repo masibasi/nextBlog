@@ -5,6 +5,7 @@ import { SectionHeader } from "app/components/home/section-header";
 import { NowSection } from "app/components/home/now-section";
 import { ProjectCard } from "app/components/home/project-card";
 import { WritingList } from "app/components/home/writing-list";
+import { CalendlySection } from "app/components/home/calendly-section";
 import { ScrollReveal } from "app/components/home/scroll-reveal";
 import { SITE_URL } from "app/data/site";
 
@@ -118,6 +119,23 @@ export default async function Page() {
         </ScrollReveal>
         <ScrollReveal delay={100}>
           <WritingList posts={recentPosts} />
+        </ScrollReveal>
+      </section>
+
+      {/* Contact — scroll-mt clears the fixed 60px navbar for the #contact anchor */}
+      <section
+        id="contact"
+        className="max-w-6xl mx-auto px-6 md:px-12 py-20 border-t border-neutral-200/60 dark:border-neutral-800/60 scroll-mt-[60px]"
+      >
+        <ScrollReveal>
+          <SectionHeader label="Let's talk" />
+          <p className="text-[15px] text-neutral-600 dark:text-neutral-300 leading-[1.75] max-w-[520px] -mt-4 mb-9">
+            Always up for a coffee chat — about AI systems, full-stack work, or grad school
+            in LA. Grab whatever time works for you.
+          </p>
+        </ScrollReveal>
+        <ScrollReveal delay={100}>
+          <CalendlySection />
         </ScrollReveal>
       </section>
 
