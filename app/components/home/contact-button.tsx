@@ -4,6 +4,16 @@ import { useState, useEffect, useRef } from "react";
 
 const CONTACTS = [
   {
+    label: "Book a chat",
+    href: "#contact",
+    icon: (
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect width="18" height="18" x="3" y="4" rx="2" />
+        <path d="M16 2v4M8 2v4M3 10h18" />
+      </svg>
+    ),
+  },
+  {
     label: "Email",
     href: "mailto:leejimin@usc.edu",
     icon: (
@@ -93,7 +103,7 @@ export function ContactButton() {
           <a
             key={label}
             href={href}
-            target={href.startsWith("mailto") ? undefined : "_blank"}
+            target={href.startsWith("http") ? "_blank" : undefined}
             rel="noopener noreferrer"
             onClick={() => setOpen(false)}
             // Named group so icon can respond independently of the link group
