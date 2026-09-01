@@ -1,3 +1,8 @@
+import Link from "next/link";
+
+const LINK_CLASS =
+  "text-xs text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors";
+
 export default function Footer() {
   return (
     <footer className="border-t border-neutral-200/60 dark:border-neutral-800/60 mt-16">
@@ -7,20 +12,29 @@ export default function Footer() {
         </p>
         <div className="flex gap-5">
           {[
-            { label: "RSS", href: "/rss", external: false },
-            { label: "GitHub", href: "https://github.com/masibasi", external: true },
-            { label: "LinkedIn", href: "https://www.linkedin.com/in/jiminlee4015/", external: true },
-            { label: "Email", href: "mailto:leejimin@usc.edu", external: false },
-          ].map(({ label, href, external }) => (
-            <a
-              key={label}
-              href={href}
-              {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-              className="text-xs text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
-            >
-              {label}
-            </a>
-          ))}
+            // route: client-side nav, so the homepage booking section is one
+            // hop away from every page
+            { label: "Book a chat", href: "/#contact", external: false, route: true },
+            { label: "RSS", href: "/rss", external: false, route: false },
+            { label: "GitHub", href: "https://github.com/masibasi", external: true, route: false },
+            { label: "LinkedIn", href: "https://www.linkedin.com/in/jiminlee4015/", external: true, route: false },
+            { label: "Email", href: "mailto:leejimin@usc.edu", external: false, route: false },
+          ].map(({ label, href, external, route }) =>
+            route ? (
+              <Link key={label} href={href} className={LINK_CLASS}>
+                {label}
+              </Link>
+            ) : (
+              <a
+                key={label}
+                href={href}
+                {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                className={LINK_CLASS}
+              >
+                {label}
+              </a>
+            )
+          )}
         </div>
       </div>
     </footer>
