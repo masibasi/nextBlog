@@ -42,7 +42,7 @@ export function Navbar() {
         </Link>
 
         {/* Nav links + controls */}
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-2 sm:gap-6">
           <nav className="flex items-center gap-0">
             {navItems.map(({ path, name }) => {
               const isActive =
@@ -67,9 +67,11 @@ export function Navbar() {
           </nav>
 
           <div className="flex items-center gap-1">
+            {/* Collapse the width too, not just opacity — an invisible toggle
+                still holding ~36px pushed the theme switcher off-screen at 375px */}
             <div
               className={`transition-opacity duration-150 ${
-                isPostsPage ? "opacity-100" : "opacity-0 pointer-events-none"
+                isPostsPage ? "opacity-100" : "opacity-0 pointer-events-none w-0 overflow-hidden"
               }`}
             >
               <LangToggle />
