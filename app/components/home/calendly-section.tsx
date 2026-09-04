@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Script from "next/script";
 import { CALENDLY_URL } from "app/data/site";
+import { CALENDLY_PRELOAD } from "app/lib/scroll";
 
 const WIDGET_SRC = "https://assets.calendly.com/assets/external/widget.js";
 
@@ -55,6 +56,14 @@ export function CalendlySection() {
 
     observer.observe(el);
     return () => observer.disconnect();
+  }, []);
+
+  // The hero's booking badge fires this on hover/focus, so the widget is
+  // already rendering by the time its click finishes scrolling down here.
+  useEffect(() => {
+    const onPreload = () => setShouldLoad(true);
+    window.addEventListener(CALENDLY_PRELOAD, onPreload);
+    return () => window.removeEventListener(CALENDLY_PRELOAD, onPreload);
   }, []);
 
   // No theme provider — ThemeSwitcher toggles `dark` on <html> directly, so

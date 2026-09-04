@@ -97,9 +97,9 @@ export default function ResumePage() {
         <ResumeEntry
           title="Software Engineering Intern, Integration & Interoperability Platform"
           subtitle="Blue Shield of California · Long Beach, CA"
-          period="Jun 2026 – Present"
+          period="Jun 2026 – Aug 2026"
           bullets={[
-            "Developing reusable AI-assisted tooling for Boomi-to-MuleSoft migrations using MuleSoft Vibes, Anypoint Code Builder, and internal integration standards",
+            "Developed reusable AI-assisted tooling for Boomi-to-MuleSoft migrations using MuleSoft Vibes, Anypoint Code Builder, and internal integration standards",
             "Built an initial reusable AI migration skill that guides phased analysis of Boomi processes, field mappings, transformation logic, configuration, counters, and error-handling patterns",
             "Analyzed a production integration reference process to identify mapping gaps and validation requirements, and defined Python MCP tools for structured Boomi parsing and MuleSoft standards compliance",
           ]}

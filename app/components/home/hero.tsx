@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ContactButton } from "./contact-button";
 import { CURRENT_STATUS } from "app/data/site";
+import { BookChatButton } from "./book-chat-button";
 
 const ENTER_FROM = [
   "translate(-20px, 0)",
@@ -128,15 +129,17 @@ export function Hero() {
       key="bio"
       className="text-[15px] text-neutral-600 dark:text-neutral-300 leading-[1.75] max-w-[400px]"
     >
-      I&apos;m an M.S. CS student at USC, currently building AI-assisted integration tooling
-      as a software engineering intern at Blue Shield of California. Before that, I shipped
-      enterprise supply-chain software at EMRO in Seoul. I care about software that&apos;s
-      useful to real people.
+      I&apos;m an M.S. CS student at USC, graduating May 2027 and looking for new grad
+      software engineering roles. This past summer I built AI-assisted integration tooling
+      at Blue Shield of California, and before that I shipped enterprise supply-chain
+      software at EMRO in Seoul. I care about software that&apos;s useful to real people.
     </p>,
-    <div key="cta" className="flex flex-wrap gap-3 items-center">
+    <div key="cta" className="flex flex-wrap gap-3 items-center justify-center lg:justify-start">
+      {/* Mobile counterpart of the photo-card badge */}
+      <BookChatButton className="lg:hidden" />
       <Link
         href="/projects"
-        className="bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 px-5 py-2.5 rounded-full text-[13px] font-medium tracking-[0.02em] hover:bg-neutral-700 dark:hover:bg-neutral-300 transition-colors"
+        className="border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-neutral-100 lg:border-transparent lg:bg-neutral-900 lg:dark:bg-neutral-100 lg:text-white lg:dark:text-neutral-900 px-5 py-2.5 rounded-full text-[13px] font-medium tracking-[0.02em] hover:border-neutral-500 dark:hover:border-neutral-400 lg:hover:bg-neutral-700 lg:dark:hover:bg-neutral-300 transition-colors"
       >
         View projects
       </Link>
@@ -201,6 +204,11 @@ export function Hero() {
               style={{ mixBlendMode: "screen" }}
             />
           </div>
+
+          {/* Booking badge — sibling of the name badge, so it rides the card tilt.
+              Desktop only: on mobile the photo sits below the fold, so the CTA
+              row carries this instead. */}
+          <BookChatButton className="hidden lg:inline-flex absolute -top-3 -right-3 z-20 shadow-lg shadow-cardinal-700/25 hover:-translate-y-0.5" />
 
           {/* Name badge */}
           <div className="absolute bottom-4 left-4 right-4 z-10 bg-white dark:bg-neutral-900 rounded-xl px-4 py-3 border border-neutral-200 dark:border-neutral-700 shadow-sm">

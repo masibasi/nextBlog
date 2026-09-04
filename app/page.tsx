@@ -13,12 +13,6 @@ export const revalidate = 60;
 
 const currentWork = [
   {
-    role: "Software Engineering Intern",
-    org: "Blue Shield of California",
-    period: "Jun 2026 – Present",
-    type: "Work" as const,
-  },
-  {
     role: "Web Team Lead",
     org: "USC Interaction Lab",
     period: "Jan 2026 – Present",
