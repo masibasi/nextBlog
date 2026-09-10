@@ -1,6 +1,7 @@
 type WorkItem = {
   role: string;
   org: string;
+  orgUrl?: string;
   period: string;
   type: "Work" | "Research" | "Education";
 };
@@ -30,7 +31,18 @@ export function NowSection({ items }: Props) {
             {item.role}
           </div>
           <div className="text-[13px] text-neutral-600 dark:text-neutral-300">
-            {item.org}
+            {item.orgUrl ? (
+              <a
+                href={item.orgUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-cardinal-700 dark:hover:text-cardinal-300 transition-colors underline decoration-neutral-300 dark:decoration-neutral-600 underline-offset-2"
+              >
+                {item.org}
+              </a>
+            ) : (
+              item.org
+            )}
           </div>
           <span
             className={`inline-block mt-3.5 text-[10px] font-medium tracking-[0.06em] px-2.5 py-1 rounded-full ${TYPE_STYLES[item.type]}`}

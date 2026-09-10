@@ -15,6 +15,7 @@ const currentWork = [
   {
     role: "Web Team Lead",
     org: "USC Interaction Lab",
+    orgUrl: "https://uscinteractionlab.web.app/",
     period: "Jan 2026 – Present",
     type: "Work" as const,
   },
