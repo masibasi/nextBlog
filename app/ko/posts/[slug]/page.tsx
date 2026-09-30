@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import { CustomMDX } from "app/components/mdx";
 import { formatDate, getBlogPosts } from "app/lib/posts";
-import { ViewCount } from "app/components/ViewCount";
 
 export const revalidate = false;
 
@@ -17,7 +16,9 @@ export default function Post({ params }: { params: { slug: string } }) {
     <div className="max-w-2xl mx-auto px-4 md:px-6 py-12">
       <section>
         <h1 className="title font-semibold text-2xl tracking-tighter">{post.metadata.title}</h1>
-        <ViewCount slug={params.slug} publishedAt={formatDate(post.metadata.publishedAt)} />
+        <p className="mt-2 mb-8 text-sm text-neutral-600 dark:text-neutral-400">
+          {formatDate(post.metadata.publishedAt)}
+        </p>
         <article className="mt-8">
           <CustomMDX source={post.content} />
         </article>
