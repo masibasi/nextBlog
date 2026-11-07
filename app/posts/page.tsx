@@ -10,14 +10,12 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <div className="max-w-3xl mx-auto px-4 md:px-6 py-12">
-      <section>
-        <h1 className="font-serif text-3xl mb-2 tracking-tight text-neutral-900 dark:text-neutral-100">Writing</h1>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-8">
-          Occasional notes on building software, studying at USC, and figuring things out.
-        </p>
-        <Posts />
-      </section>
+    <div className="w-full max-w-6xl mx-auto px-6 md:px-12 py-12">
+      <h1 className="font-serif text-3xl tracking-[-0.02em] text-neutral-900 dark:text-neutral-50 mb-2">Writing</h1>
+      <p className="max-w-2xl text-[14px] text-neutral-500 dark:text-neutral-400 mb-12">
+        Occasional notes on building software, studying at USC, and figuring things out.
+      </p>
+      <Posts />
     </div>
   );
 }

@@ -11,12 +11,13 @@ type Post = {
 
 type Props = {
   posts: Post[];
+  lang?: "en" | "ko";
 };
 
-export function WritingList({ posts }: Props) {
+export function WritingList({ posts, lang = "en" }: Props) {
   if (posts.length === 0) {
     return (
-      <p className="text-[14px] text-neutral-400 dark:text-neutral-500">No posts yet.</p>
+      <p className="text-[14px] text-neutral-400 dark:text-neutral-500">{lang === "ko" ? "아직 글이 없어요." : "No posts yet."}</p>
     );
   }
 
@@ -25,7 +26,7 @@ export function WritingList({ posts }: Props) {
       {posts.map((post) => (
         <Link
           key={post.slug}
-          href={`/posts/${post.slug}`}
+          href={`${lang === "ko" ? "/ko" : ""}/posts/${post.slug}`}
           className="flex items-baseline gap-6 py-4 border-b border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 group transition-all duration-300 hover:pl-1"
         >
           {/* Date warms slightly on hover */}

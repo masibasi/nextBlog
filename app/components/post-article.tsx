@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { formatDate, getBlogPost } from "app/lib/posts";
 import { baseUrl } from "app/sitemap";
@@ -53,8 +54,15 @@ export async function PostArticle({ slug, lang }: { slug: string; lang: "en" | "
   const blocks = await fetchBlocks(post.id);
 
   return (
-    <div className="max-w-2xl mx-auto px-4 md:px-6 py-12">
-      <section>
+    <div className="w-full max-w-6xl mx-auto px-6 md:px-12 py-12">
+      {/* Same container as nav/footer; body stays at a readable width, left-aligned */}
+      <section className="max-w-2xl">
+        <Link
+          href={lang === "ko" ? "/ko/posts" : "/posts"}
+          className="inline-block mb-8 text-[13px] text-neutral-500 dark:text-neutral-400 hover:text-cardinal-700 dark:hover:text-cardinal-400 transition-colors"
+        >
+          ← {lang === "ko" ? "글 목록" : "All writing"}
+        </Link>
         <script
           type="application/ld+json"
           suppressHydrationWarning
@@ -73,7 +81,7 @@ export async function PostArticle({ slug, lang }: { slug: string; lang: "en" | "
             }),
           }}
         />
-        <h1 className="title font-semibold text-2xl tracking-tighter">{post.metadata.title}</h1>
+        <h1 className="title font-serif text-3xl tracking-[-0.02em] text-neutral-900 dark:text-neutral-50">{post.metadata.title}</h1>
         <div className="mt-2 mb-8 flex flex-wrap items-center gap-3">
           <p className="text-sm text-neutral-600 dark:text-neutral-400">
             {formatDate(post.metadata.publishedAt)}
