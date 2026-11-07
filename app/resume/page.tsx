@@ -52,8 +52,8 @@ function ResumeEntry({
 const skillGroups = [
   { label: "Languages", skills: ["Python", "Java", "TypeScript", "JavaScript"] },
   { label: "Frameworks", skills: ["Spring Boot", "FastAPI", "Flask", "React", "Next.js"] },
-  { label: "AI & Agentic Systems", skills: ["LLM applications", "AI agents", "LangGraph", "MCP", "Prompt & workflow design"] },
-  { label: "Integration & Data", skills: ["MuleSoft Anypoint Platform", "DataWeave", "REST APIs", "MySQL", "PostgreSQL"] },
+  { label: "Machine Learning & AI", skills: ["LLM applications", "MCP", "LangGraph", "Agentic workflow design", "LLM evaluation"] },
+  { label: "Backend & Data", skills: ["REST APIs", "MySQL", "PostgreSQL", "MuleSoft Anypoint Platform", "DataWeave"] },
   { label: "Cloud & DevOps", skills: ["AWS", "Azure", "Docker", "Jenkins", "CI/CD"] },
 ];
 
@@ -70,8 +70,8 @@ export default function ResumePage() {
           </a>
         </div>
         <a
-          href="/Ji_Min_Lee_resume_2026.pdf"
-          download="Ji_Min_Lee_resume.pdf"
+          href="/Jimin_Lee_resume.pdf"
+          download="Jimin_Lee_resume.pdf"
           className="shrink-0 mt-1 px-3 py-1.5 text-sm rounded-lg border border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:border-cardinal-300 dark:hover:border-cardinal-800 hover:text-cardinal-700 dark:hover:text-cardinal-400 transition-colors"
         >
           Download PDF
@@ -82,8 +82,8 @@ export default function ResumePage() {
       <ResumeSection title="Education">
         <ResumeEntry
           title="University of Southern California"
-          subtitle="Master of Science in Computer Science (AI)"
-          period="Aug 2025 – May 2027"
+          subtitle="Master of Science in Computer Science"
+          period="Aug 2025 – Expected May 2027"
         />
         <ResumeEntry
           title="Gachon University"
@@ -92,16 +92,16 @@ export default function ResumePage() {
         />
       </ResumeSection>
 
-      {/* Professional Experience */}
-      <ResumeSection title="Professional Experience">
+      {/* Experience */}
+      <ResumeSection title="Experience">
         <ResumeEntry
-          title="Software Engineering Intern, Integration & Interoperability Platform"
+          title="Service Integration Intern, Integration & Interoperability Platform"
           subtitle="Blue Shield of California · Long Beach, CA"
           period="Jun 2026 – Aug 2026"
           bullets={[
-            "Developed reusable AI-assisted tooling for Boomi-to-MuleSoft migrations using MuleSoft Vibes, Anypoint Code Builder, and internal integration standards",
-            "Built an initial reusable AI migration skill that guides phased analysis of Boomi processes, field mappings, transformation logic, configuration, counters, and error-handling patterns",
-            "Analyzed a production integration reference process to identify mapping gaps and validation requirements, and defined Python MCP tools for structured Boomi parsing and MuleSoft standards compliance",
+            "Built an AI-assisted Boomi-to-MuleSoft migration workflow estimated to reduce medium-complexity migration effort by 70–80%, from ~2 weeks to ~2 days, now adopted for the ~80 remaining integrations",
+            "Developed an LLM agent skill and 6 custom Python MCP tools that trace source-to-target mappings and parse legacy transformation logic, resolving 270+ fields across 15 record layouts",
+            "Migrated 4 enterprise integrations end to end with 4/4 Mule packages building and 56/56 MUnit tests passing, auto-generating business-purpose documentation and flagging unconfirmed logic for developer review",
           ]}
         />
         <ResumeEntry
@@ -109,10 +109,17 @@ export default function ResumePage() {
           subtitle="University of Southern California, Interaction Lab (Prof. Maja Matarić) · Los Angeles, CA"
           period="Jan 2026 – Present"
           bullets={[
-            "Leading full-stack development of a secure NIH-funded research platform on AWS with Next.js and TypeScript, establishing code review standards and sprint workflows for a cross-functional team",
-            "Translating study requirements into backend schemas and API contracts for longitudinal workflows and robot integration",
-            "Implementing an LLM-assisted reflection module to personalize therapeutic content within study workflows",
-            "Integrating web interfaces with socially assistive robots (Blossom) via AWS IoT Core (MQTT) for low-latency bidirectional communication",
+            "Lead full-stack development of a secure NIH R01-funded longitudinal research platform supporting 90+ participants using Next.js, TypeScript, AWS Amplify, DynamoDB, and Lambda",
+            "Design backend schemas, API contracts, and serverless workflows for longitudinal study data, with Cognito authentication and IAM-controlled service access",
+            "Build LLM-assisted therapeutic reflection workflows and real-time Blossom robot communication through AWS IoT Core and MQTT",
+          ]}
+        />
+        <ResumeEntry
+          title="Graduate Research Intern"
+          subtitle="University of Southern California, AI for Health Lab (Prof. Ruishan Liu) · Los Angeles, CA"
+          period="Sep 2025 – Aug 2026"
+          bullets={[
+            "Developed a cold-start computerized adaptive testing pipeline using LLM-based simulation and IRT calibration; co-authored a paper on synthetically calibrated item banks (under review, ACL Rolling Review)",
           ]}
         />
         <ResumeEntry
@@ -120,11 +127,10 @@ export default function ResumePage() {
           subtitle="EMRO – Korea's #1 AI-powered supply-chain software provider · Seoul, Korea"
           period="Sep 2023 – Jun 2025"
           bullets={[
-            "Developed and launched \"Quotation Doctor,\" a high-impact internal business application for Hyundai Motor Group, enabling search over historical quotes and surfacing price benchmarks and purchase history",
-            "Built and extended enterprise-scale backend APIs using Java/Spring with MySQL/PostgreSQL to power validation, analytics, and monitoring workflows",
-            "Developed interactive dashboards in JavaScript (HTML/CSS) to visualize validation outcomes and operational metrics",
-            "Integrated a FastText-based similarity service (Python/Flask), validating 100K+ quotes/month and reducing page load time from 10s to under 2s",
-            "Standardized CI/CD across Azure and on-prem environments (Jenkins, Docker) with automated health checks and rollback mechanisms",
+            "Developed and launched a production procurement analytics platform for Hyundai Motor Group, translating procurement workflows into quotation search, price benchmarking, and analytics features",
+            "Built enterprise backend APIs using Java/Spring and MySQL/PostgreSQL for validation, analytics, and monitoring",
+            "Integrated a Python/Flask FastText similarity service processing 100K+ quotations monthly and reduced page load time from 10 seconds to under 2 seconds",
+            "Standardized CI/CD across Azure and on-prem environments using Jenkins and Docker with automated health checks and rollback mechanisms",
           ]}
         />
       </ResumeSection>
@@ -141,12 +147,12 @@ export default function ResumePage() {
           ]}
         />
         <ResumeEntry
-          title="Visurai – AI-powered visual storytelling assistant"
+          title="Visurai – AI-powered visual storytelling assistant for dyslexic, ADHD, and visual learners"
           subtitle="Awards: 1st Place (Context Engineering), Software Engineering Award · USC Good Vibes Only Buildathon (LA Tech Week by a16z)"
           period="Oct 2025"
           bullets={[
-            "Built real-time FastAPI backend converting text into visual storyboards & narration; streamed incremental results via SSE",
-            "Designed an async multi-stage pipeline with concurrency control for slow generative workloads",
+            "Built a FastAPI backend converting text into visual storyboards & narration; streamed results via SSE",
+            "Designed an asynchronous multi-stage generation pipeline with concurrency controls for long-running AI workloads",
           ]}
         />
         <ResumeEntry
@@ -155,20 +161,6 @@ export default function ResumePage() {
           period="May 2025 – Nov 2025"
           bullets={[
             "Architected a multi-agent pipeline using LangGraph to generate structured JSON storyboards for image generation; cut JSON errors ~30% via schema-constrained prompting and validation",
-          ]}
-        />
-      </ResumeSection>
-
-      {/* Research */}
-      <ResumeSection title="Research Experience">
-        <ResumeEntry
-          title="Graduate Research Intern"
-          subtitle="University of Southern California, AI for Health Lab (Prof. Ruishan Liu) · Los Angeles, CA"
-          period="Sep 2025 – Present"
-          bullets={[
-            "Developed a cold-start CAT pipeline integrating LLM-based simulation and IRT calibration",
-            "Implemented evaluation tooling for CAT simulations (batch runs, metrics logging, reproducibility)",
-            "Co-authored a paper on synthetically calibrated IRT item banks for CAT (submitted to ACL Rolling Review, ARR)",
           ]}
         />
       </ResumeSection>
