@@ -49,11 +49,7 @@ export default async function Page() {
     // graceful fallback
   }
 
-  const recentPosts = getBlogPosts()
-    .sort((a, b) =>
-      new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt) ? -1 : 1
-    )
-    .slice(0, 5);
+  const recentPosts = (await getBlogPosts()).slice(0, 5);
 
   return (
     <div className="font-sans">

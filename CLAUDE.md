@@ -29,7 +29,10 @@ pnpm start    # start production server
 | `app/components/footer.tsx` | Full-width footer, left/right layout |
 | `app/components/home/` | Homepage-only components (hero, project-card, now-section, writing-list, etc.) |
 | `components/project-list.tsx` | Projects page list (featured large card + regular grid) |
-| `utils/notion.ts` | All Notion fetch logic — `revalidate: 60` |
+| `utils/notion.ts` | All Notion fetch logic (projects + posts) — `revalidate: 60` |
+| `app/components/notion-blocks.tsx` | Shared Notion block renderer + paginated `fetchBlocks` (projects and posts) |
+| `app/components/post-article.tsx` | Post page body shared by `/posts/[slug]` and `/ko/posts/[slug]` |
+| `app/admin/page.tsx` | Password (`ADMIN_KEY`) sign-in that sets the `blog_admin` cookie → shows Edit in Notion on posts |
 | `app/global.css` | Global styles: `.card-warm`, `.photo-placeholder` |
 | `tailwind.config.js` | Cardinal/warm color scales, font vars, hero-in animation |
 | `app/data/site.ts` | `SITE_URL`, `CURRENT_STATUS` (hero status pill — swap when job status changes) |
@@ -40,6 +43,12 @@ pnpm start    # start production server
 NOTION_TOKEN
 NOTION_MAIN_DB_ID
 NOTION_OTHER_DB_ID
+NOTION_POSTS_DB_ID
+ADMIN_KEY                        # /admin password
+NEXT_PUBLIC_GISCUS_REPO          # owner/repo — comments hidden until all GISCUS vars set
+NEXT_PUBLIC_GISCUS_REPO_ID
+NEXT_PUBLIC_GISCUS_CATEGORY
+NEXT_PUBLIC_GISCUS_CATEGORY_ID
 ```
 
 ## Architecture
@@ -48,6 +57,7 @@ NOTION_OTHER_DB_ID
 - **All other pages**: wrap content in `max-w-2xl` or `max-w-3xl mx-auto px-4`
 - **Nav**: `position: fixed`, `backdrop-blur-xl` — all pages need `pt-[60px]` on main
 - **Projects**: `featured` checkbox in Notion → large card with cover image; unchecked → grid card
+- **Posts**: Notion Posts DB (Title, Slug, Published, Date, Summary, Lang en/ko, Tags). Only `Published` rows show. en/ko versions share a Slug; empty Slug falls back to the page id. Comments (Giscus) are keyed by slug, so both languages share one thread
 - **Notion images**: external URLs used directly; file URLs (expire in ~1h) proxied via `/api/notion-image?pageId=`
 
 ## Design System

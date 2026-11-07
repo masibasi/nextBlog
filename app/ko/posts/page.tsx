@@ -1,5 +1,7 @@
 import { Posts } from "app/components/posts";
 
+export const revalidate = 60;
+
 export default function Page() {
   return (
     <div className="max-w-3xl mx-auto px-4 md:px-6 py-12">

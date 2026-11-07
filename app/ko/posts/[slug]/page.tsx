@@ -1,28 +1,16 @@
-import { notFound } from "next/navigation";
-import { CustomMDX } from "app/components/mdx";
-import { formatDate, getBlogPosts } from "app/lib/posts";
+import { getBlogPost, getBlogPosts } from "app/lib/posts";
+import { PostArticle, postMetadata } from "app/components/post-article";
 
-export const revalidate = false;
+export const revalidate = 60;
 
-export function generateStaticParams() {
-  return getBlogPosts("ko").map((post) => ({ slug: post.slug }));
+export async function generateStaticParams() {
+  return (await getBlogPosts("ko")).map((post) => ({ slug: post.slug }));
+}
+
+export async function generateMetadata({ params }: { params: { slug: string } }) {
+  return postMetadata(await getBlogPost(params.slug, "ko"));
 }
 
 export default function Post({ params }: { params: { slug: string } }) {
-  const post = getBlogPosts("ko").find((post) => post.slug === params.slug);
-  if (!post) notFound();
-
-  return (
-    <div className="max-w-2xl mx-auto px-4 md:px-6 py-12">
-      <section>
-        <h1 className="title font-semibold text-2xl tracking-tighter">{post.metadata.title}</h1>
-        <p className="mt-2 mb-8 text-sm text-neutral-600 dark:text-neutral-400">
-          {formatDate(post.metadata.publishedAt)}
-        </p>
-        <article className="mt-8">
-          <CustomMDX source={post.content} />
-        </article>
-      </section>
-    </div>
-  );
+  return <PostArticle slug={params.slug} lang="ko" />;
 }

@@ -14,12 +14,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: today,
   }));
 
-  const enPosts = getBlogPosts().map((post) => ({
+  const [en, ko] = await Promise.all([getBlogPosts(), getBlogPosts("ko")]);
+
+  const enPosts = en.map((post) => ({
     url: `${baseUrl}/posts/${post.slug}`,
     lastModified: post.metadata.publishedAt,
   }));
 
-  const koPosts = getBlogPosts("ko").map((post) => ({
+  const koPosts = ko.map((post) => ({
     url: `${baseUrl}/ko/posts/${post.slug}`,
     lastModified: post.metadata.publishedAt,
   }));

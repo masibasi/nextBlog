@@ -1,82 +1,17 @@
-import { notFound } from "next/navigation";
-import { CustomMDX } from "app/components/mdx";
-import { formatDate, getBlogPosts } from "app/lib/posts";
-import { baseUrl } from "app/sitemap";
+import { getBlogPost, getBlogPosts } from "app/lib/posts";
+import { PostArticle, postMetadata } from "app/components/post-article";
 
-export const revalidate = false;
+// Posts come from Notion — re-check every 60s; new slugs render on first visit.
+export const revalidate = 60;
 
-export function generateStaticParams() {
-  return getBlogPosts().map((post) => ({ slug: post.slug }));
+export async function generateStaticParams() {
+  return (await getBlogPosts()).map((post) => ({ slug: post.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }) {
-  let post = getBlogPosts().find((post) => post.slug === params.slug);
-  if (!post) {
-    return;
-  }
-
-  let { title, publishedAt: publishedTime, summary: description, image } = post.metadata;
-  let ogImage = image ? image : `${baseUrl}/og?title=${encodeURIComponent(title)}`;
-
-  return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      type: "article",
-      publishedTime,
-      url: `${baseUrl}/posts/${post.slug}`,
-      images: [
-        {
-          url: ogImage,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [ogImage],
-    },
-  };
+export async function generateMetadata({ params }: { params: { slug: string } }) {
+  return postMetadata(await getBlogPost(params.slug, "en"));
 }
 
 export default function Post({ params }: { params: { slug: string } }) {
-  const post = getBlogPosts().find((post) => post.slug === params.slug);
-  if (!post) notFound();
-
-  return (
-    <div className="max-w-2xl mx-auto px-4 md:px-6 py-12">
-      <section>
-        <script
-          type="application/ld+json"
-          suppressHydrationWarning
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "BlogPosting",
-              headline: post.metadata.title,
-              datePublished: post.metadata.publishedAt,
-              dateModified: post.metadata.publishedAt,
-              description: post.metadata.summary,
-              image: post.metadata.image ? `${baseUrl}${post.metadata.image}` : `${baseUrl}/og?title=${encodeURIComponent(post.metadata.title)}`,
-              url: `${baseUrl}/posts/${post.slug}`,
-              author: {
-                "@type": "Person",
-                name: "Ji Min Lee",
-              },
-            }),
-          }}
-        />
-        <h1 className="title font-semibold text-2xl tracking-tighter">{post.metadata.title}</h1>
-        <p className="mt-2 mb-8 text-sm text-neutral-600 dark:text-neutral-400">
-          {formatDate(post.metadata.publishedAt)}
-        </p>
-        <article className="mt-8">
-          <CustomMDX source={post.content} />
-        </article>
-      </section>
-    </div>
-  );
+  return <PostArticle slug={params.slug} lang="en" />;
 }

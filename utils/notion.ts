@@ -19,7 +19,7 @@ const MAIN_DB_ID = (process.env.NOTION_MAIN_DB_ID as string | undefined) ?? "";
 const OTHER_DB_ID = (process.env.NOTION_OTHER_DB_ID as string | undefined) ?? "";
 const NOTION_VERSION = "2022-06-28";
 
-async function notionQuery(databaseId: string, startCursor?: string) {
+async function notionQuery(databaseId: string, startCursor?: string, filter?: any) {
   const res = await fetch(`https://api.notion.com/v1/databases/${databaseId}/query`, {
     method: "POST",
     headers: {
@@ -27,7 +27,7 @@ async function notionQuery(databaseId: string, startCursor?: string) {
       "Notion-Version": NOTION_VERSION,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ page_size: 100, start_cursor: startCursor }),
+    body: JSON.stringify({ page_size: 100, start_cursor: startCursor, ...(filter ? { filter } : {}) }),
     next: { revalidate: 60 },
   });
 
@@ -40,14 +40,14 @@ async function notionQuery(databaseId: string, startCursor?: string) {
   return res.json();
 }
 
-async function queryAll(databaseId: string): Promise<any[]> {
+async function queryAll(databaseId: string, filter?: any): Promise<any[]> {
   if (!NOTION_TOKEN || !databaseId) return [];
   const results: any[] = [];
   let cursor: string | undefined = undefined;
   let hasMore = true;
 
   while (hasMore) {
-    const data = await notionQuery(databaseId, cursor);
+    const data = await notionQuery(databaseId, cursor, filter);
     results.push(...(data.results ?? []));
     hasMore = !!data.has_more;
     cursor = data.next_cursor ?? undefined;
@@ -120,4 +120,65 @@ export async function getOtherProjects(): Promise<Project[]> {
 export async function getAllProjects(): Promise<Project[]> {
   const [main, other] = await Promise.all([getMainProjects(), getOtherProjects()]);
   return [...(main ?? []), ...(other ?? [])];
+}
+
+// ── Posts ────────────────────────────────────────────────────────────────
+
+const POSTS_DB_ID = (process.env.NOTION_POSTS_DB_ID as string | undefined) ?? "";
+
+export type Post = {
+  id: string;
+  slug: string;
+  lang: "en" | "ko";
+  notionUrl: string | null;
+  metadata: {
+    title: string;
+    publishedAt: string; // YYYY-MM-DD
+    summary: string;
+    image?: string; // absolute external URL or /api/notion-image proxy path
+    tags: string[];
+  };
+};
+
+function mapPost(item: any): Post {
+  const props = item?.properties ?? {};
+  const slug = pickRichText(props?.Slug?.rich_text).trim() || item.id.replace(/-/g, "");
+  const lang = props?.Lang?.select?.name === "ko" ? "ko" : "en";
+  return {
+    id: item.id,
+    slug,
+    lang,
+    notionUrl: item.url ?? null,
+    metadata: {
+      title: pickRichText(props?.Title?.title),
+      publishedAt: props?.Date?.date?.start ?? (item.created_time ?? "").slice(0, 10),
+      summary: pickRichText(props?.Summary?.rich_text),
+      image: item.cover?.external?.url
+        ? item.cover.external.url
+        : item.cover?.file?.url
+        ? `/api/notion-image?pageId=${item.id}`
+        : undefined,
+      tags: pickMulti(props?.Tags?.multi_select),
+    },
+  };
+}
+
+/** Published posts for a language, newest first. Never throws. */
+export async function getPosts(lang: "en" | "ko" = "en"): Promise<Post[]> {
+  if (!POSTS_DB_ID) return [];
+  try {
+    const rows = await queryAll(POSTS_DB_ID, { property: "Published", checkbox: { equals: true } });
+    return rows
+      .map(mapPost)
+      .filter((p) => p.lang === lang && p.metadata.title)
+      .sort((a, b) => (a.metadata.publishedAt > b.metadata.publishedAt ? -1 : 1));
+  } catch (e) {
+    console.error("[notion] getPosts failed", e);
+    return [];
+  }
+}
+
+export async function getPost(slug: string, lang: "en" | "ko" = "en"): Promise<Post | undefined> {
+  const posts = await getPosts(lang);
+  return posts.find((p) => p.slug === slug);
 }
