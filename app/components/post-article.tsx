@@ -69,7 +69,7 @@ export async function PostArticle({ slug, lang }: { slug: string; lang: "en" | "
               image: absoluteImage(post),
               url: `${baseUrl}${postPath(post.slug, lang)}`,
               inLanguage: lang,
-              author: { "@type": "Person", name: "Ji Min Lee" },
+              author: { "@type": "Person", name: "Jimin Lee" },
             }),
           }}
         />

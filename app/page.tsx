@@ -60,7 +60,7 @@ export default async function Page() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Person",
-            name: "Ji Min Lee",
+            name: "Jimin Lee",
             jobTitle: "Software Engineer",
             url: SITE_URL,
             affiliation: {

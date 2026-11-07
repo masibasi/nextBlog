@@ -2,7 +2,7 @@ import "./global.css";
 import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
-import { DM_Serif_Display, DM_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import { Navbar } from "./components/nav";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -11,16 +11,20 @@ import { SwipeProvider } from "./components/swipe-provider";
 import { baseUrl } from "./sitemap";
 import { themeEffect } from "utils/themeEffect";
 
-const dmSerif = DM_Serif_Display({
+// Self-hosted (from @fontsource) so builds don't depend on fetching Google Fonts.
+const dmSerif = localFont({
+  src: "./fonts/dm-serif-display-latin-400-normal.woff2",
   weight: "400",
-  subsets: ["latin"],
   variable: "--font-dm-serif",
   display: "swap",
 });
 
-const dmSans = DM_Sans({
-  weight: ["300", "400", "500"],
-  subsets: ["latin"],
+const dmSans = localFont({
+  src: [
+    { path: "./fonts/dm-sans-latin-300-normal.woff2", weight: "300", style: "normal" },
+    { path: "./fonts/dm-sans-latin-400-normal.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/dm-sans-latin-500-normal.woff2", weight: "500", style: "normal" },
+  ],
   variable: "--font-dm-sans",
   display: "swap",
 });
@@ -28,15 +32,15 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Ji Min Lee",
-    template: "%s | Ji Min Lee",
+    default: "Jimin Lee",
+    template: "%s | Jimin Lee",
   },
-  description: "Ji Min Lee — Software Engineer, Full-Stack & AI Systems. M.S. CS (AI) at USC, graduating May 2027 and open to new grad roles.",
+  description: "Jimin Lee — Software Engineer, Full-Stack & AI Systems. M.S. CS (AI) at USC, graduating May 2027 and open to new grad roles.",
   openGraph: {
-    title: "Ji Min Lee",
+    title: "Jimin Lee",
     description: "Software Engineer, Full-Stack & AI Systems. M.S. CS (AI) at USC, graduating May 2027 and open to new grad roles.",
     url: baseUrl,
-    siteName: "Ji Min Lee",
+    siteName: "Jimin Lee",
     locale: "en_US",
     type: "website",
   },

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Resume",
-  description: "Ji Min Lee — Software Engineer, Full-Stack & AI Systems",
+  description: "Jimin Lee — Software Engineer, Full-Stack & AI Systems",
 };
 
 function ResumeSection({ title, children }: { title: string; children: React.ReactNode }) {
@@ -63,7 +63,7 @@ export default function ResumePage() {
       {/* Header */}
       <div className="flex items-start justify-between mb-10">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">Ji Min Lee</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">Jimin Lee</h1>
           <p className="text-neutral-500 dark:text-neutral-400 mt-1">Software Engineer · Full-Stack & AI Systems</p>
           <a href="mailto:leejimin@usc.edu" className="text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors mt-1 block">
             leejimin@usc.edu

@@ -115,8 +115,8 @@ export function Hero() {
       key="name"
       className="font-serif text-[clamp(44px,6vw,80px)] leading-[1.0] tracking-[-0.03em] text-neutral-900 dark:text-neutral-100"
     >
-      <span className="lg:hidden">Ji Min <em className="not-italic text-cardinal-700 dark:text-cardinal-400">Lee</em></span>
-      <span className="hidden lg:inline">Ji Min<br /><em className="not-italic text-cardinal-700 dark:text-cardinal-400">Lee</em></span>
+      <span className="lg:hidden">Jimin <em className="not-italic text-cardinal-700 dark:text-cardinal-400">Lee</em></span>
+      <span className="hidden lg:inline">Jimin<br /><em className="not-italic text-cardinal-700 dark:text-cardinal-400">Lee</em></span>
     </h1>,
     <div
       key="role"
@@ -192,7 +192,7 @@ export function Hero() {
           <div ref={cardDivRef} className="relative rounded-2xl overflow-hidden shadow-[0_28px_70px_rgba(0,0,0,0.16)] hover:shadow-[0_40px_90px_rgba(0,0,0,0.22)] transition-shadow duration-500 aspect-[4/5] bg-warm-100 dark:bg-neutral-800">
             <Image
               src="/me.jpg"
-              alt="Ji Min Lee"
+              alt="Jimin Lee"
               fill
               className="object-cover"
               priority
@@ -213,7 +213,7 @@ export function Hero() {
           {/* Name badge */}
           <div className="absolute bottom-4 left-4 right-4 z-10 bg-white dark:bg-neutral-900 rounded-xl px-4 py-3 border border-neutral-200 dark:border-neutral-700 shadow-sm">
             <div className="font-serif text-base leading-tight text-neutral-900 dark:text-neutral-50 font-semibold">
-              Ji Min Lee
+              Jimin Lee
             </div>
             <div className="text-[11px] text-neutral-700 dark:text-neutral-300 mt-0.5">
               M.S. CS (AI) &middot; USC &middot; Class of 2027

@@ -8,7 +8,7 @@ export default function Footer() {
     <footer className="border-t border-neutral-200/60 dark:border-neutral-800/60 mt-16">
       <div className="max-w-6xl mx-auto px-6 md:px-12 py-7 flex flex-col sm:flex-row justify-between items-center gap-4">
         <p className="text-xs text-neutral-500 dark:text-neutral-400">
-          &copy; {new Date().getFullYear()} Ji Min Lee &middot; MIT Licensed
+          &copy; {new Date().getFullYear()} Jimin Lee &middot; MIT Licensed
         </p>
         <div className="flex gap-5">
           {[

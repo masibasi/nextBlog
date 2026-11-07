@@ -27,9 +27,9 @@ export async function GET() {
   const rssFeed = `<?xml version="1.0" encoding="UTF-8" ?>
   <rss version="2.0">
     <channel>
-        <title>Ji Min Lee</title>
+        <title>Jimin Lee</title>
         <link>${baseUrl}</link>
-        <description>Writing by Ji Min Lee — software engineering, AI systems, and life at USC.</description>
+        <description>Writing by Jimin Lee — software engineering, AI systems, and life at USC.</description>
         ${itemsXml}
     </channel>
   </rss>`

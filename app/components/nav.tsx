@@ -38,7 +38,7 @@ export function Navbar() {
           href="/"
           className="font-serif text-[16px] sm:text-[18px] tracking-[-0.01em] text-neutral-900 dark:text-neutral-100 hover:opacity-80 transition-opacity shrink-0"
         >
-          Ji Min Lee
+          Jimin Lee
         </Link>
 
         {/* Nav links + controls */}

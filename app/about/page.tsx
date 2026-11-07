@@ -5,7 +5,7 @@ import { ScrollReveal } from "app/components/home/scroll-reveal";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "About Ji Min Lee — Software Engineer, Full-Stack & AI Systems, graduating May 2027 and open to new grad roles",
+  description: "About Jimin Lee — Software Engineer, Full-Stack & AI Systems, graduating May 2027 and open to new grad roles",
 };
 
 const SOCIAL_LINKS = [
@@ -88,7 +88,7 @@ export default function AboutPage() {
         <div className="shrink-0 mx-auto sm:mx-0">
           <Image
             src="/usc_me.JPG"
-            alt="Ji Min Lee"
+            alt="Jimin Lee"
             width={200}
             height={240}
             className="rounded-2xl shadow-lg object-cover w-[160px] h-[192px] sm:w-[200px] sm:h-[240px]"
@@ -98,7 +98,7 @@ export default function AboutPage() {
         <div className="flex flex-col justify-center gap-4 text-center sm:text-left">
           <div>
             <h1 className="font-serif text-3xl sm:text-4xl tracking-[-0.02em] text-neutral-900 dark:text-neutral-50 leading-tight">
-              Ji Min Lee
+              Jimin Lee
             </h1>
             <p className="mt-1 text-[15px] text-neutral-600 dark:text-neutral-300">
               Software Engineer at USC · Open to 2027 new grad roles

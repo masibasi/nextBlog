@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   if (!project) return {};
 
   const title = project.title;
-  const description = project.summary ?? `${project.title} — a project by Ji Min Lee.`;
+  const description = project.summary ?? `${project.title} — a project by Jimin Lee.`;
   const ogImage = project.cover
     ? project.cover.startsWith("http")
       ? project.cover
