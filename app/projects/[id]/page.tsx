@@ -52,14 +52,15 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
   const blocks: Block[] = project ? await fetchBlocks(project.id, 3600) : [];
 
   if (!project) {
-    return <div className="max-w-2xl mx-auto py-8 px-4">Could not load data</div>;
+    return <div className="w-full max-w-6xl mx-auto px-6 md:px-12 py-8">Could not load data</div>;
   }
 
   const hasAward = project.tags?.includes("Award");
   const displayTags = (project.tags ?? []).filter((t) => t !== "Award");
 
   return (
-    <main className="max-w-2xl mx-auto py-8 px-4">
+    <div className="w-full max-w-6xl mx-auto px-6 md:px-12 py-8">
+      <div className="max-w-2xl">
       {/* Animated header — client component for staggered mount entrance */}
       <ProjectPageHeader
         project={project}
@@ -73,6 +74,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
           <NotionBlocks blocks={blocks} reveal />
         </div>
       )}
-    </main>
+      </div>
+    </div>
   );
 }
