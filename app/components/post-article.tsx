@@ -55,8 +55,8 @@ export async function PostArticle({ slug, lang }: { slug: string; lang: "en" | "
 
   return (
     <div className="w-full max-w-6xl mx-auto px-6 md:px-12 py-12">
-      {/* Same container as nav/footer; body stays at a readable width, left-aligned */}
-      <section className="max-w-2xl">
+      {/* Full-width container so the column never shrinks; readable column centered */}
+      <section className="max-w-3xl mx-auto">
         <Link
           href={lang === "ko" ? "/ko/posts" : "/posts"}
           className="inline-block mb-8 text-[13px] text-neutral-500 dark:text-neutral-400 hover:text-cardinal-700 dark:hover:text-cardinal-400 transition-colors"

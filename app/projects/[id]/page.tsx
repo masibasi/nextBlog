@@ -60,7 +60,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
 
   return (
     <div className="w-full max-w-6xl mx-auto px-6 md:px-12 py-8">
-      <div className="max-w-2xl">
+      <div className="max-w-3xl mx-auto">
       {/* Animated header — client component for staggered mount entrance */}
       <ProjectPageHeader
         project={project}

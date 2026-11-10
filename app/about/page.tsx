@@ -82,7 +82,7 @@ const INTERESTS = [
 export default function AboutPage() {
   return (
     <div className="w-full max-w-6xl mx-auto px-6 md:px-12 py-12">
-      <div className="max-w-2xl space-y-16">
+      <div className="max-w-3xl mx-auto space-y-16">
 
       {/* Hero: photo + intro split */}
       <div className="flex flex-col sm:flex-row gap-8 sm:gap-10 items-start">

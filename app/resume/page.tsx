@@ -60,7 +60,7 @@ const skillGroups = [
 export default function ResumePage() {
   return (
     <div className="w-full max-w-6xl mx-auto px-6 md:px-12 py-12">
-      <div className="max-w-2xl">
+      <div className="max-w-3xl mx-auto">
       {/* Header */}
       <div className="flex items-start justify-between mb-10">
         <div>
