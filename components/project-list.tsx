@@ -1,4 +1,4 @@
-import type { Project } from "../utils/notion";
+import { compareProjects, type Project } from "../utils/notion";
 
 function AwardBadge() {
   return (
@@ -19,11 +19,7 @@ export default function ProjectList({ projects }: { projects: Project[] }) {
     return <div className="text-neutral-600 dark:text-neutral-400">No projects available yet.</div>;
   }
 
-  const sorted = [...visible].sort((a, b) => {
-    const da = a?.duration ? new Date(a.duration).getTime() : 0;
-    const db = b?.duration ? new Date(b.duration).getTime() : 0;
-    return db - da;
-  });
+  const sorted = [...visible].sort(compareProjects);
 
   const featured = sorted.filter((p) => p.featured);
   const regular = sorted.filter((p) => !p.featured);

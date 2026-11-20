@@ -8,6 +8,7 @@ export type Project = {
   stacks?: string[];
   releasable?: boolean;
   featured?: boolean;
+  order?: number | null; // Notion `order` number: lower shows first; empty falls back to date
   summary?: string;
   cover?: string | null;
   linkUrl?: string | null;
@@ -93,6 +94,7 @@ function mapProject(item: any): Project {
     stacks: pickMulti(stacksProp?.multi_select),
     releasable: !!props?.releasable?.checkbox,
     featured: !!props?.featured?.checkbox || !!props?.Featured?.checkbox,
+    order: props?.order?.number ?? props?.Order?.number ?? null,
     summary: pickRichText(props?.Summary?.rich_text ?? props?.summary?.rich_text),
     // external URL은 영구, file URL은 ~1시간 후 만료 → 프록시로 교체
     cover: item.cover?.external?.url
@@ -103,6 +105,18 @@ function mapProject(item: any): Project {
     linkUrl: linkProp?.url ?? demoProp?.url ?? null,
     notionUrl: item.url ?? null,
   };
+}
+
+// Sort: projects with an `order` value first (ascending), then the rest by start date (newest first).
+export function compareProjects(a: Project, b: Project): number {
+  const oa = typeof a.order === "number" ? a.order : null;
+  const ob = typeof b.order === "number" ? b.order : null;
+  if (oa !== null && ob !== null && oa !== ob) return oa - ob;
+  if (oa !== null && ob === null) return -1;
+  if (oa === null && ob !== null) return 1;
+  const da = a.duration ? new Date(a.duration).getTime() : 0;
+  const db = b.duration ? new Date(b.duration).getTime() : 0;
+  return db - da;
 }
 
 export async function getMainProjects(): Promise<Project[]> {

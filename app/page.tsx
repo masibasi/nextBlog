@@ -1,4 +1,4 @@
-import { getMainProjects, getOtherProjects } from "../utils/notion";
+import { compareProjects, getMainProjects, getOtherProjects } from "../utils/notion";
 import { getBlogPosts } from "app/lib/posts";
 import { Hero } from "app/components/home/hero";
 import { SectionHeader } from "app/components/home/section-header";
@@ -39,11 +39,7 @@ export default async function Page() {
     const [main, other] = await Promise.all([getMainProjects(), getOtherProjects()]);
     const all = [...main, ...other].filter((p) => p.releasable && p.featured);
     featuredProjects = all
-      .sort((a, b) => {
-        const da = a.duration ? new Date(a.duration).getTime() : 0;
-        const db = b.duration ? new Date(b.duration).getTime() : 0;
-        return db - da;
-      })
+      .sort(compareProjects)
       .slice(0, 3);
   } catch {
     // graceful fallback
